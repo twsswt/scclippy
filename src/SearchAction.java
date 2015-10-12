@@ -5,18 +5,10 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
-import com.intellij.openapi.editor.actionSystem.EditorActionManager;
-import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 
 public class SearchAction extends AnAction {
-
-//    static {
-//        final EditorActionManager actionManager = EditorActionManager.getInstance();
-//        final TypedAction typedAction = actionManager.getTypedAction();
-//        typedAction.setupHandler(new KeyHandler());
-//    }
 
     @Override
     public void actionPerformed(final AnActionEvent anActionEvent) {
@@ -37,7 +29,7 @@ public class SearchAction extends AnAction {
             @Override
             public void run() {
                 String newText = document.getText(new TextRange(start, end)).toString();
-                MainWindow.selectionOutcome.setText(newText);
+                MainWindow.selectionOutput.setText(newText);
             }
         };
 
