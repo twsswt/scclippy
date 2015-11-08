@@ -25,7 +25,7 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-      <toolWindow id="Stackoverflow plugin" anchor="bottom" factoryClass="MainWindow">
+      <toolWindow id="Stackoverflow SCC" anchor="bottom" factoryClass="main.MainWindow">
       </toolWindow>
   </extensions>
 
@@ -38,7 +38,7 @@
   </project-components>
 
   <actions>
-      <action id="SearchAction" class="SearchAction" text="Search Stackoverflow"
+      <action id="actions.SearchAction" class="actions.SearchAction" text="Search Stackoverflow"
               description="Searches Stackoverflow for an answer/related code">
           <add-to-group group-id="EditorPopupMenu" anchor="first"/>
       </action>

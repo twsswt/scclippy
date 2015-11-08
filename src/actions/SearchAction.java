@@ -1,3 +1,5 @@
+package actions;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -7,6 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import main.MainWindow;
 
 public class SearchAction extends AnAction {
 
@@ -28,8 +31,8 @@ public class SearchAction extends AnAction {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                String newText = document.getText(new TextRange(start, end)).toString();
-                MainWindow.selectionOutput.setText(newText);
+                String newText = document.getText(new TextRange(start, end));
+                MainWindow.input.setText(newText);
             }
         };
 
