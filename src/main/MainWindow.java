@@ -21,9 +21,11 @@ import java.awt.event.ActionListener;
 public class MainWindow implements ToolWindowFactory {
 
     public static int queryNumber = 5; // TODO make input for this
+    private static String indexPath = "D:/sccindex/index";
+
     public static JTextArea input = new JTextArea("", 5, 50);
     public static JTextArea[] output = new JTextArea[queryNumber];
-    private static String indexPath = "D:/sccindex/index";
+    public static JButton searchButton = new JButton("Search");
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
@@ -44,8 +46,7 @@ public class MainWindow implements ToolWindowFactory {
         input.setWrapStyleWord(true);
         JScrollPane inputScrollPane = new JBScrollPane(input);
         panel.add(inputScrollPane);
-
-        JButton searchButton = new JButton("Search");
+        
         searchButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {

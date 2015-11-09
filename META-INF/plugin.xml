@@ -27,6 +27,7 @@
   <extensions defaultExtensionNs="com.intellij">
       <toolWindow id="Stackoverflow SCC" anchor="bottom" factoryClass="main.MainWindow">
       </toolWindow>
+      <typedHandler implementation="actions.CustomTypedHandlerDelegate"/>
   </extensions>
 
   <application-components>
