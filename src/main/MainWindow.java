@@ -30,7 +30,7 @@ public class MainWindow implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
 
-        // TODO add select index path & data option
+        // TODO add select index path & data option?
         // IndexFiles.index(new String[] {"-index", "D:/sccindex/index", "-docs", "D:/sccdata", "-update"});
 
         JPanel panel = new JPanel();
@@ -53,7 +53,7 @@ public class MainWindow implements ToolWindowFactory {
                         String[] filesContent = null;
                         try {
                             filesContent = SearchFiles.search(new String[]{
-                                    indexPath, "contents", input.getText(), "5"
+                                    indexPath, "contents", input.getText(), String.valueOf(queryNumber)
                             });
                         } catch (Exception e) { /* TODO: Show intellij notification for failure */ }
 
@@ -73,7 +73,7 @@ public class MainWindow implements ToolWindowFactory {
                                 }
 
                             } catch (BadLocationException e2) {
-                                //TODO WHAT EXACTLY?
+                                // Never thrown?
                             }
                         }
                         for (int i = filesContent.length; i < output.length; i++) {
