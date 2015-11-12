@@ -17,7 +17,6 @@ package lucene;
  */
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
@@ -29,7 +28,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,13 +53,12 @@ public class SearchFiles {
 
         IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
         IndexSearcher searcher = new IndexSearcher(reader);
+
         // TODO change analyzer to accept braces and other symbols.
         Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
         QueryParser parser = new QueryParser(field, analyzer);
-
         String line = queryString.trim();
-        Query query = parser.parse(line);
-//        System.out.println("Searching for: " + query.toString(field));
+        Query query = parser.parse(QueryParser.escape(line));
 
         TopDocs results = searcher.search(query, hitsPerPage);
         ScoreDoc[] hits = results.scoreDocs;

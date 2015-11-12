@@ -55,7 +55,10 @@ public class MainWindow implements ToolWindowFactory {
                             filesContent = SearchFiles.search(new String[]{
                                     indexPath, "contents", input.getText(), String.valueOf(queryNumber)
                             });
-                        } catch (Exception e) { /* TODO: Show intellij notification for failure */ }
+                        } catch (Exception e) {
+                            /* TODO: Show intellij notification for failure */
+                            System.err.println(e.getMessage());
+                        }
 
                         if (filesContent == null)
                             return;
