@@ -85,7 +85,7 @@ public class MainWindow implements ToolWindowFactory {
         panel.add(searchButton);
 
         for (int i = 0; i < output.length; i++) {
-            output[i] = new JEditorPane("text/html", "Result " + (i + 1));
+            output[i] = new JEditorPane("text/html", "");
             output[i].setEditable(false);
             output[i].setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.YELLOW));
             HTMLEditorKit kit = new HTMLEditorKit();
@@ -93,6 +93,7 @@ public class MainWindow implements ToolWindowFactory {
             kit.getStyleSheet().addRule("code {background-color: olive;}");
 
             outputScrollPane[i] = new JBScrollPane(output[i]);
+            outputScrollPane[i].setPreferredSize(new Dimension(1000, 100));
             panel.add(outputScrollPane[i]);
         }
     }
