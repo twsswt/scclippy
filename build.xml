@@ -36,19 +36,23 @@
 			srcdir="src"
 			destdir="bin"
 			debuglevel="lines,vars,source"
-			classpathref="project.classpath"
-		/>
+			classpathref="project.classpath"/>
 	
-	</target>	
+	</target>
 	
-	<target	name="build-jar" depends="compile"
-	>
-		<jar
-			destfile="scclippy.jar"
-			basedir="bin"
-			excludes="**/test/**/*.class"
-		/>
+	<target	name="jar" depends="compile">
+		<jar destfile="scclippy-${version}.jar">
+			<fileset dir="bin" excludes="**/*Test.class"/>
+			<fileset dir="." includes="META-INF/plugin.xml"/>
+		</jar>
 		
+	</target>
+
+	<target name="plugin" depends="jar">
+		<zip file="scclippy-0.0.1-PREALPHA.zip">
+			<zipfileset prefix="scclippy/lib" dir="lib" includes="lucene-*.jar" />
+			<zipfileset prefix="scclippy/lib" dir="." includes="scclippy-${version}.jar" />
+		</zip>
 	</target>
 		
 	<target name="build" depends="compile"/>

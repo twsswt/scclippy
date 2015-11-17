@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
  
-<project basedir="." default="build" name="hussien2015deontobot">
+<project basedir="." default="build" name="nikolov2015scclippy">
   
   <target 
       name="clean"
