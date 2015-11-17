@@ -1,0 +1,9 @@
+<ivy-module version="2.0">
+
+	<info organisation="uk.ac.glasgow" module="scclippy"/>
+		
+	<dependencies>
+		<dependency org="junit" name="junit" conf="default" rev="4.11"/>					
+	</dependencies>
+	
+</ivy-module>

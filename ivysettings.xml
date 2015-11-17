@@ -1,0 +1,28 @@
+<ivysettings>
+
+	<settings
+		defaultResolver="chained" />
+
+	<resolvers>
+	
+		<chain 
+			name="chained"
+			returnFirst="true"
+			dual="true"
+		>
+
+			<ibiblio
+				name="1"
+				m2compatible="true"
+			/>
+		
+			<url name="2">
+				<artifact pattern="http://rote.dcs.gla.ac.uk/site-jars/[organisation]/[module]/[revision]/[artifact]-[revision].jar" />
+			</url>
+			
+		</chain>
+		
+	</resolvers>
+
+
+</ivysettings>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project
+	name="scclippy"
+	basedir="."
+	xmlns:ivy="antlib:org.apache.ivy.ant"
+	default="build">
+	
+	<path id="project.classpath">
+		<pathelement location="bin" />
+		<fileset dir="lib" />
+	</path>
+
+	<property name="version" value="0.0.1-PREALPHA"/>
+	
+	<target name="clean">
+		<delete dir="bin" />
+	</target>
+	
+	<target	name="cleanall" depends="clean">
+		<delete dir="lib" />
+		<delete dir="." includes="*.jar"/>
+		<ivy:cleancache/>
+	</target>
+		
+	<target name="init">
+		<mkdir dir="bin"/>
+	</target>
+
+	<target name="resolve">
+		<ivy:retrieve />
+	</target>
+		
+	<target name="compile" depends="init,resolve">
+		<javac
+			srcdir="src"
+			destdir="bin"
+			debuglevel="lines,vars,source"
+			classpathref="project.classpath"
+		/>
+	
+	</target>	
+	
+	<target	name="build-jar" depends="compile"
+	>
+		<jar
+			destfile="scclippy.jar"
+			basedir="bin"
+			excludes="**/test/**/*.class"
+		/>
+		
+	</target>
+		
+	<target name="build" depends="compile"/>
+
+</project>
