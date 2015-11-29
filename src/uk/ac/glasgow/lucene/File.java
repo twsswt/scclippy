@@ -22,7 +22,10 @@ public class File {
             return null;
         }
         String filename = Paths.get(filepath).getFileName().toString();
-        return filename.substring(0, filename.length() - fileType.length());
+        String[] questionAndAnswer = filename.split("-");
+        String questionOrAnswer = questionAndAnswer[questionAndAnswer.length - 1];
+
+        return questionOrAnswer.substring(0, questionOrAnswer.length() - fileType.length());
     }
 
     public String getContent() {
