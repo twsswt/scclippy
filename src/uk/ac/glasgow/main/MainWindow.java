@@ -174,9 +174,9 @@ public class MainWindow implements ToolWindowFactory {
                     Object[] possibilities = new Object[snippets.size()];
                     for (int i = 0; i < snippets.size(); i++) {
                         if (snippets.get(i).length() > 100)
-                            possibilities[i] = snippets.get(i).substring(0, inputDialogMaxSnippetLength);
+                            possibilities[i] = (i+1) + ":" + snippets.get(i).substring(0, inputDialogMaxSnippetLength);
                         else
-                            possibilities[i] = snippets.get(i);
+                            possibilities[i] = (i+1) + ":" + snippets.get(i);
                     }
 
                     String chosenSnippet = (String) JOptionPane.showInputDialog(
@@ -189,7 +189,8 @@ public class MainWindow implements ToolWindowFactory {
                             possibilities[0]);
 
                     if ((chosenSnippet != null) && (chosenSnippet.length() > 0)) {
-                        insertTextIntoEditor(chosenSnippet);
+                        int index = chosenSnippet.indexOf(":");
+                        insertTextIntoEditor(snippets.get(Integer.parseInt(chosenSnippet.substring(0, index)) - 1));
                     }
 
                 }
@@ -197,11 +198,15 @@ public class MainWindow implements ToolWindowFactory {
         }
 
         private void insertTextIntoEditor(String text) {
-            ApplicationManager.getApplication().runWriteAction(new Runnable() { //TODO
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
                 @Override
                 public void run() {
+                    if (currentEditor == null)
+                        return;
+
                     Document doc = currentEditor.getDocument();
                     int offset = currentEditor.getCaretModel().getOffset();
+
                     doc.setText(
                             doc.getText(new TextRange(0, offset)) +
                                     text +
