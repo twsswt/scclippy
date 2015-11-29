@@ -162,19 +162,7 @@ public class MainWindow implements ToolWindowFactory {
 
                 if (snippets.size() == 1) {
                     // insert directly
-                    ApplicationManager.getApplication().runWriteAction(new Runnable() { //TODO
-                        @Override
-                        public void run() {
-
-                            Document doc = currentEditor.getDocument();
-                            int offset = currentEditor.getCaretModel().getOffset();
-                            doc.setText(
-                                    doc.getText(new TextRange(0, offset)) +
-                                            snippets.get(0) +
-                                            doc.getText(new TextRange(offset, doc.getText().length()))
-                            );
-                        }
-                    });
+                    insertTextIntoEditor(snippets.get(0));
                 } else if (snippets.size() > 1) {
                     // ask user for input
                     JPanel panel = new JPanel();
@@ -182,12 +170,16 @@ public class MainWindow implements ToolWindowFactory {
                     JLabel snippetsLabel = new JLabel();
                     panel.add(snippetsLabel);
 
+                    int inputDialogMaxSnippetLength = 100;
                     Object[] possibilities = new Object[snippets.size()];
                     for (int i = 0; i < snippets.size(); i++) {
-                        possibilities[i] = snippets.get(i);
+                        if (snippets.get(i).length() > 100)
+                            possibilities[i] = snippets.get(i).substring(0, inputDialogMaxSnippetLength);
+                        else
+                            possibilities[i] = snippets.get(i);
                     }
 
-                    String chosenSnippet = (String)JOptionPane.showInputDialog(
+                    String chosenSnippet = (String) JOptionPane.showInputDialog(
                             resultPanel,
                             "Choose which code snippet:\n",
                             "Code snippet",
@@ -197,23 +189,26 @@ public class MainWindow implements ToolWindowFactory {
                             possibilities[0]);
 
                     if ((chosenSnippet != null) && (chosenSnippet.length() > 0)) {
-                        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                Document doc = currentEditor.getDocument();
-                                int offset = currentEditor.getCaretModel().getOffset();
-                                doc.setText(
-                                        doc.getText(new TextRange(0, offset)) +
-                                                chosenSnippet +
-                                                doc.getText(new TextRange(offset, doc.getText().length()))
-                                );
-                            }
-                        });
+                        insertTextIntoEditor(chosenSnippet);
                     }
 
                 }
             }
+        }
+
+        private void insertTextIntoEditor(String text) {
+            ApplicationManager.getApplication().runWriteAction(new Runnable() { //TODO
+                @Override
+                public void run() {
+                    Document doc = currentEditor.getDocument();
+                    int offset = currentEditor.getCaretModel().getOffset();
+                    doc.setText(
+                            doc.getText(new TextRange(0, offset)) +
+                                    text +
+                                    doc.getText(new TextRange(offset, doc.getText().length()))
+                    );
+                }
+            });
         }
     }
 }
