@@ -37,7 +37,7 @@ public class MainWindow implements ToolWindowFactory {
 
     static int queryNumber = 5; // TODO make input for this
 
-    private static String indexPath = "D:/sccindex/index";
+    private static String indexPath = "D:/index";
 
     public static JTextArea input = new JTextArea();
     public static JEditorPane[] output = new JEditorPane[queryNumber];
@@ -49,6 +49,8 @@ public class MainWindow implements ToolWindowFactory {
 
     JPanel resultPanel = new JPanel();
     JScrollPane resultPanelScroll = new JBScrollPane(resultPanel);
+
+    File[] files = null;
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
@@ -73,7 +75,6 @@ public class MainWindow implements ToolWindowFactory {
         searchButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        File[] files = null;
                         try {
                             files = SearchFiles.search(new String[]{
                                     indexPath, "contents", input.getText(), String.valueOf(queryNumber)
@@ -147,9 +148,8 @@ public class MainWindow implements ToolWindowFactory {
         public void mouseClicked(MouseEvent e) {
 
             // double click
-            if (e.getClickCount() == 2) {
-
-                String text = output[id].getText();
+            if (e.getClickCount() == 2 && files != null && files[id] != null) {
+                String text = files[id].getContent();
                 int start, end = 0;
                 String startText = "<code>";
                 String endText = "</code>";
@@ -181,8 +181,6 @@ public class MainWindow implements ToolWindowFactory {
 
                     JLabel snippetsLabel = new JLabel();
                     panel.add(snippetsLabel);
-
-
 
                     Object[] possibilities = new Object[snippets.size()];
                     for (int i = 0; i < snippets.size(); i++) {
