@@ -21,8 +21,12 @@ public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
                 MainWindow.currentEditor = editor;
                 int offset = editor.getCaretModel().getCurrentCaret().getOffset();
                 if (offset >= 1) {
-                    int lastSpace = file.getText().lastIndexOf(' ', offset - 1);
-                    MainWindow.input.setText(file.getText().substring(lastSpace, offset));
+                    int lastCommand = file.getText().lastIndexOf(';', offset - 1);
+                    if (lastCommand == -1)
+                        lastCommand = file.getText().lastIndexOf('{', offset - 1);
+                    if (lastCommand == -1)
+                        break;
+                    MainWindow.input.setText(file.getText().substring(lastCommand + 1, offset).trim());
                     MainWindow.searchButton.doClick();
                 }
                 break;
