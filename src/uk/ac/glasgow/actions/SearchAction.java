@@ -1,4 +1,4 @@
-package actions;
+package uk.ac.glasgow.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -9,7 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import main.MainWindow;
+import uk.ac.glasgow.main.MainWindow;
 
 public class SearchAction extends AnAction {
 
@@ -19,9 +19,11 @@ public class SearchAction extends AnAction {
         //Get all the required data from data keys
         final Editor editor = anActionEvent.getRequiredData(CommonDataKeys.EDITOR);
         final Project project = anActionEvent.getRequiredData(CommonDataKeys.PROJECT);
+        MainWindow.currentEditor = editor;
 
         //Access document, caret, and selection
         final Document document = editor.getDocument();
+
         final SelectionModel selectionModel = editor.getSelectionModel();
 
         final int start = selectionModel.getSelectionStart();

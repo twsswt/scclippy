@@ -1,4 +1,4 @@
-package lucene;
+package uk.ac.glasgow.lucene;
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -39,7 +39,7 @@ public class SearchFiles {
      *
      * @param args [-index dir] [-field f] [-query string] [-paging hitsPerPage]
      */
-    public static String[] search(String[] args) throws Exception {
+    public static File[] search(String[] args) throws Exception {
         if (args.length != 4)
             return null;
 
@@ -54,7 +54,6 @@ public class SearchFiles {
         IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
         IndexSearcher searcher = new IndexSearcher(reader);
 
-        // TODO change analyzer to accept braces and other symbols.
         Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
         QueryParser parser = new QueryParser(field, analyzer);
         String line = queryString.trim();
@@ -63,15 +62,16 @@ public class SearchFiles {
         TopDocs results = searcher.search(query, hitsPerPage);
         ScoreDoc[] hits = results.scoreDocs;
 
-        String[] fileContent = new String[hitsPerPage];
+        File[] files = new File[hitsPerPage];
 
         for (int i = 0; i < hits.length; i++) {
             Document doc = searcher.doc(hits[i].doc);
             String path = doc.get("path");
-            fileContent[i] = new String(Files.readAllBytes(Paths.get(path)));
+            String content = new String(Files.readAllBytes(Paths.get(path)));
+            files[i] = new File(path, content);
         }
 
-        return fileContent;
+        return files;
     }
 
 }

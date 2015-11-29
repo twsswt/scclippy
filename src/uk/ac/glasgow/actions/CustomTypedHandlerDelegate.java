@@ -1,10 +1,10 @@
-package actions;
+package uk.ac.glasgow.actions;
 
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import main.MainWindow;
+import uk.ac.glasgow.main.MainWindow;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
@@ -18,10 +18,13 @@ public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
 
         for (char trigger : triggerSearchChars) {
             if (c == trigger) {
+                MainWindow.currentEditor = editor;
                 int offset = editor.getCaretModel().getCurrentCaret().getOffset();
-                int lastSpace = file.getText().lastIndexOf(' ', offset - 1);
-                MainWindow.input.setText(file.getText().substring(lastSpace, offset));
-                MainWindow.searchButton.doClick();
+                if (offset >= 1) {
+                    int lastSpace = file.getText().lastIndexOf(' ', offset - 1);
+                    MainWindow.input.setText(file.getText().substring(lastSpace, offset));
+                    MainWindow.searchButton.doClick();
+                }
                 break;
             }
         }

@@ -1,4 +1,4 @@
-package lucene;
+package uk.ac.glasgow.lucene;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,6 +19,7 @@ package lucene;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -36,45 +37,34 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 
-/** Index all text files under a directory.
+/**
+ * Index all text files under a directory.
  * <p>
  * This is a command-line application demonstrating simple Lucene indexing.
  * Run it with no command-line arguments for usage information.
  */
 public class IndexFiles {
 
-    private IndexFiles() {}
+    /**
+     * Index all text files under a directory.
+     * [-index INDEX_PATH] [-docs DOCS_PATH] [-update]
+     */
+    public static boolean index(String[] args) {
+        if (args.length != 3)
+            return false;
 
-    /** Index all text files under a directory. */
-    public static void index(String[] args) {
-        String usage = "java org.apache.lucene.demo.IndexFiles"
-                + " [-index INDEX_PATH] [-docs DOCS_PATH] [-update]\n\n"
-                + "This indexes the documents in DOCS_PATH, creating a Lucene index"
-                + "in INDEX_PATH that can be searched with com.company.SearchFiles";
-        String indexPath = "index";
-        String docsPath = null;
-        boolean create = true;
-        for(int i=0;i<args.length;i++) {
-            if ("-index".equals(args[i])) {
-                indexPath = args[i+1];
-                i++;
-            } else if ("-docs".equals(args[i])) {
-                docsPath = args[i+1];
-                i++;
-            } else if ("-update".equals(args[i])) {
-                create = false;
-            }
-        }
+        String indexPath = args[0];
+        String docsPath = args[1];
+        boolean create = Boolean.parseBoolean(args[2]);
 
         if (docsPath == null) {
-            System.err.println("Usage: " + usage);
-            System.exit(1);
+            return false;
         }
 
         final Path docDir = Paths.get(docsPath);
         if (!Files.isReadable(docDir)) {
-            System.out.println("Document directory '" +docDir.toAbsolutePath()+ "' does not exist or is not readable, please check the path");
-            System.exit(1);
+            System.out.println("Document directory '" + docDir.toAbsolutePath() + "' does not exist or is not readable, please check the path");
+            return false;
         }
 
         Date start = new Date();
@@ -82,7 +72,7 @@ public class IndexFiles {
             System.out.println("Indexing to directory '" + indexPath + "'...");
 
             Directory dir = FSDirectory.open(Paths.get(indexPath));
-            Analyzer analyzer = new StandardAnalyzer();
+            Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
             if (create) {
@@ -121,12 +111,14 @@ public class IndexFiles {
             System.out.println(" caught a " + e.getClass() +
                     "\n with message: " + e.getMessage());
         }
+
+        return true;
     }
 
     /**
      * Indexes the given file using the given writer, or if a directory is given,
      * recurses over files and directories found under the given directory.
-     *
+     * <p>
      * NOTE: This method indexes one document per input file.  This is slow.  For good
      * throughput, put multiple documents into your input file(s).  An example of this is
      * in the benchmark module, which can create "line doc" files, one document per line,
@@ -135,7 +127,7 @@ public class IndexFiles {
      * >WriteLineDocTask</a>.
      *
      * @param writer Writer to the index where the given file/dir info will be stored
-     * @param path The file to index, or the directory to recurse into to find files to index
+     * @param path   The file to index, or the directory to recurse into to find files to index
      * @throws IOException If there is a low-level I/O error
      */
     static void indexDocs(final IndexWriter writer, Path path) throws IOException {
@@ -156,7 +148,9 @@ public class IndexFiles {
         }
     }
 
-    /** Indexes a single document */
+    /**
+     * Indexes a single document
+     */
     static void indexDoc(IndexWriter writer, Path file, long lastModified) throws IOException {
         try (InputStream stream = Files.newInputStream(file)) {
             // make a new, empty document
