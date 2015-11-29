@@ -160,9 +160,6 @@ public class MainWindow implements ToolWindowFactory {
                     snippets.add(text.substring(start + startText.length(), end));
                 }
 
-//                for (int i = 0; i < snippets.size(); i++)
-//                    System.out.println(snippets.get(i));
-
                 if (snippets.size() == 1) {
                     // insert directly
                     ApplicationManager.getApplication().runWriteAction(new Runnable() { //TODO
@@ -221,41 +218,4 @@ public class MainWindow implements ToolWindowFactory {
             }
         }
     }
-
-    private class FinalSelectedSnippetListener extends MouseAdapter {
-
-        String code;
-        JPanel snippetChooser;
-
-        public FinalSelectedSnippetListener(String code, JPanel snippetChooser) {
-            this.code = code;
-            this.snippetChooser = snippetChooser;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // double click
-            if (e.getClickCount() == 2) {
-                snippetChooser.setVisible(false);
-                resultPanelScroll.setVisible(true);
-
-                ApplicationManager.getApplication().runWriteAction(new Runnable() { //TODO refactor
-                    @Override
-                    public void run() {
-
-                        Document doc = currentEditor.getDocument();
-                        int offset = currentEditor.getCaretModel().getOffset();
-                        doc.setText(
-                                doc.getText(new TextRange(0, offset)) +
-                                        code +
-                                        doc.getText(new TextRange(offset, doc.getText().length()))
-                        );
-                    }
-                });
-
-            }
-        }
-    }
-
-
 }
