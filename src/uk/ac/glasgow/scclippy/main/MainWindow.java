@@ -1,4 +1,4 @@
-package uk.ac.glasgow.main;
+package uk.ac.glasgow.scclippy.main;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
@@ -10,8 +10,8 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.glasgow.lucene.File;
-import uk.ac.glasgow.lucene.SearchFiles;
+import uk.ac.glasgow.scclippy.lucene.File;
+import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -36,7 +36,6 @@ public class MainWindow implements ToolWindowFactory {
     private static int INPUT_TEXT_AREA_ROWS = 5; //TODO make this auto resizable
 
     static int queryNumber = 5; // TODO make input for this
-
     private static String indexPath = "D:/index";
 
     public static JTextArea input = new JTextArea();
@@ -94,21 +93,6 @@ public class MainWindow implements ToolWindowFactory {
                                     + "\">Link to Stackoverflow</a>";
                             output[i].setText(text + url);
                             output[i].setEnabled(true);
-                            output[i].addHyperlinkListener(new HyperlinkListener() {
-                                public void hyperlinkUpdate(HyperlinkEvent e) {
-                                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                        if (Desktop.isDesktopSupported()) {
-                                            try {
-                                                Desktop.getDesktop().browse(e.getURL().toURI());
-                                            } catch (IOException e1) {
-                                                e1.printStackTrace();
-                                            } catch (URISyntaxException e1) {
-                                                e1.printStackTrace();
-                                            }
-                                        }
-                                    }
-                                }
-                            });
                             outputScrollPane[i].repaint();
                         }
                         for (int i = files.length; i < output.length; i++) {
@@ -128,7 +112,21 @@ public class MainWindow implements ToolWindowFactory {
             kit.getStyleSheet().addRule("code {background-color: olive;}");
 
             output[i].addMouseListener(new SelectedSnippetListener(i, toolWindow));
-
+            output[i].addHyperlinkListener(new HyperlinkListener() {
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        if (Desktop.isDesktopSupported()) {
+                            try {
+                                Desktop.getDesktop().browse(e.getURL().toURI());
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            } catch (URISyntaxException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            });
             outputScrollPane[i] = new JBScrollPane(output[i]);
             outputScrollPane[i].setPreferredSize(new Dimension(1000, 100));
             resultPanel.add(outputScrollPane[i]);
@@ -209,8 +207,8 @@ public class MainWindow implements ToolWindowFactory {
 
                     doc.setText(
                             doc.getText(new TextRange(0, offset)) +
-                                    text +
-                                    doc.getText(new TextRange(offset, doc.getText().length()))
+                            text +
+                            doc.getText(new TextRange(offset, doc.getText().length()))
                     );
                 }
             });
