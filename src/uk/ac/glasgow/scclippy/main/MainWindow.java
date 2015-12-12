@@ -40,7 +40,6 @@ public class MainWindow implements ToolWindowFactory {
 
     public static JTextArea input = new JTextArea();
     public static JEditorPane[] output = new JEditorPane[queryNumber];
-    JScrollPane[] outputScrollPane = new JBScrollPane[output.length];
 
     public static JButton searchButton = new JButton("Search");
 
@@ -93,7 +92,7 @@ public class MainWindow implements ToolWindowFactory {
                                     + "\">Link to Stackoverflow</a>";
                             output[i].setText(text + url);
                             output[i].setEnabled(true);
-                            outputScrollPane[i].repaint();
+                            output[i].updateUI();
                         }
                         for (int i = files.length; i < output.length; i++) {
                             output[i].setText("");
@@ -120,16 +119,14 @@ public class MainWindow implements ToolWindowFactory {
                                 Desktop.getDesktop().browse(e.getURL().toURI());
                             } catch (IOException e1) {
                                 e1.printStackTrace();
-                            } catch (URISyntaxException e1) {
-                                e1.printStackTrace();
+                            } catch (URISyntaxException e2) {
+                                e2.printStackTrace();
                             }
                         }
                     }
                 }
             });
-            outputScrollPane[i] = new JBScrollPane(output[i]);
-            outputScrollPane[i].setPreferredSize(new Dimension(1000, 100));
-            resultPanel.add(outputScrollPane[i]);
+            resultPanel.add(output[i]);
         }
     }
 
