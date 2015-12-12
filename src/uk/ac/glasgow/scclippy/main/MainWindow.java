@@ -11,14 +11,7 @@ import uk.ac.glasgow.scclippy.lucene.File;
 import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * Main Tool Window class
@@ -63,22 +56,20 @@ public class MainWindow implements ToolWindowFactory {
         posts = new Posts(queryNumber, toolWindow);
 
         searchButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        try {
-                            files = SearchFiles.search(new String[]{
-                                    indexPath, "contents", inputPane.getText(), String.valueOf(queryNumber)
-                            });
-                        } catch (Exception e) {
-                            /* TODO: Show intellij notification for failure */
-                            System.err.println(e.getMessage());
-                        }
-
-                        if (files == null)
-                            return;
-
-                        posts.update(files);
+                ae -> {
+                    try {
+                        files = SearchFiles.search(new String[]{
+                                indexPath, "contents", inputPane.getText(), String.valueOf(queryNumber)
+                        });
+                    } catch (Exception e) {
+                        /* TODO: Show intellij notification for failure */
+                        System.err.println(e.getMessage());
                     }
+
+                    if (files == null)
+                        return;
+
+                    posts.update(files);
                 }
         );
         resultsPanel.add(searchButton);
