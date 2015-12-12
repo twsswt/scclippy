@@ -25,9 +25,9 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-      <toolWindow id="Stackoverflow SCC" anchor="bottom" factoryClass="uk.ac.glasgow.main.MainWindow">
+      <toolWindow id="SourceCodeClippy" anchor="bottom" factoryClass="uk.ac.glasgow.scclippy.main.MainWindow">
       </toolWindow>
-      <typedHandler implementation="uk.ac.glasgow.actions.CustomTypedHandlerDelegate"/>
+      <typedHandler implementation="uk.ac.glasgow.scclippy.actions.CustomTypedHandlerDelegate"/>
   </extensions>
 
   <application-components>
@@ -39,7 +39,7 @@
   </project-components>
 
   <actions>
-      <action id="uk.ac.glasgow.actions.SearchAction" class="uk.ac.glasgow.actions.SearchAction" text="Search Stackoverflow"
+      <action id="uk.ac.glasgow.scclippy.actions.SearchAction" class="uk.ac.glasgow.scclippy.actions.SearchAction" text="SCC - Set as a query"
               description="Searches Stackoverflow for an answer/related code">
           <add-to-group group-id="EditorPopupMenu" anchor="first"/>
       </action>

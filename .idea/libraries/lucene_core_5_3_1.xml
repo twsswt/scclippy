@@ -3,7 +3,6 @@
     <CLASSES>
       <root url="jar://D:/Lucene/lucene-5.3.1/core/lucene-core-5.3.1.jar!/" />
       <root url="jar://D:/Lucene/lucene-5.3.1/analysis/common/lucene-analyzers-common-5.3.1.jar!/" />
-      <root url="jar://D:/Lucene/lucene-5.3.1/demo/lucene-demo-5.3.1.jar!/" />
       <root url="jar://D:/Lucene/lucene-5.3.1/queryparser/lucene-queryparser-5.3.1.jar!/" />
     </CLASSES>
     <JAVADOC />

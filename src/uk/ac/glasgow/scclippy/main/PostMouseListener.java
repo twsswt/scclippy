@@ -12,16 +12,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class SelectedSnippetListener extends MouseAdapter {
+public class PostMouseListener extends MouseAdapter {
 
     int id;
     ToolWindow toolWindow;
 
-    static String startText = "<code>";
-    static String endText = "</code>";
+    static String codeStartTag = "<code>";
+    static String codeEndTag = "</code>";
     static int inputDialogMaxSnippetLength = 100;
 
-    public SelectedSnippetListener(int id, ToolWindow toolWindow) {
+    public PostMouseListener(int id, ToolWindow toolWindow) {
         this.id = id;
         this.toolWindow = toolWindow;
     }
@@ -59,30 +59,27 @@ public class SelectedSnippetListener extends MouseAdapter {
     private List<String> getSnippetsFromText(String text) {
         List<String> snippets = new LinkedList<>();
         int start, end = 0;
-        while ((start = text.indexOf(startText, end)) != -1 &&
-                (end = text.indexOf(endText, start)) != -1) {
-            snippets.add(text.substring(start + startText.length(), end));
+        while ((start = text.indexOf(codeStartTag, end)) != -1 &&
+                (end = text.indexOf(codeEndTag, start)) != -1) {
+            snippets.add(text.substring(start + codeStartTag.length(), end));
         }
 
         return snippets;
     }
 
     private void insertTextIntoEditor(String text) {
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-            @Override
-            public void run() {
-                if (MainWindow.currentEditor == null)
-                    return;
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            if (MainWindow.currentEditor == null)
+                return;
 
-                Document doc = MainWindow.currentEditor.getDocument();
-                int offset = MainWindow.currentEditor.getCaretModel().getOffset();
+            Document doc = MainWindow.currentEditor.getDocument();
+            int offset = MainWindow.currentEditor.getCaretModel().getOffset();
 
-                doc.setText(
-                        doc.getText(new TextRange(0, offset)) +
-                                text +
-                                doc.getText(new TextRange(offset, doc.getText().length()))
-                );
-            }
+            doc.setText(
+                    doc.getText(new TextRange(0, offset)) +
+                            text +
+                            doc.getText(new TextRange(offset, doc.getText().length()))
+            );
         });
     }
 
