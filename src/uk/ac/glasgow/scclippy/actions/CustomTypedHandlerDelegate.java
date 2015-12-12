@@ -4,6 +4,7 @@ import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+import uk.ac.glasgow.scclippy.main.InputPane;
 import uk.ac.glasgow.scclippy.main.MainWindow;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,8 +34,8 @@ public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
                     } else {
                         break;
                     }
-                    MainWindow.inputPane.setText(file.getText().substring(last + 1, offset).trim());
-                    MainWindow.searchButton.doClick();
+                    InputPane.inputPane.setText(file.getText().substring(last + 1, offset).trim());
+//                    MainWindow.searchButton.doClick();
                 }
                 break;
             }

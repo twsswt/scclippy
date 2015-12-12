@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import uk.ac.glasgow.scclippy.main.InputPane;
 import uk.ac.glasgow.scclippy.main.MainWindow;
 
 public class SearchAction extends AnAction {
@@ -16,12 +17,12 @@ public class SearchAction extends AnAction {
     @Override
     public void actionPerformed(final AnActionEvent anActionEvent) {
 
-        //Get all the required data from data keys
+        // Get all the required data from data keys
         final Editor editor = anActionEvent.getRequiredData(CommonDataKeys.EDITOR);
         final Project project = anActionEvent.getRequiredData(CommonDataKeys.PROJECT);
         MainWindow.currentEditor = editor;
 
-        //Access document, caret, and selection
+        // Access document, caret, and selection
         final Document document = editor.getDocument();
 
         final SelectionModel selectionModel = editor.getSelectionModel();
@@ -29,17 +30,13 @@ public class SearchAction extends AnAction {
         final int start = selectionModel.getSelectionStart();
         final int end = selectionModel.getSelectionEnd();
 
-        //New instance of Runnable to make a replacement
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                String newText = document.getText(new TextRange(start, end));
-                MainWindow.inputPane.setText(newText);
-//                MainWindow.searchButton.doClick();
-            }
+        // New instance of Runnable to make a replacement
+        Runnable runnable = () -> {
+            String newText = document.getText(new TextRange(start, end));
+            InputPane.inputPane.setText(newText);
         };
 
-        //Making the replacement
+        // Making the replacement
         WriteCommandAction.runWriteCommandAction(project, runnable);
         selectionModel.removeSelection();
     }
@@ -47,11 +44,11 @@ public class SearchAction extends AnAction {
     @Override
     public void update(final AnActionEvent e) {
 
-        //Get required data keys
+        // Get required data keys
         final Project project = e.getData(CommonDataKeys.PROJECT);
         final Editor editor = e.getData(CommonDataKeys.EDITOR);
 
-        //Set visibility only in case of existing project and editor and if some text in the editor is selected
+        // Set visibility only in case of existing project and editor and if some text in the editor is selected
         e.getPresentation().setVisible((project != null && editor != null && editor.getSelectionModel().hasSelection()));
     }
 }

@@ -36,22 +36,21 @@ public class SearchFiles {
 
     /**
      * Given a query, returns result of search based on indexed documents
-     *
-     * @param args [-index dir] [-field f] [-query string] [-paging hitsPerPage]
+     * @param indexPath path to the index
+     * @param field what to return e.g. "content" (from the file)
+     * @param queryString the query
+     * @param hitsPerPage how many hits per page
+     * @return array of files with the content
+     * @throws Exception
      */
-    public static File[] search(String[] args) throws Exception {
-        if (args.length != 4)
+    public static File[] search(String indexPath, String field, String queryString, int hitsPerPage) throws Exception {
+        if (indexPath == null || field == null || queryString == null)
             return null;
-
-        String index = args[0];
-        String field = args[1] == null ? "contents" : args[1];
-        String queryString = args[2];
-        int hitsPerPage = Integer.parseInt(args[3]);
 
         if (hitsPerPage < 1)
             return null;
 
-        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
+        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher searcher = new IndexSearcher(reader);
 
         Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
