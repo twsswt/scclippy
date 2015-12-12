@@ -15,7 +15,7 @@ public class InputPane {
     public static JTextArea inputPane = new JTextArea();
     static JScrollPane inputScrollPane = new JBScrollPane(inputPane);
 
-    InputPane() {
+    static {
         inputPane.setLineWrap(true);
         inputPane.setWrapStyleWord(true);
         inputPane.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.CYAN));

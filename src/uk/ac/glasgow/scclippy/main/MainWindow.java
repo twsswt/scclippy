@@ -24,7 +24,6 @@ public class MainWindow implements ToolWindowFactory {
 
     static JPanel resultsPanel = new JPanel();
     static JScrollPane resultsPanelScroll = new JBScrollPane(resultsPanel);
-    public static InputPane inputPane = new InputPane();
     public static Posts posts;
 
     static File[] files = null;
