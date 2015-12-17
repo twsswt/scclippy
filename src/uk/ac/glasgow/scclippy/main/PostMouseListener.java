@@ -15,15 +15,13 @@ import java.util.List;
 public class PostMouseListener extends MouseAdapter {
 
     int id;
-    ToolWindow toolWindow;
 
     static String codeStartTag = "<code>";
     static String codeEndTag = "</code>";
     static int inputDialogMaxSnippetLength = 100;
 
-    public PostMouseListener(int id, ToolWindow toolWindow) {
+    public PostMouseListener(int id) {
         this.id = id;
-        this.toolWindow = toolWindow;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class PostMouseListener extends MouseAdapter {
 
     public String getChosenSnippet(Object[] possibilities) {
         return (String) JOptionPane.showInputDialog(
-                MainWindow.resultsPanel,
+                MainWindow.mainPanel,
                 "Choose which code snippet:\n",
                 "Code snippet",
                 JOptionPane.PLAIN_MESSAGE,

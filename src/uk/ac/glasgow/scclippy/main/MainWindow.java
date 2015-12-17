@@ -22,9 +22,9 @@ public class MainWindow implements ToolWindowFactory {
 
     public static Editor currentEditor;
 
-    static JPanel resultsPanel = new JPanel();
-    static JScrollPane resultsPanelScroll = new JBScrollPane(resultsPanel);
-    public static Posts posts;
+    static JPanel mainPanel = new JPanel();
+    static JScrollPane mainPanelScroll = new JBScrollPane(mainPanel);
+    public static Posts posts = new Posts(queryNumber);
 
     static File[] files = null;
 
@@ -34,15 +34,17 @@ public class MainWindow implements ToolWindowFactory {
         // TODO add select and create index options
         // IndexFiles.index(new String[] {"-index", "D:/sccindex/index", "-docs", "D:/sccdata", "-update"});
 
-        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.PAGE_AXIS));
-        resultsPanelScroll.getVerticalScrollBar().setUnitIncrement(MAIN_SCROLL_STEP);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+        mainPanelScroll.getVerticalScrollBar().setUnitIncrement(MAIN_SCROLL_STEP);
+
+        JButton button = new JButton("Search Stackoverflow (online)");
+        button.addActionListener(new StackoverflowSearchActionListener(posts));
 
         Component component = toolWindow.getComponent();
-        component.getParent().add(resultsPanelScroll);
+        component.getParent().add(mainPanelScroll);
 
-        resultsPanel.add(InputPane.inputScrollPane);
-
-        posts = new Posts(queryNumber, toolWindow);
-        posts.addTo(resultsPanel);
+        mainPanel.add(button);
+        mainPanel.add(InputPane.inputScrollPane);
+        posts.addTo(mainPanel);
     }
 }
