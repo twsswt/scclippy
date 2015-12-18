@@ -3,7 +3,6 @@ package uk.ac.glasgow.scclippy.main;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.wm.ToolWindow;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -83,7 +82,7 @@ public class PostMouseListener extends MouseAdapter {
 
     public String getChosenSnippet(Object[] possibilities) {
         return (String) JOptionPane.showInputDialog(
-                MainWindow.mainPanel,
+                MainWindow.searchPanel,
                 "Choose which code snippet:\n",
                 "Code snippet",
                 JOptionPane.PLAIN_MESSAGE,

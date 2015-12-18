@@ -15,9 +15,10 @@ import java.net.URISyntaxException;
 class Posts {
 
     private JEditorPane[] postPane;
+    static int SEARCH_POST_COUNT = 5;
 
-    Posts(int queryNumber) {
-        postPane = new JEditorPane[queryNumber];
+    Posts() {
+        postPane = new JEditorPane[SEARCH_POST_COUNT];
 
         for (int i = 0; i < postPane.length; i++) {
             postPane[i] = new JEditorPane("text/html", "");
@@ -37,7 +38,7 @@ class Posts {
      * Adds each pane to a panel
      * @param panel the panel
      */
-    void addTo(JPanel panel) {
+    void addTo(JComponent panel) {
         for (JEditorPane pane : postPane) {
             panel.add(pane);
         }

@@ -50,7 +50,7 @@ public class InputPane {
                         MainWindow.indexPath,
                         "contents",
                         text,
-                        MainWindow.queryNumber
+                        Posts.SEARCH_POST_COUNT
                 );
             } catch (Exception e2) {
                 /* TODO: Show intellij notification for failure */
