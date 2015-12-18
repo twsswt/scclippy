@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.main;
+package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;

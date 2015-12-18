@@ -9,8 +9,8 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import uk.ac.glasgow.scclippy.main.InputPane;
-import uk.ac.glasgow.scclippy.main.MainWindow;
+import uk.ac.glasgow.scclippy.uicomponents.InputPane;
+import uk.ac.glasgow.scclippy.uicomponents.MainWindow;
 
 public class SearchAction extends AnAction {
 

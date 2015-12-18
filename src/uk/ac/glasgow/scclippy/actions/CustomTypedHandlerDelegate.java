@@ -4,8 +4,8 @@ import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import uk.ac.glasgow.scclippy.main.InputPane;
-import uk.ac.glasgow.scclippy.main.MainWindow;
+import uk.ac.glasgow.scclippy.uicomponents.InputPane;
+import uk.ac.glasgow.scclippy.uicomponents.MainWindow;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {

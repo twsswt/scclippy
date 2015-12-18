@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.main;
+package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTabbedPane;
+import org.apache.log4j.chainsaw.Main;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.lucene.File;
 
@@ -40,12 +41,11 @@ public class MainWindow implements ToolWindowFactory {
         initSearchPanel();
     }
 
-    private JTabbedPane createTabbedPane() {
+    private static JTabbedPane createTabbedPane() {
         JTabbedPane tabbedPane = new JBTabbedPane();
 
-        ImageIcon icon = null;
-        tabbedPane.addTab("Search", icon, searchPanelScroll, "Searching by index or using Stackoverflow API");
-        tabbedPane.addTab("Settings", icon, settingsPanel, "Change settings");
+        tabbedPane.addTab("Search", null, searchPanelScroll, "Searching by index or using Stackoverflow API");
+        tabbedPane.addTab("Settings", null, settingsPanel, "Change settings");
 
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
@@ -53,7 +53,7 @@ public class MainWindow implements ToolWindowFactory {
         return tabbedPane;
     }
 
-    private void initSearchPanel() {
+    private static void initSearchPanel() {
         MainWindow.searchPanel.setLayout(new BoxLayout(MainWindow.searchPanel, BoxLayout.PAGE_AXIS));
         searchPanelScroll.getVerticalScrollBar().setUnitIncrement(MAIN_SCROLL_STEP);
 
