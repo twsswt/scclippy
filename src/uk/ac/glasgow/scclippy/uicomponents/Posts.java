@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 
-class Posts {
+public class Posts {
 
     private JEditorPane[] postPane;
     static int SEARCH_POST_COUNT = 5;

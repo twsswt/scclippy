@@ -6,7 +6,6 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTabbedPane;
-import org.apache.log4j.chainsaw.Main;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.lucene.File;
 
@@ -57,13 +56,17 @@ public class MainWindow implements ToolWindowFactory {
         MainWindow.searchPanel.setLayout(new BoxLayout(MainWindow.searchPanel, BoxLayout.PAGE_AXIS));
         searchPanelScroll.getVerticalScrollBar().setUnitIncrement(MAIN_SCROLL_STEP);
 
+        // buttons
         JButton searchStackoverflowButton = new JButton("Search for excerpts in Stackoverflow");
         searchStackoverflowButton.addActionListener(new StackoverflowSearchActionListener(posts));
+        JButton searchWithGoogleButton = new JButton("Open browser to search for Stackoverflow posts");
+        searchWithGoogleButton.addActionListener(new GoogleSearchActionListener());
 
-        // button panel at the top
+        // button panel
         JComponent buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         buttonPanel.add(searchStackoverflowButton);
+        buttonPanel.add(searchWithGoogleButton);
 
         // add components to search panel
         MainWindow.searchPanel.add(buttonPanel);
