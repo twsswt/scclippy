@@ -8,6 +8,7 @@
 		<dependency org="org.apache.lucene" name="lucene-core" rev="5.3.1" conf="default"/>
 		<dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="5.3.1" conf="default"/>
 		<dependency org="org.apache.lucene" name="lucene-queryparser" rev="5.3.1" conf="default"/>
+		<dependency org="org.json" name="json" rev="20140107" conf="default"/>
 
 		<dependency org="com.intellij" name="openapi" rev="15.0.1"/>
 		<dependency org="com.intellij" name="extensions" rev="15.0.1"/>
