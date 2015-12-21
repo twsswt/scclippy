@@ -4,6 +4,7 @@ import com.intellij.ui.JBColor;
 import uk.ac.glasgow.scclippy.lucene.File;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
@@ -17,10 +18,15 @@ public class Posts {
     private JEditorPane[] postPane;
     static int SEARCH_POST_COUNT = 5;
     static HTMLEditorKit kit = new HTMLEditorKit();
+    private static Border border;
 
     static {
-        kit.getStyleSheet().addRule("code {background-color: olive;}");
+        kit.getStyleSheet().addRule("code {background-color: #909090;}");
         kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
+
+        Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.YELLOW);
+        Border marginBorder = BorderFactory.createEmptyBorder(0, 8, 0, 0);
+        border = BorderFactory.createCompoundBorder(matteBorder, marginBorder);
     }
 
     Posts() {
@@ -29,7 +35,7 @@ public class Posts {
         for (int i = 0; i < postPane.length; i++) {
             postPane[i] = new JEditorPane("text/html", "");
             postPane[i].setEditable(false);
-            postPane[i].setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.YELLOW));
+            postPane[i].setBorder(border);
             postPane[i].setEditorKit(kit);
             postPane[i].addMouseListener(new PostMouseListener(i));
             postPane[i].addHyperlinkListener(new PostHyperlinkListener());

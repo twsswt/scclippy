@@ -5,6 +5,7 @@ import com.intellij.ui.components.JBScrollPane;
 import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -16,10 +17,18 @@ public class InputPane {
     JScrollPane inputScrollPane = new JBScrollPane(inputArea);
     static boolean resizable = true;
 
+    private static Border border;
+
+    static {
+        Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.CYAN);
+        Border marginBorder = BorderFactory.createEmptyBorder(0, 8, 0, 0);
+        border = BorderFactory.createCompoundBorder(matteBorder, marginBorder);
+    }
+
     InputPane() {
         inputArea.setLineWrap(true);
         inputArea.setWrapStyleWord(true);
-        inputArea.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.CYAN));
+        inputArea.setBorder(border);
         inputArea.setRows(INPUT_TEXT_AREA_ROWS);
         inputArea.getDocument().addDocumentListener(new InputPaneListener(inputArea));
     }

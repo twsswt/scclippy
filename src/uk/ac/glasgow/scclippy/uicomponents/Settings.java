@@ -35,7 +35,7 @@ public class Settings {
         JCheckBox resizableInputPaneCheckBox = new ResizableInputPaneCheckBox("Auto-resizable query input text area");
         inputAndOutputOptions.add(resizableInputPaneCheckBox);
         // output checkbox
-        JCheckBox indexSearchHighlightCheckBox = new IndexSearchHighlightCheckBox("Highlighted results with index search");
+        JCheckBox indexSearchHighlightCheckBox = new IndexSearchHighlightCheckBox("Highlighted results");
         inputAndOutputOptions.add(indexSearchHighlightCheckBox);
 
         // Index settings

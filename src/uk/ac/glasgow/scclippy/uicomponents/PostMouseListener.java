@@ -1,8 +1,14 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
+import com.intellij.codeInsight.actions.ReformatCodeAction;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.codeStyle.CodeStyleManager;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

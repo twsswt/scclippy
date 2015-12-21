@@ -4,7 +4,6 @@ import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import uk.ac.glasgow.scclippy.uicomponents.InputPane;
 import uk.ac.glasgow.scclippy.uicomponents.MainWindow;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.uicomponents.Search;
@@ -36,7 +35,6 @@ public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
                         break;
                     }
                     Search.inputPane.inputArea.setText(file.getText().substring(last + 1, offset).trim());
-//                    MainWindow.searchButton.doClick();
                 }
                 break;
             }
