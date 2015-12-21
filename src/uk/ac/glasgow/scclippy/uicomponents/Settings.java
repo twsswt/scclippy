@@ -57,13 +57,13 @@ public class Settings {
         JLabel indexFolderLabel = new JLabel("Index directory not selected");
         createIndexOptions.add(indexFolderLabel);
         String[] index = new String[1];
-        JButton indexFolderChooser = new IndexFolderChooser("Choose index folder", indexFolderLabel, index);
+        JButton indexFolderChooser = new FolderChooserButton("Choose index folder", indexFolderLabel, index);
         createIndexOptions.add(indexFolderChooser);
         // data chooser
         JLabel dataFolderLabel = new JLabel("Data directory not selected");
         createIndexOptions.add(dataFolderLabel);
         String[] data = new String[1];
-        JButton dataFolderChooser = new DataFolderChooser("Choose data folder", dataFolderLabel, data);
+        JButton dataFolderChooser = new FolderChooserButton("Choose data folder", dataFolderLabel, data);
         createIndexOptions.add(dataFolderChooser);
         // update index option
         boolean[] update = new boolean[1];
@@ -194,37 +194,19 @@ public class Settings {
         }
     }
 
-    private static class IndexFolderChooser extends JButton {
+    private static class FolderChooserButton extends JButton {
 
-        public IndexFolderChooser(String s, JLabel indexFolderLabel, String[] index) {
+        public FolderChooserButton(String s, JLabel indexFolderLabel, String[] path) {
             super(s);
             addActionListener(e -> {
                 JFileChooser chooser = new JFileChooser();
-                chooser.setDialogTitle("Choose index folder");
+                chooser.setDialogTitle(s);
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
                 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    index[0] = chooser.getSelectedFile().getAbsolutePath();
+                    path[0] = chooser.getSelectedFile().getAbsolutePath();
                     indexFolderLabel.setText(chooser.getSelectedFile().getName());
                     indexFolderLabel.setToolTipText(chooser.getSelectedFile().getPath());
-                }
-            });
-        }
-    }
-
-    private static class DataFolderChooser extends JButton {
-
-        public DataFolderChooser(String s, JLabel dataFolderLabel, String[] data) {
-            super(s);
-            addActionListener(e -> {
-                JFileChooser chooser = new JFileChooser();
-                chooser.setDialogTitle("Choose data folder");
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    data[0] = chooser.getSelectedFile().getAbsolutePath();
-                    dataFolderLabel.setText(chooser.getSelectedFile().getName());
-                    dataFolderLabel.setToolTipText(chooser.getSelectedFile().getPath());
                 }
             });
         }
@@ -252,7 +234,7 @@ public class Settings {
                         statusLabel.setText("Indexing files...");
                         IndexTask task = new IndexTask(index, data, update);
                         task.execute();
-                        statusLabel.setText("Finished indexing!");
+                        statusLabel.setText("Finished indexing " + IndexFiles.getFilesIndexed() + " files!");
                     }
             );
         }
