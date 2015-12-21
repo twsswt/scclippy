@@ -3,7 +3,6 @@ package uk.ac.glasgow.scclippy.uicomponents;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -17,9 +16,11 @@ public class StackoverflowSearchActionListener implements ActionListener {
     String PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
 
     private Posts posts;
+    private InputPane inputPane;
 
-    StackoverflowSearchActionListener(Posts posts) {
+    StackoverflowSearchActionListener(Posts posts, InputPane inputPane) {
         this.posts = posts;
+        this.inputPane = inputPane;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class StackoverflowSearchActionListener implements ActionListener {
 
         String body = "";
         try {
-            body = URLEncoder.encode(InputPane.inputPane.getText(), "UTF-8");
+            body = URLEncoder.encode(inputPane.inputArea.getText(), "UTF-8");
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
         }

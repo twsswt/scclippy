@@ -12,13 +12,19 @@ import java.net.URLEncoder;
 
 public class GoogleSearchActionListener implements ActionListener {
 
+    private InputPane inputPane;
+
+    public GoogleSearchActionListener(InputPane inputPane) {
+        this.inputPane = inputPane;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (Desktop.isDesktopSupported()) {
             try {
                 String query = "";
                 try {
-                    query = URLEncoder.encode(InputPane.inputPane.getText().trim() + " ", "UTF-8");
+                    query = URLEncoder.encode(inputPane.inputArea.getText().trim() + " ", "UTF-8");
                 } catch (UnsupportedEncodingException e1) {
                     e1.printStackTrace();
                 }

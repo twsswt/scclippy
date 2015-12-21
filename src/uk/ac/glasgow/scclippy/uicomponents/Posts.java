@@ -16,6 +16,12 @@ public class Posts {
 
     private JEditorPane[] postPane;
     static int SEARCH_POST_COUNT = 5;
+    static HTMLEditorKit kit = new HTMLEditorKit();
+
+    static {
+        kit.getStyleSheet().addRule("code {background-color: olive;}");
+        kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
+    }
 
     Posts() {
         postPane = new JEditorPane[SEARCH_POST_COUNT];
@@ -24,15 +30,22 @@ public class Posts {
             postPane[i] = new JEditorPane("text/html", "");
             postPane[i].setEditable(false);
             postPane[i].setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.YELLOW));
-            HTMLEditorKit kit = new HTMLEditorKit();
             postPane[i].setEditorKit(kit);
-            kit.getStyleSheet().addRule("code {background-color: olive;}");
-            kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
-
             postPane[i].addMouseListener(new PostMouseListener(i));
             postPane[i].addHyperlinkListener(new PostHyperlinkListener());
         }
     }
+
+    static void enableHighlights() {
+        kit.getStyleSheet().addRule("code {background-color: olive;}");
+        kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
+    }
+
+    static void disableHighlights() {
+        kit.getStyleSheet().removeStyle("code");
+        kit.getStyleSheet().removeStyle("span.highlight");
+    }
+
 
     /**
      * Adds each pane to a panel

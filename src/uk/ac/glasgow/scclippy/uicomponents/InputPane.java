@@ -10,20 +10,31 @@ import javax.swing.event.DocumentListener;
 
 public class InputPane {
 
-    private static int INPUT_TEXT_AREA_ROWS = 5; //TODO make this auto resizable
+    final static int INPUT_TEXT_AREA_ROWS = 5;
 
-    public static JTextArea inputPane = new JTextArea();
-    static JScrollPane inputScrollPane = new JBScrollPane(inputPane);
+    public JTextArea inputArea = new JTextArea();
+    JScrollPane inputScrollPane = new JBScrollPane(inputArea);
+    static boolean resizable = true;
 
-    static {
-        inputPane.setLineWrap(true);
-        inputPane.setWrapStyleWord(true);
-        inputPane.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.CYAN));
-        inputPane.setRows(INPUT_TEXT_AREA_ROWS);
-        inputPane.getDocument().addDocumentListener(new InputPaneListener());
+    InputPane() {
+        inputArea.setLineWrap(true);
+        inputArea.setWrapStyleWord(true);
+        inputArea.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.CYAN));
+        inputArea.setRows(INPUT_TEXT_AREA_ROWS);
+        inputArea.getDocument().addDocumentListener(new InputPaneListener(inputArea));
+    }
+
+    public JComponent getComponent() {
+        return inputScrollPane;
     }
 
     private static class InputPaneListener implements DocumentListener {
+
+        JTextArea inputPane;
+
+        InputPaneListener(JTextArea inputPane) {
+            this.inputPane = inputPane;
+        }
 
         @Override
         public void insertUpdate(DocumentEvent e) {
@@ -41,13 +52,21 @@ public class InputPane {
         }
 
         private void searchAction() {
+            if (resizable)
+                inputPane.setRows(inputPane.getLineCount());
+
             String text = inputPane.getText();
             if (text.equals(""))
                 return;
 
+            if (Settings.indexPath == null) {
+                Search.posts.update("Set index path from 'Settings' first");
+                return;
+            }
+
             try {
                 MainWindow.files = SearchFiles.search(
-                        MainWindow.indexPath,
+                        Settings.indexPath,
                         "contents",
                         text,
                         Posts.SEARCH_POST_COUNT
@@ -56,7 +75,7 @@ public class InputPane {
                 /* TODO: Show intellij notification for failure */
                 System.err.println(e2.getMessage());
             }
-            MainWindow.posts.update(MainWindow.files);
+            Search.posts.update(MainWindow.files);
         }
     }
 }

@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import uk.ac.glasgow.scclippy.uicomponents.InputPane;
 import uk.ac.glasgow.scclippy.uicomponents.MainWindow;
+import uk.ac.glasgow.scclippy.uicomponents.Search;
 
 public class SearchAction extends AnAction {
 
@@ -33,7 +34,7 @@ public class SearchAction extends AnAction {
         // New instance of Runnable to make a replacement
         Runnable runnable = () -> {
             String newText = document.getText(new TextRange(start, end));
-            InputPane.inputPane.setText(newText);
+            Search.inputPane.inputArea.setText(newText);
         };
 
         // Making the replacement

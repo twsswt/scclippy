@@ -27,7 +27,9 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import uk.ac.glasgow.scclippy.uicomponents.MainWindow;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,71 +47,45 @@ import java.util.Date;
  */
 public class IndexFiles {
 
+    static int filesIndexed;
+
     /**
      * Index all text files under a directory.
-     * [-index INDEX_PATH] [-docs DOCS_PATH] [-update]
+     * @param indexPath path to the index
+     * @param dataPath path to the data
+     * @param updateIndex update the index or create new instead
+     * @return successful/unsuccessful creation of index
      */
-    public static boolean index(String[] args) {
-        if (args.length != 3)
+    public static boolean index(String indexPath, String dataPath, boolean updateIndex) {
+        filesIndexed = 0;
+
+        if (dataPath == null)
             return false;
 
-        String indexPath = args[0];
-        String docsPath = args[1];
-        boolean create = Boolean.parseBoolean(args[2]);
-
-        if (docsPath == null) {
+        final Path docDir = Paths.get(dataPath);
+        if (!Files.isReadable(docDir))
             return false;
-        }
 
-        final Path docDir = Paths.get(docsPath);
-        if (!Files.isReadable(docDir)) {
-            System.out.println("Document directory '" + docDir.toAbsolutePath() + "' does not exist or is not readable, please check the path");
-            return false;
-        }
-
-        Date start = new Date();
         try {
-            System.out.println("Indexing to directory '" + indexPath + "'...");
-
             Directory dir = FSDirectory.open(Paths.get(indexPath));
             Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
-            if (create) {
-                // Create a new index in the directory, removing any
-                // previously indexed documents:
+            if (updateIndex) {
+                // Create a new index in the directory
                 iwc.setOpenMode(OpenMode.CREATE);
             } else {
                 // Add new documents to an existing index:
                 iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
             }
 
-            // Optional: for better indexing performance, if you
-            // are indexing many documents, increase the RAM
-            // buffer.  But if you do this, increase the max heap
-            // size to the JVM (eg add -Xmx512m or -Xmx1g):
-            //
-            // iwc.setRAMBufferSizeMB(256.0);
-
             IndexWriter writer = new IndexWriter(dir, iwc);
             indexDocs(writer, docDir);
 
-            // NOTE: if you want to maximize search performance,
-            // you can optionally call forceMerge here.  This can be
-            // a terribly costly operation, so generally it's only
-            // worth it when your index is relatively static (ie
-            // you're done adding documents to it):
-            //
-            // writer.forceMerge(1);
-
             writer.close();
 
-            Date end = new Date();
-            System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-
         } catch (IOException e) {
-            System.out.println(" caught a " + e.getClass() +
-                    "\n with message: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return true;
@@ -119,8 +95,8 @@ public class IndexFiles {
      * Indexes the given file using the given writer, or if a directory is given,
      * recurses over files and directories found under the given directory.
      * <p>
-     * NOTE: This method indexes one document per inputPane file.  This is slow.  For good
-     * throughput, put multiple documents into your inputPane file(s).  An example of this is
+     * NOTE: This method indexes one document per inputArea file.  This is slow.  For good
+     * throughput, put multiple documents into your inputArea file(s).  An example of this is
      * in the benchmark module, which can create "line doc" files, one document per line,
      * using the
      * <a href="../../../../../contrib-benchmark/org/apache/lucene/benchmark/byTask/tasks/WriteLineDocTask.html"
@@ -180,16 +156,19 @@ public class IndexFiles {
 
             if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
                 // New index, so we just add the document (no old document can be there):
-                System.out.println("adding " + file);
                 writer.addDocument(doc);
             } else {
                 // Existing index (an old copy of this document may have been indexed) so
                 // we use updateDocument instead to replace the old one matching the exact
                 // path, if present:
-                System.out.println("updating " + file);
                 writer.updateDocument(new Term("path", file.toString()), doc);
             }
+            filesIndexed++;
         }
+    }
+
+    public static int getFilesIndexed() {
+        return filesIndexed;
     }
 }
 

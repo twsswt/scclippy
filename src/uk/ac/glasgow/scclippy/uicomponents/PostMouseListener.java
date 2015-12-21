@@ -65,13 +65,13 @@ public class PostMouseListener extends MouseAdapter {
     }
 
     private void insertTextIntoEditor(String text) {
+        if (MainWindow.currentEditor == null)
+            return;
+
+        Document doc = MainWindow.currentEditor.getDocument();
+        int offset = MainWindow.currentEditor.getCaretModel().getOffset();
+
         ApplicationManager.getApplication().runWriteAction(() -> {
-            if (MainWindow.currentEditor == null)
-                return;
-
-            Document doc = MainWindow.currentEditor.getDocument();
-            int offset = MainWindow.currentEditor.getCaretModel().getOffset();
-
             doc.setText(
                     doc.getText(new TextRange(0, offset)) +
                             text +
@@ -82,7 +82,7 @@ public class PostMouseListener extends MouseAdapter {
 
     public String getChosenSnippet(Object[] possibilities) {
         return (String) JOptionPane.showInputDialog(
-                MainWindow.searchPanel,
+                Search.searchPanel,
                 "Choose which code snippet:\n",
                 "Code snippet",
                 JOptionPane.PLAIN_MESSAGE,
