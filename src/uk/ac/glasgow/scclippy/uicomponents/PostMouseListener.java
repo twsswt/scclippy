@@ -1,14 +1,15 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
-import com.intellij.codeInsight.actions.ReformatCodeAction;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.DataConstants;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.codeStyle.CodeStyleManager;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -71,17 +72,25 @@ public class PostMouseListener extends MouseAdapter {
     }
 
     private void insertTextIntoEditor(String text) {
-        if (MainWindow.currentEditor == null)
+        // TODO
+        DataContext dataContext = DataManager.getInstance().getDataContext();
+        Project project = (Project) dataContext.getData(DataConstants.PROJECT);
+        if (project == null)
             return;
 
-        Document doc = MainWindow.currentEditor.getDocument();
-        int offset = MainWindow.currentEditor.getCaretModel().getOffset();
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        if (editor == null)
+            return;
+
+        Document doc = editor.getDocument();
+
+        int offset = editor.getCaretModel().getOffset();
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             doc.setText(
                     doc.getText(new TextRange(0, offset)) +
-                            text +
-                            doc.getText(new TextRange(offset, doc.getText().length()))
+                    text +
+                    doc.getText(new TextRange(offset, doc.getText().length()))
             );
         });
     }

@@ -21,7 +21,6 @@ public class SearchAction extends AnAction {
         // Get all the required data from data keys
         final Editor editor = anActionEvent.getRequiredData(CommonDataKeys.EDITOR);
         final Project project = anActionEvent.getRequiredData(CommonDataKeys.PROJECT);
-        MainWindow.currentEditor = editor;
 
         // Access document, caret, and selection
         final Document document = editor.getDocument();

@@ -19,7 +19,6 @@ public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
 
         for (char trigger : triggerSearchChars) {
             if (c == trigger) {
-                MainWindow.currentEditor = editor;
                 int offset = editor.getCaretModel().getCurrentCaret().getOffset();
                 if (offset >= 1) {
                     int lastCommand = file.getText().lastIndexOf(';', offset - 1);
