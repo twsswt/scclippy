@@ -1,14 +1,13 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataConstants;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.TextRange;
 
 import javax.swing.*;
@@ -72,9 +71,8 @@ public class PostMouseListener extends MouseAdapter {
     }
 
     private void insertTextIntoEditor(String text) {
-        // TODO
-        DataContext dataContext = DataManager.getInstance().getDataContext();
-        Project project = (Project) dataContext.getData(DataConstants.PROJECT);
+        DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
+        Project project = DataKeys.PROJECT.getData(dataContext);
         if (project == null)
             return;
 
