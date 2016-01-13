@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 public class MainWindow implements ToolWindowFactory {
 
     static Search search;
+    static SearchHistoryTab history;
     static Settings settings;
 
     static File[] files = null;
@@ -30,15 +31,18 @@ public class MainWindow implements ToolWindowFactory {
         component.getParent().add(tabbedPane);
 
         Search.initSearchPanel();
+        SearchHistoryTab.initHistoryPanel();
         Settings.initSettingsPanel();
     }
 
     private static JTabbedPane createTabbedPane() {
         tabbedPane.addTab("Search", null, Search.searchPanelScroll, "Searching by index or using Stackoverflow API");
+        tabbedPane.addTab("History", null, SearchHistoryTab.historyPanelScroll, "View input history");
         tabbedPane.addTab("Settings", null, Settings.settingsPanelScroll, "Change settings");
 
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+        tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 
         return tabbedPane;
     }

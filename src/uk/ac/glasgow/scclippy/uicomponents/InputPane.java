@@ -73,6 +73,7 @@ public class InputPane {
                 return;
             }
 
+            SearchHistoryTab.update(text);
             try {
                 MainWindow.files = SearchFiles.search(
                         Settings.indexPath,
