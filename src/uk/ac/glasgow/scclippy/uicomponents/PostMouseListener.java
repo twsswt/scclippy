@@ -71,23 +71,17 @@ public class PostMouseListener extends MouseAdapter {
     }
 
     private void insertTextIntoEditor(String text) {
-        DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
-        Project project = DataKeys.PROJECT.getData(dataContext);
-        if (project == null)
-            return;
-
-        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        Editor editor = uk.ac.glasgow.scclippy.plugin.Editor.getEditor();
         if (editor == null)
             return;
 
         Document doc = editor.getDocument();
-
         int offset = editor.getCaretModel().getOffset();
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             doc.setText(
                     doc.getText(new TextRange(0, offset)) +
-                    text +
+                    "\n" + text +
                     doc.getText(new TextRange(offset, doc.getText().length()))
             );
         });

@@ -1,12 +1,10 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
-import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
-import java.util.Queue;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Represents the user's search history

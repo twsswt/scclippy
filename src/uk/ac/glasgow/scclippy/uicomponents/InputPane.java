@@ -40,6 +40,7 @@ public class InputPane {
     private static class InputPaneListener implements DocumentListener {
 
         JTextArea inputPane;
+        static String lastText = "";
 
         InputPaneListener(JTextArea inputPane) {
             this.inputPane = inputPane;
@@ -65,8 +66,9 @@ public class InputPane {
                 inputPane.setRows(inputPane.getLineCount());
 
             String text = inputPane.getText();
-            if (text.equals(""))
+            if (text.equals("") || text.equals(lastText))
                 return;
+            lastText = text;
 
             if (Settings.indexPath == null) {
                 Search.posts.update("Set index path from 'Settings' first");
