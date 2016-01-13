@@ -7,6 +7,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.io.IOException;
@@ -21,7 +24,7 @@ public class Posts {
     private static Border border;
 
     static {
-        kit.getStyleSheet().addRule("code {background-color: #909090;}");
+        kit.getStyleSheet().addRule("code {color: #909090;}");
         kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
 
         Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.YELLOW);
@@ -43,7 +46,7 @@ public class Posts {
     }
 
     static void enableHighlights() {
-        kit.getStyleSheet().addRule("code {background-color: olive;}");
+        kit.getStyleSheet().addRule("code {color: #909090;}");
         kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
     }
 
@@ -55,6 +58,7 @@ public class Posts {
 
     /**
      * Adds each pane to a panel
+     *
      * @param panel the panel
      */
     void addTo(JComponent panel) {
@@ -65,6 +69,7 @@ public class Posts {
 
     /**
      * Updates all the panes with the files provided
+     *
      * @param files File array
      */
     void update(File[] files) {
@@ -76,7 +81,6 @@ public class Posts {
                 return;
             }
             String text = files[i].getContent();
-
             String url = "<a href=\"http://stackoverflow.com/questions/"
                     + files[i].getFileName()
                     + "\">Link to Stackoverflow</a>";
@@ -91,6 +95,7 @@ public class Posts {
 
     /**
      * Updates the first pane with the message and the rest with empty strings
+     *
      * @param message the message to display
      */
     void update(String message) {
@@ -102,9 +107,10 @@ public class Posts {
 
     /**
      * Updates a pane
-     * @param index index of the pane
+     *
+     * @param index       index of the pane
      * @param snippetText the text to place in the pane
-     * @param id id of the pane (starting from index 0)
+     * @param id          id of the pane (starting from index 0)
      */
     void update(int index, String snippetText, int id) {
         if (index >= postPane.length) {
@@ -120,6 +126,7 @@ public class Posts {
 
     /**
      * Converts text to HTML by adding breaks and nbsp
+     *
      * @param snippetText the text
      * @return the html variant of the text
      */
@@ -132,8 +139,9 @@ public class Posts {
 
     /**
      * Replaces all occurences of a character in a string with some string
-     * @param s the initial string
-     * @param c the character
+     *
+     * @param s           the initial string
+     * @param c           the character
      * @param replacement the replacement string
      * @return the modified string
      */
@@ -141,7 +149,7 @@ public class Posts {
         StringBuilder sb = new StringBuilder(s);
         for (int i = s.length() - 2; i >= 0; i--) {
             if (sb.charAt(i) == c) {
-                sb.replace(i, i+1, replacement);
+                sb.replace(i, i + 1, replacement);
             }
         }
         return sb.toString();
