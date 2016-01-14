@@ -81,13 +81,14 @@ public class InputPane {
                         Settings.indexPath,
                         "contents",
                         text,
-                        Posts.SEARCH_POST_COUNT
+                        Posts.DEFAULT_POST_COUNT
                 );
+                Search.posts.update(MainWindow.files);
             } catch (Exception e2) {
                 /* TODO: Show intellij notification for failure */
                 System.err.println(e2.getMessage());
             }
-            Search.posts.update(MainWindow.files);
+            Search.currentSearchType = Search.SearchType.INDEX;
         }
     }
 }

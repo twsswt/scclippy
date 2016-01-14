@@ -59,6 +59,7 @@ public class StackoverflowSearchActionListener implements ActionListener {
             JSONObject item = (JSONObject) items.get(i);
             posts.update(i, item.getString("excerpt"), item.getInt(item.getString("item_type") + "_id"));
         }
+        Search.currentSearchType = Search.SearchType.API;
     }
 
     private static String readAll(Reader rd) throws IOException {

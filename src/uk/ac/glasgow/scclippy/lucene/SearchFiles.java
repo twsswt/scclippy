@@ -39,15 +39,15 @@ public class SearchFiles {
      * @param indexPath path to the index
      * @param field what to return e.g. "content" (from the file)
      * @param queryString the query
-     * @param hitsPerPage how many hits per page
+     * @param desiredHits how many hits per page
      * @return array of files with the content
      * @throws Exception
      */
-    public static File[] search(String indexPath, String field, String queryString, int hitsPerPage) throws Exception {
+    public static File[] search(String indexPath, String field, String queryString, int desiredHits) throws Exception {
         if (indexPath == null || field == null || queryString == null)
             return null;
 
-        if (hitsPerPage < 1)
+        if (desiredHits < 1)
             return null;
 
         IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
@@ -58,10 +58,10 @@ public class SearchFiles {
         String line = queryString.trim();
         Query query = parser.parse(QueryParser.escape(line));
 
-        TopDocs results = searcher.search(query, hitsPerPage);
+        TopDocs results = searcher.search(query, desiredHits);
         ScoreDoc[] hits = results.scoreDocs;
 
-        File[] files = new File[hitsPerPage];
+        File[] files = new File[hits.length];
 
         for (int i = 0; i < hits.length; i++) {
             Document doc = searcher.doc(hits[i].doc);

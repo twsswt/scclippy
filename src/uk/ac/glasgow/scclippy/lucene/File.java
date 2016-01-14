@@ -6,7 +6,7 @@ public class File {
 
     private String filepath;
     private String content;
-    private String fileType = ".txt";
+    final private String FILE_TYPE = ".txt";
 
     File(String filepath, String content) {
         this.filepath = filepath;
@@ -25,7 +25,7 @@ public class File {
         String[] questionAndAnswer = filename.split("-");
         String questionOrAnswer = questionAndAnswer[questionAndAnswer.length - 1];
 
-        return questionOrAnswer.substring(0, questionOrAnswer.length() - fileType.length());
+        return questionOrAnswer.substring(0, questionOrAnswer.length() - FILE_TYPE.length());
     }
 
     public String getContent() {

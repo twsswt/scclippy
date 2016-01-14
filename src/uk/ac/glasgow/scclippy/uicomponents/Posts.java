@@ -7,9 +7,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
 import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.io.IOException;
@@ -19,7 +16,9 @@ import java.net.URISyntaxException;
 public class Posts {
 
     private JEditorPane[] postPane;
-    static int SEARCH_POST_COUNT = 5;
+    static int DEFAULT_POST_COUNT = 5;
+    static int MAX_POST_COUNT = 20;
+
     static HTMLEditorKit kit = new HTMLEditorKit();
     private static Border border;
 
@@ -33,9 +32,9 @@ public class Posts {
     }
 
     Posts() {
-        postPane = new JEditorPane[SEARCH_POST_COUNT];
+        postPane = new JEditorPane[MAX_POST_COUNT];
 
-        for (int i = 0; i < postPane.length; i++) {
+        for (int i = 0; i < MAX_POST_COUNT; i++) {
             postPane[i] = new JEditorPane("text/html", "");
             postPane[i].setEditable(false);
             postPane[i].setBorder(border);
@@ -62,8 +61,8 @@ public class Posts {
      * @param panel the panel
      */
     void addTo(JComponent panel) {
-        for (JEditorPane pane : postPane) {
-            panel.add(pane);
+        for (JEditorPane aPostPane : postPane) {
+            panel.add(aPostPane);
         }
     }
 
