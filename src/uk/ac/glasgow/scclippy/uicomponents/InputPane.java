@@ -2,7 +2,8 @@ package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
-import uk.ac.glasgow.scclippy.lucene.SearchFiles;
+import uk.ac.glasgow.scclippy.plugin.Search;
+import uk.ac.glasgow.scclippy.plugin.Settings;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,7 +16,6 @@ public class InputPane {
 
     public JTextArea inputArea = new JTextArea();
     JScrollPane inputScrollPane = new JBScrollPane(inputArea);
-    static boolean resizable = true;
 
     private static Border border;
 
@@ -62,7 +62,7 @@ public class InputPane {
         }
 
         private void searchAction() {
-            if (resizable)
+            if (Settings.resizable)
                 inputPane.setRows(inputPane.getLineCount());
 
             String text = inputPane.getText();
@@ -71,24 +71,18 @@ public class InputPane {
             lastText = text;
 
             if (Settings.indexPath == null) {
-                Search.posts.update("Set index path from 'Settings' first");
+                SearchTab.posts.update("Set index path from 'SettingsTab' first");
                 return;
             }
 
             SearchHistoryTab.update(text);
-            try {
-                MainWindow.files = SearchFiles.search(
-                        Settings.indexPath,
-                        "contents",
-                        text,
-                        Posts.DEFAULT_POST_COUNT
-                );
-                Search.posts.update(MainWindow.files);
-            } catch (Exception e2) {
-                /* TODO: Show intellij notification for failure */
-                System.err.println(e2.getMessage());
+
+            if (SearchTab.useAppServerCheckBox.isSelected()) {
+                Search.webAppSearch(text);
+            } else {
+                Search.localIndexSearch(text, Posts.DEFAULT_POST_COUNT);
             }
-            Search.currentSearchType = Search.SearchType.INDEX;
         }
     }
+
 }

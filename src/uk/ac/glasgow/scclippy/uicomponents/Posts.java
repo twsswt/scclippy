@@ -16,8 +16,8 @@ import java.net.URISyntaxException;
 public class Posts {
 
     private JEditorPane[] postPane;
-    static int DEFAULT_POST_COUNT = 5;
-    static int MAX_POST_COUNT = 20;
+    public static int DEFAULT_POST_COUNT = 5;
+    public static int MAX_POST_COUNT = 20;
 
     static HTMLEditorKit kit = new HTMLEditorKit();
     private static Border border;
@@ -71,7 +71,7 @@ public class Posts {
      *
      * @param files File array
      */
-    void update(File[] files) {
+    public void update(File[] files) {
         if (files == null)
             return;
 
@@ -97,7 +97,7 @@ public class Posts {
      *
      * @param message the message to display
      */
-    void update(String message) {
+    public void update(String message) {
         postPane[0].setText(message);
         for (int i = 1; i < postPane.length; i++) {
             postPane[i].setText("");
@@ -111,7 +111,7 @@ public class Posts {
      * @param snippetText the text to place in the pane
      * @param id          id of the pane (starting from index 0)
      */
-    void update(int index, String snippetText, int id) {
+    public void update(int index, String snippetText, int id) {
         if (index >= postPane.length) {
             return;
         }

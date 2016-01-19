@@ -1,49 +1,46 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
-
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import uk.ac.glasgow.scclippy.lucene.IndexFiles;
+import uk.ac.glasgow.scclippy.plugin.Settings;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
 
-public class Settings {
+public class SettingsTab {
 
     static JComponent settingsPanel = new JPanel();
     static JBScrollPane settingsPanelScroll = new JBScrollPane(settingsPanel);
-    final static String settingsPath = "D:/scc_settings.txt";
-    static String indexPath;
+    public static JTextField webAppURL = new JTextField("http://localhost:8080/scc/rest/search/"); //TODO
 
     static void initSettingsPanel() {
-        loadSettings();
+        Settings.loadSettings();
 
         Border lineBorder = BorderFactory.createLineBorder(JBColor.cyan);
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.PAGE_AXIS));
 
-        // Input and Output settings
-        JPanel inputAndOutputOptions = new JPanel();
-        inputAndOutputOptions.setBorder(BorderFactory.createTitledBorder(lineBorder, "Input and Output options"));
-        settingsPanel.add(inputAndOutputOptions);
-        // input checkbox
+        // General settings
+        JPanel generalSettings = new JPanel();
+        generalSettings.setBorder(BorderFactory.createTitledBorder(lineBorder, "General settings"));
+        settingsPanel.add(generalSettings);
+        // resizable input
         JCheckBox resizableInputPaneCheckBox = new ResizableInputPaneCheckBox("Auto-resizable query input text area");
-        inputAndOutputOptions.add(resizableInputPaneCheckBox);
-        // output checkbox
+        generalSettings.add(resizableInputPaneCheckBox);
+        // highlighted results
         JCheckBox indexSearchHighlightCheckBox = new IndexSearchHighlightCheckBox("Highlighted results");
-        inputAndOutputOptions.add(indexSearchHighlightCheckBox);
+        generalSettings.add(indexSearchHighlightCheckBox);
+        // Web App RESTful URL
+        generalSettings.add(webAppURL);
 
         // Index settings
         JPanel indexOptions = new JPanel();
         indexOptions.setBorder(BorderFactory.createTitledBorder(lineBorder, "Index options"));
         settingsPanel.add(indexOptions);
         // index used option
-        String text = indexPath == null ? "Index directory not selected" : indexPath;
+        String text = Settings.indexPath == null ? "Index directory not selected" : Settings.indexPath;
         JLabel indexChosenLabel = new JLabel(text);
         indexOptions.add(indexChosenLabel);
         JButton indexChooserButton = new IndexChooserButton("Choose index", indexChosenLabel);
@@ -106,46 +103,6 @@ public class Settings {
         }
     }
 
-    private static void saveSettings() {
-        java.io.File f = new java.io.File(settingsPath);
-
-        try {
-            PrintWriter pw = new PrintWriter(f);
-            pw.write(indexPath);
-            pw.write("\n");
-            pw.write(String.valueOf(InputPane.resizable));
-            pw.write("\n");
-            pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void loadSettings() {
-        java.io.File f = new java.io.File(settingsPath);
-
-        if (!f.exists()) {
-            try {
-                if (!f.createNewFile())
-                    return;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return;
-        }
-
-        try {
-            Scanner sc = new Scanner(f);
-            if (sc.hasNextLine()) {
-                indexPath = sc.nextLine();
-            }
-            if (sc.hasNextLine()) {
-                InputPane.resizable = Boolean.parseBoolean(sc.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     private static class ResizableInputPaneCheckBox extends JCheckBox {
         public ResizableInputPaneCheckBox(String s) {
@@ -153,10 +110,10 @@ public class Settings {
             setSelected(true);
             addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    InputPane.resizable = true;
+                    Settings.resizable = true;
                 } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    InputPane.resizable = false;
-                    Search.inputPane.inputArea.setRows(InputPane.INPUT_TEXT_AREA_ROWS);
+                    Settings.resizable = false;
+                    SearchTab.inputPane.inputArea.setRows(InputPane.INPUT_TEXT_AREA_ROWS);
                 }
             });
         }
@@ -185,8 +142,8 @@ public class Settings {
                 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
                 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    indexPath = chooser.getSelectedFile().getAbsolutePath();
-                    saveSettings();
+                    Settings.indexPath = chooser.getSelectedFile().getAbsolutePath();
+                    Settings.saveSettings();
                     indexChosenLabel.setText(chooser.getSelectedFile().getName());
                     indexChosenLabel.setToolTipText(chooser.getSelectedFile().getPath());
                 }

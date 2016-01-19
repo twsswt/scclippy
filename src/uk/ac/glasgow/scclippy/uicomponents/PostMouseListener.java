@@ -1,14 +1,10 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import uk.ac.glasgow.scclippy.plugin.Search;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -33,11 +29,11 @@ public class PostMouseListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
 
         // double click
-        if (e.getClickCount() != 2 || MainWindow.files == null || MainWindow.files[id] == null) {
+        if (e.getClickCount() != 2 || Search.files == null || Search.files[id] == null) {
             return;
         }
 
-        String text = MainWindow.files[id].getContent();
+        String text = Search.files[id].getContent();
         List<String> snippets = getSnippetsFromText(text);
 
         if (snippets.size() == 1) {
@@ -89,7 +85,7 @@ public class PostMouseListener extends MouseAdapter {
 
     public String getChosenSnippet(Object[] possibilities) {
         return (String) JOptionPane.showInputDialog(
-                Search.searchPanel,
+                SearchTab.searchPanel,
                 "Choose which code snippet:\n",
                 "Code snippet",
                 JOptionPane.PLAIN_MESSAGE,

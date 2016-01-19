@@ -19,11 +19,9 @@ import java.awt.event.KeyEvent;
  */
 public class MainWindow implements ToolWindowFactory {
 
-    static Search search;
+    static SearchTab search;
     static SearchHistoryTab history;
-    static Settings settings;
-
-    static File[] files = null;
+    static SettingsTab settings;
 
     static JTabbedPane tabbedPane = new JBTabbedPane();
 
@@ -33,9 +31,9 @@ public class MainWindow implements ToolWindowFactory {
         Component component = toolWindow.getComponent();
         component.getParent().add(tabbedPane);
 
-        Search.initSearchPanel();
+        SearchTab.initSearchPanel();
         SearchHistoryTab.initHistoryPanel();
-        Settings.initSettingsPanel();
+        SettingsTab.initSettingsPanel();
 
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         if (editor == null)
@@ -44,9 +42,9 @@ public class MainWindow implements ToolWindowFactory {
     }
 
     private static JTabbedPane createTabbedPane() {
-        tabbedPane.addTab("Search", null, Search.searchPanelScroll, "Searching by index or using Stackoverflow API");
+        tabbedPane.addTab("Search", null, SearchTab.searchPanelScroll, "Searching by index or using Stackoverflow API");
         tabbedPane.addTab("History", null, SearchHistoryTab.historyPanelScroll, "View input history");
-        tabbedPane.addTab("Settings", null, Settings.settingsPanelScroll, "Change settings");
+        tabbedPane.addTab("Settings", null, SettingsTab.settingsPanelScroll, "Change settings");
 
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
