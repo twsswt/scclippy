@@ -7,8 +7,12 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.uicomponents.SearchTab;
 
+/**
+ * Handles user input
+ */
 public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
 
+    // Special characters that trigger search
     private static char[] triggerSearchChars = new char[] {
       ' ', '.', ';'
     };
@@ -21,9 +25,9 @@ public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
                 int offset = editor.getCaretModel().getCurrentCaret().getOffset();
                 if (offset >= 1) {
                     int lastCommand = file.getText().lastIndexOf(';', offset - 1);
-
                     int lastBrace = file.getText().lastIndexOf('{', offset - 1);
 
+                    // set scope from last command or brace
                     int last;
                     if (lastCommand > lastBrace) {
                         last = lastCommand;
@@ -32,6 +36,7 @@ public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
                     } else {
                         break;
                     }
+                    // update query input
                     SearchTab.inputPane.inputArea.setText(file.getText().substring(last + 1, offset).trim());
                 }
                 break;

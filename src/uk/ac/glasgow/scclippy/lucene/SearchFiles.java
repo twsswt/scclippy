@@ -67,7 +67,7 @@ public class SearchFiles {
             Document doc = searcher.doc(hits[i].doc);
             String path = doc.get("path");
             String content = new String(Files.readAllBytes(Paths.get(path)));
-            files[i] = new File(path, content);
+            files[i] = new File(File.getFilenameFromFilepath(path), content);
         }
 
         return files;

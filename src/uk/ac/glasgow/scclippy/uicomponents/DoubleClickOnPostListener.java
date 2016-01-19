@@ -13,18 +13,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class PostMouseListener extends MouseAdapter {
+/**
+ * Double Click Mouse Listener for a Post (JEditorPane)
+ */
+public class DoubleClickOnPostListener extends MouseAdapter {
 
-    int id;
+    int id; // id of the post
 
-    static String codeStartTag = "<code>";
-    static String codeEndTag = "</code>";
-    static int inputDialogMaxSnippetLength = 100;
+    private final static String CODE_START_TAG = "<code>"; // marks snippet's start
+    private final static String CODE_END_TAG = "</code>"; // marks snippet's end
+    private final static int INPUT_DIALOG_MAX_SNIPPET_LENGTH = 100; // length of snippets in the JOptionPane
 
-    public PostMouseListener(int id) {
+    public DoubleClickOnPostListener(int id) {
         this.id = id;
     }
 
+    /**
+     * Event handler for double click
+     * Inserts selected code into the user's current editor
+     * @param e the event
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -37,11 +45,11 @@ public class PostMouseListener extends MouseAdapter {
         List<String> snippets = getSnippetsFromText(text);
 
         if (snippets.size() == 1) {
-            // insert directly
+            // insert directly into code
             insertTextIntoEditor(snippets.get(0));
         }
         else if (snippets.size() > 1) {
-            // ask user for input
+            // ask user for input before inserting
             String chosenSnippet = getChosenSnippet(getSnippetOptions(snippets));
 
             if ((chosenSnippet != null) && (chosenSnippet.length() > 0)) {
@@ -51,21 +59,35 @@ public class PostMouseListener extends MouseAdapter {
         }
     }
 
+    /**
+     * Returns the index of the chosen snippet
+     * @param chosenSnippet the string of the chosen snippet
+     * @return the index
+     */
     private int indexOfChosenSnippet(String chosenSnippet) {
         return Integer.parseInt(chosenSnippet.substring(0, chosenSnippet.indexOf(":"))) - 1;
     }
 
+    /**
+     * Returns a list of snippets from a string based on start and end tags
+     * @param text the input string
+     * @return the list of snippets
+     */
     private List<String> getSnippetsFromText(String text) {
         List<String> snippets = new LinkedList<>();
         int start, end = 0;
-        while ((start = text.indexOf(codeStartTag, end)) != -1 &&
-                (end = text.indexOf(codeEndTag, start)) != -1) {
-            snippets.add(text.substring(start + codeStartTag.length(), end));
+        while ((start = text.indexOf(CODE_START_TAG, end)) != -1 &&
+                (end = text.indexOf(CODE_END_TAG, start)) != -1) {
+            snippets.add(text.substring(start + CODE_START_TAG.length(), end));
         }
 
         return snippets;
     }
 
+    /**
+     * Inserts text into editor
+     * @param text the text to be inserted
+     */
     private void insertTextIntoEditor(String text) {
         Editor editor = uk.ac.glasgow.scclippy.plugin.Editor.getEditor();
         if (editor == null)
@@ -83,6 +105,12 @@ public class PostMouseListener extends MouseAdapter {
         });
     }
 
+
+    /**
+     * Displays a JOptionPane and asks the user for input
+     * @param possibilities the options
+     * @return the user's choice
+     */
     public String getChosenSnippet(Object[] possibilities) {
         return (String) JOptionPane.showInputDialog(
                 SearchTab.searchPanel,
@@ -94,11 +122,16 @@ public class PostMouseListener extends MouseAdapter {
                 possibilities[0]);
     }
 
+    /**
+     * Takes a list of snippets and returns a formatted list of options
+     * @param snippets the input snippets
+     * @return the options
+     */
     public Object[] getSnippetOptions(List<String> snippets) {
         Object[] snippetOptions = new Object[snippets.size()];
         for (int i = 0; i < snippets.size(); i++) {
             if (snippets.get(i).length() > 100)
-                snippetOptions[i] = (i + 1) + ":" + snippets.get(i).substring(0, inputDialogMaxSnippetLength);
+                snippetOptions[i] = (i + 1) + ":" + snippets.get(i).substring(0, INPUT_DIALOG_MAX_SNIPPET_LENGTH);
             else
                 snippetOptions[i] = (i + 1) + ":" + snippets.get(i);
         }

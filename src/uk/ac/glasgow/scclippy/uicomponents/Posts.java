@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 
+/**
+ * Represents the Posts (JEditorPane(s) that hold the results from a query)
+ */
 public class Posts {
 
     private JEditorPane[] postPane;
@@ -39,25 +42,29 @@ public class Posts {
             postPane[i].setEditable(false);
             postPane[i].setBorder(border);
             postPane[i].setEditorKit(kit);
-            postPane[i].addMouseListener(new PostMouseListener(i));
+            postPane[i].addMouseListener(new DoubleClickOnPostListener(i));
             postPane[i].addHyperlinkListener(new PostHyperlinkListener());
         }
     }
 
+    /**
+     * Enables code highlights through css rules
+     */
     static void enableHighlights() {
         kit.getStyleSheet().addRule("code {color: #909090;}");
         kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
     }
 
+    /**
+     * Disables code highlights through css rules
+     */
     static void disableHighlights() {
         kit.getStyleSheet().removeStyle("code");
         kit.getStyleSheet().removeStyle("span.highlight");
     }
 
-
     /**
      * Adds each pane to a panel
-     *
      * @param panel the panel
      */
     void addTo(JComponent panel) {
@@ -68,14 +75,13 @@ public class Posts {
 
     /**
      * Updates all the panes with the files provided
-     *
      * @param files File array
      */
     public void update(File[] files) {
         if (files == null)
             return;
 
-        for (int i = 0; i < files.length; i++) {
+        for (int i = 0; i < files.length && i < postPane.length; i++) {
             if (files[i] == null) {
                 return;
             }
@@ -90,68 +96,6 @@ public class Posts {
         for (int i = files.length; i < postPane.length; i++) {
             postPane[i].setText("");
         }
-    }
-
-    /**
-     * Updates the first pane with the message and the rest with empty strings
-     *
-     * @param message the message to display
-     */
-    public void update(String message) {
-        postPane[0].setText(message);
-        for (int i = 1; i < postPane.length; i++) {
-            postPane[i].setText("");
-        }
-    }
-
-    /**
-     * Updates a pane
-     *
-     * @param index       index of the pane
-     * @param snippetText the text to place in the pane
-     * @param id          id of the pane (starting from index 0)
-     */
-    public void update(int index, String snippetText, int id) {
-        if (index >= postPane.length) {
-            return;
-        }
-        String url = "<a href=\"http://stackoverflow.com/questions/"
-                + id
-                + "\">Link to Stackoverflow</a>";
-
-
-        postPane[index].setText(textToHTML(snippetText) + "<br/>" + url);
-    }
-
-    /**
-     * Converts text to HTML by adding breaks and nbsp
-     *
-     * @param snippetText the text
-     * @return the html variant of the text
-     */
-    private String textToHTML(String snippetText) {
-        snippetText = replaceAll(snippetText, '\n', "<br/>");
-        snippetText = replaceAll(snippetText, ' ', "&nbsp ");
-
-        return snippetText;
-    }
-
-    /**
-     * Replaces all occurences of a character in a string with some string
-     *
-     * @param s           the initial string
-     * @param c           the character
-     * @param replacement the replacement string
-     * @return the modified string
-     */
-    private static String replaceAll(String s, char c, String replacement) {
-        StringBuilder sb = new StringBuilder(s);
-        for (int i = s.length() - 2; i >= 0; i--) {
-            if (sb.charAt(i) == c) {
-                sb.replace(i, i + 1, replacement);
-            }
-        }
-        return sb.toString();
     }
 
     /**

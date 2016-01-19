@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Represents the user's search history
+ * Represents a class that contains components in the query history panel/tab
  */
 public class SearchHistoryTab {
 

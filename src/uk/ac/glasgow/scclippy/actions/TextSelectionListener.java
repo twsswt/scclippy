@@ -7,7 +7,7 @@ import com.intellij.openapi.editor.event.SelectionListener;
 import uk.ac.glasgow.scclippy.uicomponents.SearchTab;
 
 /**
- * Code/Text selection listener
+ * Code/Text mouse selection listener
  */
 public class TextSelectionListener implements SelectionListener {
 
@@ -18,6 +18,8 @@ public class TextSelectionListener implements SelectionListener {
         if (editor == null)
             return;
         Document doc = editor.getDocument();
+
+        // update query input with the selection
         SearchTab.inputPane.inputArea.setText(doc.getText(e.getNewRange()));
     }
 }

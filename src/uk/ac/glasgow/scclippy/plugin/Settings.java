@@ -14,6 +14,9 @@ public class Settings {
     public static String indexPath;
     public static boolean resizable = true;
 
+    /**
+     * Saves the current settings
+     */
     public static void saveSettings() {
         java.io.File f = new java.io.File(settingsPath);
 
@@ -29,6 +32,9 @@ public class Settings {
         }
     }
 
+    /**
+     * Loads settings from a file
+     */
     public static void loadSettings() {
         java.io.File f = new java.io.File(settingsPath);
 

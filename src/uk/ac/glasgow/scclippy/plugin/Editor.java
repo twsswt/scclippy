@@ -7,7 +7,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 
 /**
- * Editor
+ * Editor class (used to get the editor object)
  */
 public class Editor {
 

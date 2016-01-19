@@ -10,6 +10,9 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 
+/**
+ * Represents a class that contains components in the settings panel/tab
+ */
 public class SettingsTab {
 
     static JComponent settingsPanel = new JPanel();

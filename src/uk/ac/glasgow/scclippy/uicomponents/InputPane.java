@@ -2,6 +2,7 @@ package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
+import uk.ac.glasgow.scclippy.lucene.File;
 import uk.ac.glasgow.scclippy.plugin.Search;
 import uk.ac.glasgow.scclippy.plugin.Settings;
 
@@ -10,6 +11,9 @@ import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+ * Represents an InputPane (JTextArea)
+ */
 public class InputPane {
 
     final static int INPUT_TEXT_AREA_ROWS = 5;
@@ -71,7 +75,9 @@ public class InputPane {
             lastText = text;
 
             if (Settings.indexPath == null) {
-                SearchTab.posts.update("Set index path from 'SettingsTab' first");
+                Search.files = new File[1];
+                Search.files[0].setContent("Set index path from 'SettingsTab' first");
+                SearchTab.posts.update(Search.files);
                 return;
             }
 
@@ -82,6 +88,7 @@ public class InputPane {
             } else {
                 Search.localIndexSearch(text, Posts.DEFAULT_POST_COUNT);
             }
+            SearchTab.posts.update(Search.files);
         }
     }
 

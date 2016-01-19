@@ -1,15 +1,16 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ui.components.JBScrollPane;
-import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 import uk.ac.glasgow.scclippy.plugin.Search;
-import uk.ac.glasgow.scclippy.plugin.Settings;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
+/**
+ * Represents a class that contains components in the search panel/tab
+ */
 public class SearchTab {
 
     private static int MAIN_SCROLL_STEP = 10;
@@ -30,10 +31,8 @@ public class SearchTab {
         searchPanelScroll.getVerticalScrollBar().addAdjustmentListener(new PostsScrollListener());
 
         // buttons
-        JButton searchStackoverflowButton = new JButton("SearchTab for excerpts in Stackoverflow");
-        searchStackoverflowButton.addActionListener(new StackoverflowSearchActionListener());
-        JButton searchWithGoogleButton = new JButton("Open browser to search for Stackoverflow posts");
-        searchWithGoogleButton.addActionListener(new GoogleSearchActionListener());
+        JButton searchStackoverflowButton = new StackOverflowSearchButton("SearchTab for excerpts in Stackoverflow");
+        JButton searchWithGoogleButton = new GoogleSearchButton("Open browser to search for Stackoverflow posts");
 
         // button panel
         JComponent buttonPanel = new JPanel();
@@ -77,6 +76,7 @@ public class SearchTab {
                 } else {
                     Search.localIndexSearch(inputPane.inputArea.getText(), Posts.MAX_POST_COUNT);
                 }
+                SearchTab.posts.update(Search.files);
             }
         }
     }
