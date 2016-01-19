@@ -40,6 +40,8 @@ public class URLProcessing {
         JSONObject json = null;
         try (InputStream is = new URL(url).openStream()) {
             String jsonText = readAll(new BufferedReader(new InputStreamReader(is)));
+            if (jsonText == null || jsonText.equals(""))
+                return null;
             json = new JSONObject(jsonText);
         } catch (IOException e) {
             e.printStackTrace();
