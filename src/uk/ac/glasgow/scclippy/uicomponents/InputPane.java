@@ -78,7 +78,7 @@ public class InputPane {
             SearchHistoryTab.update(text);
 
             if (SearchTab.useAppServerCheckBox.isSelected()) {
-                Search.webAppSearch(text);
+                Search.webAppSearch(text, Posts.DEFAULT_POST_COUNT);
             } else {
                 Search.localIndexSearch(text, Posts.DEFAULT_POST_COUNT);
             }

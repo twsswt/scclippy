@@ -64,13 +64,13 @@ public class Search {
 
     public enum SearchType { INDEX, API }
 
-    public static void webAppSearch(String query) {
+    public static void webAppSearch(String query, int posts) {
         try {
             query = URLEncoder.encode(query, "UTF-8");
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
         }
-        JSONObject json = URLProcessing.readJsonFromUrl(SettingsTab.webAppURL.getText() + query);
+        JSONObject json = URLProcessing.readJsonFromUrl(SettingsTab.webAppURL.getText() + query + "?posts=" + posts);
 
         if (json == null) {
             SearchTab.posts.update("Query failed");
