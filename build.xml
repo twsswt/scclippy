@@ -20,7 +20,7 @@
 	<target	name="cleanall" depends="clean">
 		<delete dir="lib" />
 		<delete dir="..//" includes="*.jar"/>
-		<ivy:cleancache/>
+		<ivy:cleancache />
 	</target>
 		
 	<target name="init">
