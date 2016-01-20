@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <project
-	name="scclippy"
-	basedir="../"
+	name="scclippy-client"
+	basedir="./"
 	xmlns:ivy="antlib:org.apache.ivy.ant"
 	default="build">
 	
