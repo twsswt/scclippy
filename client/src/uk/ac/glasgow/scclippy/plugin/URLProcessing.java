@@ -58,7 +58,7 @@ public class URLProcessing {
 
         try (InputStream is = new URL(url).openStream()) {
             String jsonText = readAll(new BufferedReader(new InputStreamReader(is)));
-            if (jsonText == null || jsonText.equals(""))
+            if (jsonText.equals(""))
                 return null;
 
             json = new JSONObject(jsonText);
