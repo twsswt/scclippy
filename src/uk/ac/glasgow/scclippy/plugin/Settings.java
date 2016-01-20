@@ -13,6 +13,7 @@ public class Settings {
     final static String settingsPath = "D:/scc_settings.txt"; //TODO
     public static String indexPath;
     public static boolean resizable = true;
+    public static String[] webServiceURI = new String[]{"http://localhost:8080/scc/rest/search/"};
 
     /**
      * Saves the current settings
@@ -25,6 +26,8 @@ public class Settings {
             pw.write(indexPath);
             pw.write("\n");
             pw.write(String.valueOf(resizable));
+            pw.write("\n");
+            pw.write(webServiceURI[0]);
             pw.write("\n");
             pw.close();
         } catch (FileNotFoundException e) {
@@ -55,6 +58,9 @@ public class Settings {
             }
             if (sc.hasNextLine()) {
                 resizable = Boolean.parseBoolean(sc.nextLine());
+            }
+            if (sc.hasNextLine()) {
+                webServiceURI[0] = sc.nextLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

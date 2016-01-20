@@ -75,20 +75,19 @@ public class InputPane {
             lastText = text;
 
             if (Settings.indexPath == null) {
-                Search.files = new File[1];
-                Search.files[0].setContent("Set index path from 'SettingsTab' first");
-                SearchTab.posts.update(Search.files);
+                SearchTab.posts.update("Set index path from 'SettingsTab' first");
                 return;
             }
 
             SearchHistoryTab.update(text);
 
+            String msg;
             if (SearchTab.useAppServerCheckBox.isSelected()) {
-                Search.webAppSearch(text, Posts.DEFAULT_POST_COUNT);
+                msg = Search.webAppSearch(text, Posts.DEFAULT_POST_COUNT);
             } else {
-                Search.localIndexSearch(text, Posts.DEFAULT_POST_COUNT);
+                msg = Search.localIndexSearch(text, Posts.DEFAULT_POST_COUNT);
             }
-            SearchTab.posts.update(Search.files);
+            SearchTab.posts.update(msg);
         }
     }
 

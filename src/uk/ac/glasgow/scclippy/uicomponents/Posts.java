@@ -2,6 +2,7 @@ package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ui.JBColor;
 import uk.ac.glasgow.scclippy.lucene.File;
+import uk.ac.glasgow.scclippy.plugin.Search;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -65,6 +66,7 @@ public class Posts {
 
     /**
      * Adds each pane to a panel
+     *
      * @param panel the panel
      */
     void addTo(JComponent panel) {
@@ -75,9 +77,10 @@ public class Posts {
 
     /**
      * Updates all the panes with the files provided
-     * @param files File array
      */
-    public void update(File[] files) {
+    public void update() {
+        File[] files = Search.files;
+
         if (files == null)
             return;
 
@@ -85,15 +88,34 @@ public class Posts {
             if (files[i] == null) {
                 return;
             }
+
             String text = files[i].getContent();
             String url = "<a href=\"http://stackoverflow.com/questions/"
                     + files[i].getFileName()
                     + "\">Link to Stackoverflow</a>";
             postPane[i].setText(text + url);
+
             postPane[i].setEnabled(true);
             postPane[i].updateUI();
         }
         for (int i = files.length; i < postPane.length; i++) {
+            postPane[i].setText("");
+        }
+    }
+
+    /**
+     * Updates the first pane with the message and the rest with empty strings
+     * If message is null, normal update of posts is carried out
+     * @param message the message to display
+     */
+    public void update(String message) {
+        if (message == null) {
+            update();
+            return;
+        }
+
+        postPane[0].setText(message);
+        for (int i = 1; i < postPane.length; i++) {
             postPane[i].setText("");
         }
     }

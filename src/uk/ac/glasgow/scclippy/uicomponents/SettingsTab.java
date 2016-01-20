@@ -7,6 +7,9 @@ import uk.ac.glasgow.scclippy.plugin.Settings;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 
@@ -17,7 +20,7 @@ public class SettingsTab {
 
     static JComponent settingsPanel = new JPanel();
     static JBScrollPane settingsPanelScroll = new JBScrollPane(settingsPanel);
-    public static JTextField webAppURL = new JTextField("http://localhost:8080/scc/rest/search/"); //TODO
+    static JTextField webAppURL;
 
     static void initSettingsPanel() {
         Settings.loadSettings();
@@ -36,6 +39,7 @@ public class SettingsTab {
         JCheckBox indexSearchHighlightCheckBox = new IndexSearchHighlightCheckBox("Highlighted results");
         generalSettings.add(indexSearchHighlightCheckBox);
         // Web App RESTful URL
+        webAppURL = new StringSavingJTextField(Settings.webServiceURI);
         generalSettings.add(webAppURL);
 
         // Index settings
@@ -198,5 +202,41 @@ public class SettingsTab {
                     }
             );
         }
+    }
+
+    /**
+     * Updates the string provided when the text field is changed
+     */
+    private static class StringSavingJTextField extends JTextField {
+
+        String[] savedText;
+
+        public StringSavingJTextField(String[] text) {
+            super(text[0]);
+            savedText = text;
+
+            this.getDocument().addDocumentListener(new DocumentListener() {
+
+                public void changedUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+
+                private void saveChange(DocumentEvent e) {
+                    try {
+                        savedText[0] = e.getDocument().getText(0, e.getDocument().getLength());
+                    } catch (BadLocationException e1) {
+                        e1.printStackTrace();
+                    }
+                    Settings.saveSettings();
+                }
+            });
+        }
+
     }
 }

@@ -71,12 +71,13 @@ public class SearchTab {
             }
 
             if (value + extent == maximum && Search.currentSearchType.equals(Search.SearchType.INDEX)) {
+                String msg;
                 if (SearchTab.useAppServerCheckBox.isSelected()) {
-                    Search.webAppSearch(inputPane.inputArea.getText(), Posts.MAX_POST_COUNT);
+                    msg = Search.webAppSearch(inputPane.inputArea.getText(), Posts.MAX_POST_COUNT);
                 } else {
-                    Search.localIndexSearch(inputPane.inputArea.getText(), Posts.MAX_POST_COUNT);
+                    msg = Search.localIndexSearch(inputPane.inputArea.getText(), Posts.MAX_POST_COUNT);
                 }
-                SearchTab.posts.update(Search.files);
+                SearchTab.posts.update(msg);
             }
         }
     }

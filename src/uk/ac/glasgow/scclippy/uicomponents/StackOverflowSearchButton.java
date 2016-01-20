@@ -19,8 +19,8 @@ public class StackOverflowSearchButton extends JButton {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Search.stackexchangeSearch(SearchTab.inputPane.inputArea.getText());
-            SearchTab.posts.update(Search.files);
+            String message = Search.stackexchangeSearch(SearchTab.inputPane.inputArea.getText());
+            SearchTab.posts.update(message);
         }
 
     }

@@ -27,11 +27,12 @@ public class Search {
     /**
      * Performs a search using StackExchange API v2.2
      * @param query query string
+     * @return error message or null if successful
      */
-    public static void stackexchangeSearch(String query) {
+    public static String stackexchangeSearch(String query) {
         query = query.trim();
         if (query.equals(""))
-            return;
+            return "";
 
         Search.files = null;
 
@@ -45,23 +46,17 @@ public class Search {
         JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(STACKEXCHANGE_EXCERPTS_URL + "body=" + body + STACKEXCHANGE_PARAMS);
 
         if (json == null) {
-            files = new File[1];
-            files[0] = new File("Query failed");
-            return;
+            return "Query failed";
         }
 
         if (json.getInt("quota_remaining") == 0) {
-            files = new File[1];
-            files[0] = new File("Cannot make more requests today");
-            return;
+            return "Cannot make more requests today";
         }
 
         JSONArray items = json.getJSONArray("items");
         if (items.length() == 0) {
-            files = new File[1];
-            files[0].setContent("No results. Consider changing the query " +
-                    "(e.g. removing variable names) or using another option");
-            return;
+            return "No results. Consider changing the query " +
+                    "(e.g. removing variable names) or using another option";
         }
 
         files = new File[items.length()];
@@ -72,17 +67,20 @@ public class Search {
             files[i] = new File(id, content);
         }
         Search.currentSearchType = Search.SearchType.API;
+
+        return null;
     }
 
     /**
      * Performs search by querying app server using RESTful services
      * @param query query string
      * @param posts number of posts to return
+     * @return error message or null if successful
      */
-    public static void webAppSearch(String query, int posts) {
+    public static String webAppSearch(String query, int posts) {
         query = query.trim();
         if (query.equals(""))
-            return;
+            return "";
 
         try {
             query = URLEncoder.encode(query, "UTF-8");
@@ -90,19 +88,15 @@ public class Search {
             e1.printStackTrace();
         }
 
-        JSONObject json = URLProcessing.readJsonFromUrl(SettingsTab.webAppURL.getText() + query + "?posts=" + posts);
+        JSONObject json = URLProcessing.readJsonFromUrl(Settings.webServiceURI[0] + query + "?posts=" + posts);
 
         if (json == null) {
-            files = new File[1];
-            files[0] = new File("Query failed");
-            return;
+            return "Query failed";
         }
 
         JSONArray items = json.getJSONArray("results");
         if (items.length() == 0) {
-            files = new File[1];
-            files[0] = new File("No results");
-            return;
+            return "No results";
         }
 
         files = new File[items.length()];
@@ -111,17 +105,20 @@ public class Search {
             files[i] = new File("" + item.getInt("id"), item.getString("content"));
         }
         Search.currentSearchType = Search.SearchType.INDEX;
+
+        return null;
     }
 
     /**
      * Performs search using a local index
      * @param query query string
      * @param posts number of returned results/posts
+     * @return error message or null if successful
      */
-    public static void localIndexSearch(String query, int posts) {
+    public static String localIndexSearch(String query, int posts) {
         query = query.trim();
         if (query.equals(""))
-            return;
+            return "";
 
         try {
             files = SearchFiles.search(
@@ -134,6 +131,8 @@ public class Search {
             System.err.println(e2.getMessage());
         }
         Search.currentSearchType = Search.SearchType.INDEX;
+
+        return null;
     }
 
 }
