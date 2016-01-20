@@ -1,6 +1,6 @@
 <idea-plugin version="2">
   <id>com.yourcompany.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <name>SourceCodeClippy</name>
   <version>1.0</version>
   <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
@@ -16,7 +16,7 @@
   </change-notes>
 
   <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+  <idea-version since-build="131.0"/>
 
   <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
@@ -25,7 +25,9 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+      <toolWindow id="SourceCodeClippy" anchor="bottom" factoryClass="uk.ac.glasgow.scclippy.uicomponents.MainWindow">
+      </toolWindow>
+      <typedHandler implementation="uk.ac.glasgow.scclippy.actions.CustomTypedHandlerDelegate"/>
   </extensions>
 
   <application-components>
@@ -37,7 +39,7 @@
   </project-components>
 
   <actions>
-    <!-- Add your actions here -->
   </actions>
+
 
 </idea-plugin>
