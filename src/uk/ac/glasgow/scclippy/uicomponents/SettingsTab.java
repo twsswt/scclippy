@@ -12,6 +12,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.text.NumberFormat;
 
 /**
  * Represents a class that contains components in the settings panel/tab
@@ -41,6 +42,12 @@ public class SettingsTab {
         // Web App RESTful URL
         webAppURL = new StringSavingJTextField(Settings.webServiceURI);
         generalSettings.add(webAppURL);
+        // Default post count
+        JTextField defaultPostCountTextField = new IntegerSavingJTextField(Posts.defaultPostCount);
+        generalSettings.add(defaultPostCountTextField);
+        // Max post count
+        JTextField maxPostCountTextField = new IntegerSavingJTextField(Posts.maxPostCount);
+        generalSettings.add(maxPostCountTextField);
 
         // Index settings
         JPanel indexOptions = new JPanel();
@@ -220,9 +227,11 @@ public class SettingsTab {
                 public void changedUpdate(DocumentEvent e) {
                     saveChange(e);
                 }
+
                 public void removeUpdate(DocumentEvent e) {
                     saveChange(e);
                 }
+
                 public void insertUpdate(DocumentEvent e) {
                     saveChange(e);
                 }
@@ -230,13 +239,51 @@ public class SettingsTab {
                 private void saveChange(DocumentEvent e) {
                     try {
                         savedText[0] = e.getDocument().getText(0, e.getDocument().getLength());
+                        Settings.saveSettings();
                     } catch (BadLocationException e1) {
                         e1.printStackTrace();
                     }
-                    Settings.saveSettings();
                 }
             });
         }
+    }
 
+    /**
+     * Updates the integer provided when the text field is changed
+     */
+    private static class IntegerSavingJTextField extends JTextField {
+
+        int[] savedText;
+
+        public IntegerSavingJTextField(int[] text) {
+            super(text[0]);
+            setText(String.valueOf(text[0]));
+
+            savedText = text;
+
+            this.getDocument().addDocumentListener(new DocumentListener() {
+
+                public void changedUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+
+                private void saveChange(DocumentEvent e) {
+                    try {
+                        savedText[0] = Integer.parseInt(e.getDocument().getText(0, e.getDocument().getLength()));
+                        Settings.saveSettings();
+                    } catch (BadLocationException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 }

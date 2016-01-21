@@ -2,7 +2,6 @@ package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
-import uk.ac.glasgow.scclippy.lucene.File;
 import uk.ac.glasgow.scclippy.plugin.Search;
 import uk.ac.glasgow.scclippy.plugin.Settings;
 
@@ -83,9 +82,9 @@ public class InputPane {
 
             String msg;
             if (SearchTab.useAppServerCheckBox.isSelected()) {
-                msg = Search.webAppSearch(text, Posts.DEFAULT_POST_COUNT);
+                msg = Search.webAppSearch(text, Posts.defaultPostCount[0]);
             } else {
-                msg = Search.localIndexSearch(text, Posts.DEFAULT_POST_COUNT);
+                msg = Search.localIndexSearch(text, Posts.defaultPostCount[0]);
             }
             SearchTab.posts.update(msg);
         }

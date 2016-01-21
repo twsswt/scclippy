@@ -73,9 +73,9 @@ public class SearchTab {
             if (value + extent == maximum && Search.currentSearchType.equals(Search.SearchType.INDEX)) {
                 String msg;
                 if (SearchTab.useAppServerCheckBox.isSelected()) {
-                    msg = Search.webAppSearch(inputPane.inputArea.getText(), Posts.MAX_POST_COUNT);
+                    msg = Search.webAppSearch(inputPane.inputArea.getText(), Posts.maxPostCount[0]);
                 } else {
-                    msg = Search.localIndexSearch(inputPane.inputArea.getText(), Posts.MAX_POST_COUNT);
+                    msg = Search.localIndexSearch(inputPane.inputArea.getText(), Posts.maxPostCount[0]);
                 }
                 SearchTab.posts.update(msg);
             }
