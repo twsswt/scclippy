@@ -71,7 +71,7 @@ public class Posts {
      * @param colourName name of the colour
      */
     static void applyTextColour(String colourName) {
-        kit.getStyleSheet().addRule("p {color: " + colourName + "}");
+        kit.getStyleSheet().addRule("body {color: " + colourName + "}");
         updatePostsUI();
     }
 
@@ -79,17 +79,18 @@ public class Posts {
      * Removes colour to text by default in posts
      */
     static void removeTextColour() {
-        kit.getStyleSheet().removeStyle("p");
+        kit.getStyleSheet().removeStyle("body");
         updatePostsUI();
     }
 
+    /**
+     * Updates UI of every post (JEditorPane)
+     */
     private static void updatePostsUI() {
         for (JEditorPane aPostPane : postPane) {
             aPostPane.updateUI();
         }
     }
-
-
 
     /**
      * Adds each pane to a panel

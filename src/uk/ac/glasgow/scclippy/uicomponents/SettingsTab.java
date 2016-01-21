@@ -1,5 +1,6 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import uk.ac.glasgow.scclippy.lucene.IndexFiles;
@@ -50,7 +51,6 @@ public class SettingsTab {
         // Text in posts colour by name
         JTextField postsTextColourTextField = new ColourChangerTextField(Posts.textColour);
         generalSettings.add(postsTextColourTextField);
-
 
         // Index settings
         JPanel indexOptions = new JPanel();

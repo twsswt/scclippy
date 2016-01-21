@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.ac.glasgow.scclippy.lucene.File;
 import uk.ac.glasgow.scclippy.lucene.SearchFiles;
-import uk.ac.glasgow.scclippy.uicomponents.SettingsTab;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -16,8 +15,8 @@ public class Search {
 
     public static File[] files = null;
 
-    public enum SearchType { INDEX, API }
-    public static SearchType currentSearchType = SearchType.INDEX;
+    public enum SearchType { LOCAL_INDEX, WEB_SERVICE, STACKEXCHANGE_API }
+    public static SearchType currentSearchType = SearchType.WEB_SERVICE;
 
     private final static String LOCAL_INDEX_DEFAULT_FIELD = "contents";
 
@@ -29,7 +28,7 @@ public class Search {
      * @param query query string
      * @return error message or null if successful
      */
-    public static String stackexchangeSearch(String query) {
+    public static String stackExchangeSearch(String query) {
         query = query.trim();
         if (query.equals(""))
             return "";
@@ -46,7 +45,7 @@ public class Search {
         JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(STACKEXCHANGE_EXCERPTS_URL + "body=" + body + STACKEXCHANGE_PARAMS);
 
         if (json == null) {
-            return "Query failed";
+            return "Connection problems / Query failed";
         }
 
         if (json.getInt("quota_remaining") == 0) {
@@ -66,7 +65,7 @@ public class Search {
             String content = StringProcessing.textToHTML(item.getString("excerpt")) + "<br/>";
             files[i] = new File(id, content);
         }
-        Search.currentSearchType = Search.SearchType.API;
+        Search.currentSearchType = SearchType.STACKEXCHANGE_API;
 
         return null;
     }
@@ -91,7 +90,7 @@ public class Search {
         JSONObject json = URLProcessing.readJsonFromUrl(Settings.webServiceURI[0] + query + "?posts=" + posts);
 
         if (json == null) {
-            return "Query failed";
+            return "Connection problems / Query failed";
         }
 
         JSONArray items = json.getJSONArray("results");
@@ -104,7 +103,7 @@ public class Search {
             JSONObject item = (JSONObject) items.get(i);
             files[i] = new File("" + item.getInt("id"), item.getString("content"));
         }
-        Search.currentSearchType = Search.SearchType.INDEX;
+        Search.currentSearchType = SearchType.WEB_SERVICE;
 
         return null;
     }
@@ -130,7 +129,7 @@ public class Search {
         } catch (Exception e2) {
             System.err.println(e2.getMessage());
         }
-        Search.currentSearchType = Search.SearchType.INDEX;
+        Search.currentSearchType = SearchType.LOCAL_INDEX;
 
         return null;
     }

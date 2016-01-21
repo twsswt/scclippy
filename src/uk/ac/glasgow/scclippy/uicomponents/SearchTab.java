@@ -1,5 +1,6 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.components.JBScrollPane;
 import uk.ac.glasgow.scclippy.plugin.Search;
 
@@ -18,9 +19,6 @@ public class SearchTab {
     static JComponent searchPanel = new JPanel();
     static JBScrollPane searchPanelScroll = new JBScrollPane(searchPanel);
 
-    // web server or desktop indexed search checkbox
-    public static JCheckBox useAppServerCheckBox = new JCheckBox("App server / Local index");
-
     public static InputPane inputPane = new InputPane();
     public static Posts posts = new Posts();
 
@@ -30,19 +28,32 @@ public class SearchTab {
         searchPanelScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         searchPanelScroll.getVerticalScrollBar().addAdjustmentListener(new PostsScrollListener());
 
-        // buttons
-        JButton searchStackoverflowButton = new StackOverflowSearchButton("SearchTab for excerpts in Stackoverflow");
-        JButton searchWithGoogleButton = new GoogleSearchButton("Open browser to search for Stackoverflow posts");
+        String[] searchOption = {"Local Index", "Web Service", "StackExchange API"};
+        JComboBox searchOptions = new ComboBox(searchOption);
+        searchOptions.setSelectedIndex(1);
+        searchOptions.addActionListener(e -> {
+            JComboBox cb = (JComboBox)e.getSource();
+            String selectedSearchOption = (String)cb.getSelectedItem();
+            for (int i = 0; i < searchOption.length; i++) {
+                if (searchOption[i].equals(selectedSearchOption)) {
+                    Search.currentSearchType = Search.SearchType.values()[i];
+                    break;
+                }
+            }
+        });
 
-        // button panel
-        JComponent buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        buttonPanel.add(searchStackoverflowButton);
-        buttonPanel.add(searchWithGoogleButton);
-        buttonPanel.add(useAppServerCheckBox);
+        // google button
+        JButton searchWithGoogleButton = new GoogleSearchButton("Google Search");
+        searchWithGoogleButton.setToolTipText("Open browser to search for Stackoverflow posts");
+
+        // top panel
+        JComponent topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        topPanel.add(searchOptions);
+        topPanel.add(searchWithGoogleButton);
 
         // add components to search panel
-        searchPanel.add(buttonPanel);
+        searchPanel.add(topPanel);
         searchPanel.add(inputPane.getComponent());
         posts.addTo(searchPanel);
     }
@@ -70,12 +81,15 @@ public class SearchTab {
                 return;
             }
 
-            if (value + extent == maximum && Search.currentSearchType.equals(Search.SearchType.INDEX)) {
-                String msg;
-                if (SearchTab.useAppServerCheckBox.isSelected()) {
-                    msg = Search.webAppSearch(inputPane.inputArea.getText(), Posts.maxPostCount[0]);
-                } else {
-                    msg = Search.localIndexSearch(inputPane.inputArea.getText(), Posts.maxPostCount[0]);
+            if (value + extent == maximum) {
+                String query = inputPane.inputArea.getText();
+                String msg = null;
+                if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
+                    msg = Search.localIndexSearch(query, Posts.maxPostCount[0]);
+                } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
+                    msg = Search.webAppSearch(query, Posts.maxPostCount[0]);
+                } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
+                    msg = Search.stackExchangeSearch(query);
                 }
                 SearchTab.posts.update(msg);
             }
