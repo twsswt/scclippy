@@ -12,7 +12,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.text.NumberFormat;
 
 /**
  * Represents a class that contains components in the settings panel/tab
@@ -48,6 +47,10 @@ public class SettingsTab {
         // Max post count
         JTextField maxPostCountTextField = new IntegerSavingJTextField(Posts.maxPostCount);
         generalSettings.add(maxPostCountTextField);
+        // Text in posts colour by name
+        JTextField postsTextColourTextField = new ColourChangerTextField(Posts.textColour);
+        generalSettings.add(postsTextColourTextField);
+
 
         // Index settings
         JPanel indexOptions = new JPanel();
@@ -253,13 +256,13 @@ public class SettingsTab {
      */
     private static class IntegerSavingJTextField extends JTextField {
 
-        int[] savedText;
+        int[] savedNumber;
 
-        public IntegerSavingJTextField(int[] text) {
-            super(text[0]);
-            setText(String.valueOf(text[0]));
+        public IntegerSavingJTextField(int[] number) {
+            super(number[0]);
+            setText(String.valueOf(number[0]));
 
-            savedText = text;
+            savedNumber = number;
 
             this.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -277,8 +280,49 @@ public class SettingsTab {
 
                 private void saveChange(DocumentEvent e) {
                     try {
-                        savedText[0] = Integer.parseInt(e.getDocument().getText(0, e.getDocument().getLength()));
+                        savedNumber[0] = Integer.parseInt(e.getDocument().getText(0, e.getDocument().getLength()));
                         Settings.saveSettings();
+                    } catch (BadLocationException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    private static class ColourChangerTextField extends JTextField {
+
+        public ColourChangerTextField(String colour) {
+            super(colour);
+            Posts.applyTextColour(colour);
+
+            getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    applyColour(e);
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    applyColour(e);
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    applyColour(e);
+                }
+
+                private void applyColour(DocumentEvent e) {
+                    try {
+                        String newColour = e.getDocument().getText(0, e.getDocument().getLength());
+                        Posts.textColour = newColour;
+                        Settings.saveSettings();
+
+                        if (newColour.equals("")) {
+                            Posts.removeTextColour();
+                        } else {
+                            Posts.applyTextColour(newColour);
+                        }
                     } catch (BadLocationException e1) {
                         e1.printStackTrace();
                     }

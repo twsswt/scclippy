@@ -37,6 +37,8 @@ public class Settings {
             pw.write("\n");
             pw.write(String.valueOf(Posts.maxPostCount[0]));
             pw.write("\n");
+            pw.write(String.valueOf(Posts.textColour));
+            pw.write("\n");
             pw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -75,6 +77,9 @@ public class Settings {
             }
             if (sc.hasNextLine()) {
                 Posts.maxPostCount[0] = Integer.parseInt(sc.nextLine());
+            }
+            if (sc.hasNextLine()) {
+                Posts.textColour = sc.nextLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

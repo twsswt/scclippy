@@ -19,9 +19,11 @@ import java.net.URISyntaxException;
  */
 public class Posts {
 
-    private JEditorPane[] postPane;
+    private static JEditorPane[] postPane;
+
     public static int[] defaultPostCount = new int[]{5};
     public static int[] maxPostCount = new int[]{20};
+    public static String textColour = "";
 
     static HTMLEditorKit kit = new HTMLEditorKit();
     private static Border border;
@@ -30,7 +32,7 @@ public class Posts {
         kit.getStyleSheet().addRule("code {color: #909090;}");
         kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
 
-        Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.YELLOW);
+        Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.ORANGE);
         Border marginBorder = BorderFactory.createEmptyBorder(0, 8, 0, 0);
         border = BorderFactory.createCompoundBorder(matteBorder, marginBorder);
     }
@@ -63,6 +65,31 @@ public class Posts {
         kit.getStyleSheet().removeStyle("code");
         kit.getStyleSheet().removeStyle("span.highlight");
     }
+
+    /**
+     * Sets colour to text by default in posts
+     * @param colourName name of the colour
+     */
+    static void applyTextColour(String colourName) {
+        kit.getStyleSheet().addRule("p {color: " + colourName + "}");
+        updatePostsUI();
+    }
+
+    /**
+     * Removes colour to text by default in posts
+     */
+    static void removeTextColour() {
+        kit.getStyleSheet().removeStyle("p");
+        updatePostsUI();
+    }
+
+    private static void updatePostsUI() {
+        for (JEditorPane aPostPane : postPane) {
+            aPostPane.updateUI();
+        }
+    }
+
+
 
     /**
      * Adds each pane to a panel
