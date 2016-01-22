@@ -1,6 +1,5 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
-import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import uk.ac.glasgow.scclippy.lucene.IndexFiles;
@@ -127,9 +126,9 @@ public class SettingsTab {
             setSelected(true);
             addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    Settings.resizable = true;
+                    Settings.resizableInputArea = true;
                 } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                    Settings.resizable = false;
+                    Settings.resizableInputArea = false;
                     SearchTab.inputPane.inputArea.setRows(InputPane.INPUT_TEXT_AREA_ROWS);
                 }
             });
