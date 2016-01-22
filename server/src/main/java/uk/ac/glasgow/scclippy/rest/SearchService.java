@@ -18,7 +18,7 @@ import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 @Path("/search")
 public class SearchService {
  
-	private static String indexPath = "D:/index";
+	private static String indexPath = "D:/index"; //TODO
 	
 	@GET
 	@Path("/{query}")

@@ -1,5 +1,6 @@
 package uk.ac.glasgow.scclippy.plugin;
 
+import groovy.io.FileType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.ac.glasgow.scclippy.lucene.File;
@@ -7,6 +8,7 @@ import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Locale;
 
 /**
  * Search functionality
@@ -63,6 +65,7 @@ public class Search {
             JSONObject item = (JSONObject) items.get(i);
             String id = "" + item.getInt(item.getString("item_type") + "_id");
             String content = StringProcessing.textToHTML(item.getString("excerpt")) + "<br/>";
+
             files[i] = new File(id, content);
         }
         Search.currentSearchType = SearchType.STACKEXCHANGE_API;
@@ -101,7 +104,7 @@ public class Search {
         files = new File[items.length()];
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = (JSONObject) items.get(i);
-            files[i] = new File("" + item.getInt("id"), item.getString("content"));
+            files[i] = new File("" + item.getString("id"), item.getString("content"));
         }
         Search.currentSearchType = SearchType.WEB_SERVICE;
 
