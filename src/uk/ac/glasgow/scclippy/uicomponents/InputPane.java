@@ -2,7 +2,6 @@ package uk.ac.glasgow.scclippy.uicomponents;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
-import uk.ac.glasgow.scclippy.lucene.File;
 import uk.ac.glasgow.scclippy.plugin.Search;
 import uk.ac.glasgow.scclippy.plugin.Settings;
 
@@ -69,23 +68,25 @@ public class InputPane {
             if (Settings.resizable)
                 inputPane.setRows(inputPane.getLineCount());
 
-            String text = inputPane.getText();
-            if (text.equals("") || text.equals(lastText))
+            String query = inputPane.getText();
+            if (query.equals("") || query.equals(lastText))
                 return;
-            lastText = text;
+            lastText = query;
 
             if (Settings.indexPath == null) {
                 SearchTab.posts.update("Set index path from 'SettingsTab' first");
                 return;
             }
 
-            SearchHistoryTab.update(text);
+            SearchHistoryTab.update(query);
 
-            String msg;
-            if (SearchTab.useAppServerCheckBox.isSelected()) {
-                msg = Search.webAppSearch(text, Posts.DEFAULT_POST_COUNT);
-            } else {
-                msg = Search.localIndexSearch(text, Posts.DEFAULT_POST_COUNT);
+            String msg = null;
+            if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
+                msg = Search.localIndexSearch(query, Posts.defaultPostCount[0]);
+            } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
+                msg = Search.webAppSearch(query, Posts.defaultPostCount[0]);
+            } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
+                msg = Search.stackExchangeSearch(query);
             }
             SearchTab.posts.update(msg);
         }

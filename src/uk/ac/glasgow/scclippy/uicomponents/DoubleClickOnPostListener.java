@@ -1,9 +1,13 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
+import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
 import uk.ac.glasgow.scclippy.plugin.Search;
 
 import javax.swing.*;
@@ -93,9 +97,14 @@ public class DoubleClickOnPostListener extends MouseAdapter {
         if (editor == null)
             return;
 
+        Project project = editor.getProject();
+        if (project == null)
+            return;
+
         Document doc = editor.getDocument();
         int offset = editor.getCaretModel().getOffset();
 
+        // Write to file
         ApplicationManager.getApplication().runWriteAction(() -> {
             doc.setText(
                     doc.getText(new TextRange(0, offset)) +
@@ -103,6 +112,13 @@ public class DoubleClickOnPostListener extends MouseAdapter {
                     doc.getText(new TextRange(offset, doc.getText().length()))
             );
         });
+
+        // Reformat code
+        PsiFile psi = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+        int snippetLength = text.length();
+        TextRange range = new TextRange(offset, offset + snippetLength);
+        ReformatCodeProcessor rfp = new ReformatCodeProcessor(project, psi, range, false);
+        rfp.run();
     }
 
 

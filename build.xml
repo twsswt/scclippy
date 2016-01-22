@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <project
-	name="scclippy-client"
-	basedir="./"
+	name="scclippy"
+	basedir="."
 	xmlns:ivy="antlib:org.apache.ivy.ant"
 	default="build">
 	
@@ -19,8 +19,8 @@
 	
 	<target	name="cleanall" depends="clean">
 		<delete dir="lib" />
-		<delete dir="../" includes="*.jar"/>
-		<ivy:cleancache/>
+		<delete dir="..//" includes="*.jar"/>
+		<ivy:cleancache />
 	</target>
 		
 	<target name="init">
@@ -43,7 +43,7 @@
 	<target	name="jar" depends="compile">
 		<jar destfile="scclippy-${version}.jar">
 			<fileset dir="bin" excludes="**/*Test.class"/>
-			<fileset dir="../" includes="META-INF/plugin.xml"/>
+			<fileset dir="..//" includes="META-INF/plugin.xml"/>
 		</jar>
 		
 	</target>
@@ -51,7 +51,7 @@
 	<target name="plugin" depends="jar">
 		<zip file="scclippy-0.0.1-PREALPHA.zip">
 			<zipfileset prefix="scclippy/lib" dir="lib" includes="lucene-*.jar" />
-			<zipfileset prefix="scclippy/lib" dir="../" includes="scclippy-${version}.jar" />
+			<zipfileset prefix="scclippy/lib" dir="..//" includes="scclippy-${version}.jar" />
 		</zip>
 	</target>
 		

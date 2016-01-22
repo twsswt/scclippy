@@ -1,5 +1,6 @@
 package uk.ac.glasgow.scclippy.uicomponents;
 
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import uk.ac.glasgow.scclippy.lucene.IndexFiles;
@@ -41,6 +42,15 @@ public class SettingsTab {
         // Web App RESTful URL
         webAppURL = new StringSavingJTextField(Settings.webServiceURI);
         generalSettings.add(webAppURL);
+        // Default post count
+        JTextField defaultPostCountTextField = new IntegerSavingJTextField(Posts.defaultPostCount);
+        generalSettings.add(defaultPostCountTextField);
+        // Max post count
+        JTextField maxPostCountTextField = new IntegerSavingJTextField(Posts.maxPostCount);
+        generalSettings.add(maxPostCountTextField);
+        // Text in posts colour by name
+        JTextField postsTextColourTextField = new ColourChangerTextField(Posts.textColour);
+        generalSettings.add(postsTextColourTextField);
 
         // Index settings
         JPanel indexOptions = new JPanel();
@@ -220,9 +230,11 @@ public class SettingsTab {
                 public void changedUpdate(DocumentEvent e) {
                     saveChange(e);
                 }
+
                 public void removeUpdate(DocumentEvent e) {
                     saveChange(e);
                 }
+
                 public void insertUpdate(DocumentEvent e) {
                     saveChange(e);
                 }
@@ -230,13 +242,92 @@ public class SettingsTab {
                 private void saveChange(DocumentEvent e) {
                     try {
                         savedText[0] = e.getDocument().getText(0, e.getDocument().getLength());
+                        Settings.saveSettings();
                     } catch (BadLocationException e1) {
                         e1.printStackTrace();
                     }
-                    Settings.saveSettings();
                 }
             });
         }
+    }
 
+    /**
+     * Updates the integer provided when the text field is changed
+     */
+    private static class IntegerSavingJTextField extends JTextField {
+
+        int[] savedNumber;
+
+        public IntegerSavingJTextField(int[] number) {
+            super(number[0]);
+            setText(String.valueOf(number[0]));
+
+            savedNumber = number;
+
+            this.getDocument().addDocumentListener(new DocumentListener() {
+
+                public void changedUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    saveChange(e);
+                }
+
+                private void saveChange(DocumentEvent e) {
+                    try {
+                        savedNumber[0] = Integer.parseInt(e.getDocument().getText(0, e.getDocument().getLength()));
+                        Settings.saveSettings();
+                    } catch (BadLocationException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    private static class ColourChangerTextField extends JTextField {
+
+        public ColourChangerTextField(String colour) {
+            super(colour);
+            Posts.applyTextColour(colour);
+
+            getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    applyColour(e);
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    applyColour(e);
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    applyColour(e);
+                }
+
+                private void applyColour(DocumentEvent e) {
+                    try {
+                        String newColour = e.getDocument().getText(0, e.getDocument().getLength());
+                        Posts.textColour = newColour;
+                        Settings.saveSettings();
+
+                        if (newColour.equals("")) {
+                            Posts.removeTextColour();
+                        } else {
+                            Posts.applyTextColour(newColour);
+                        }
+                    } catch (BadLocationException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 }

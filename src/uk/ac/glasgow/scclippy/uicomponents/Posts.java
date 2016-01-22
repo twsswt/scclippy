@@ -19,9 +19,11 @@ import java.net.URISyntaxException;
  */
 public class Posts {
 
-    private JEditorPane[] postPane;
-    public static int DEFAULT_POST_COUNT = 5;
-    public static int MAX_POST_COUNT = 20;
+    private static JEditorPane[] postPane;
+
+    public static int[] defaultPostCount = new int[]{5};
+    public static int[] maxPostCount = new int[]{20};
+    public static String textColour = "";
 
     static HTMLEditorKit kit = new HTMLEditorKit();
     private static Border border;
@@ -30,15 +32,15 @@ public class Posts {
         kit.getStyleSheet().addRule("code {color: #909090;}");
         kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
 
-        Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.YELLOW);
+        Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.ORANGE);
         Border marginBorder = BorderFactory.createEmptyBorder(0, 8, 0, 0);
         border = BorderFactory.createCompoundBorder(matteBorder, marginBorder);
     }
 
     Posts() {
-        postPane = new JEditorPane[MAX_POST_COUNT];
+        postPane = new JEditorPane[maxPostCount[0]];
 
-        for (int i = 0; i < MAX_POST_COUNT; i++) {
+        for (int i = 0; i < maxPostCount[0]; i++) {
             postPane[i] = new JEditorPane("text/html", "");
             postPane[i].setEditable(false);
             postPane[i].setBorder(border);
@@ -62,6 +64,32 @@ public class Posts {
     static void disableHighlights() {
         kit.getStyleSheet().removeStyle("code");
         kit.getStyleSheet().removeStyle("span.highlight");
+    }
+
+    /**
+     * Sets colour to text by default in posts
+     * @param colourName name of the colour
+     */
+    static void applyTextColour(String colourName) {
+        kit.getStyleSheet().addRule("body {color: " + colourName + "}");
+        updatePostsUI();
+    }
+
+    /**
+     * Removes colour to text by default in posts
+     */
+    static void removeTextColour() {
+        kit.getStyleSheet().removeStyle("body");
+        updatePostsUI();
+    }
+
+    /**
+     * Updates UI of every post (JEditorPane)
+     */
+    private static void updatePostsUI() {
+        for (JEditorPane aPostPane : postPane) {
+            aPostPane.updateUI();
+        }
     }
 
     /**
@@ -90,9 +118,10 @@ public class Posts {
             }
 
             String text = files[i].getContent();
+            String fileType = files[i].getFileName().contains("#") ? "answer" : "question";
             String url = "<a href=\"http://stackoverflow.com/questions/"
                     + files[i].getFileName()
-                    + "\">Link to Stackoverflow</a>";
+                    + "\">Link to Stack Overflow " + fileType + "</a>";
             postPane[i].setText(text + url);
 
             postPane[i].setEnabled(true);
