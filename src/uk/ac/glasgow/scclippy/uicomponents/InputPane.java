@@ -65,7 +65,7 @@ public class InputPane {
         }
 
         private void searchAction() {
-            if (Settings.resizable)
+            if (Settings.resizableInputArea)
                 inputPane.setRows(inputPane.getLineCount());
 
             String query = inputPane.getText();

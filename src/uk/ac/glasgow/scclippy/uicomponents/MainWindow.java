@@ -38,7 +38,8 @@ public class MainWindow implements ToolWindowFactory {
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         if (editor == null)
             return;
-        editor.getSelectionModel().addSelectionListener(new TextSelectionListener());
+
+        editor.addEditorMouseListener(new TextSelectionListener());
     }
 
     /**
