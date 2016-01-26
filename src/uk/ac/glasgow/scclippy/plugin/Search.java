@@ -17,11 +17,13 @@ public class Search {
     public static File[] files = null;
 
     public enum SearchType { LOCAL_INDEX, WEB_SERVICE, STACKEXCHANGE_API }
+    public static SearchType currentSearchType = SearchType.WEB_SERVICE;
 
     public enum SortType { RELEVANCE, BY_SCORE }
-
-
     public static SortType currentSortOption = SortType.RELEVANCE;
+
+    public static int[] minimumScore = new int[]{0};
+
     private final static String LOCAL_INDEX_DEFAULT_FIELD = "contents";
     private final static String STACKEXCHANGE_EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
 
@@ -139,8 +141,9 @@ public class Search {
         return null;
     }
 
-    public static SearchType currentSearchType = SearchType.WEB_SERVICE;
-
+    /**
+     * Sorts results/files by score
+     */
     public static void sortResultsByScore() {
         Arrays.sort(files);
     }

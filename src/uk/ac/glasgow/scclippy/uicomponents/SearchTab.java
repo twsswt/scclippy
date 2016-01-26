@@ -58,6 +58,10 @@ public class SearchTab {
             }
         });
 
+        SettingsTab.IntegerSavingJTextField minimumUpvotes = new SettingsTab.IntegerSavingJTextField(Search.minimumScore);
+        minimumUpvotes.setColumns(3);
+        minimumUpvotes.setToolTipText("Minimum upvotes filter of results");
+
         // google button
         JButton searchWithGoogleButton = new GoogleSearchButton("Google Search");
         searchWithGoogleButton.setToolTipText("Open browser to search for Stackoverflow posts");
@@ -67,6 +71,7 @@ public class SearchTab {
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         topPanel.add(searchOptions);
         topPanel.add(sortOptions);
+        topPanel.add(minimumUpvotes);
         topPanel.add(searchWithGoogleButton);
 
         // add components to search panel

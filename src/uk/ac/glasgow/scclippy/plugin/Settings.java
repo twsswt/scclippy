@@ -46,6 +46,8 @@ public class Settings {
             pw.write("\n");
             pw.write(String.valueOf(Posts.textColour));
             pw.write("\n");
+            pw.write(String.valueOf(Search.minimumScore[0]));
+            pw.write("\n");
             pw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -87,6 +89,9 @@ public class Settings {
             }
             if (sc.hasNextLine()) {
                 Posts.textColour = sc.nextLine();
+            }
+            if (sc.hasNextLine()) {
+                Search.minimumScore[0] = Integer.parseInt(sc.nextLine());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

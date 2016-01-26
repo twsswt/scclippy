@@ -253,7 +253,7 @@ public class SettingsTab {
     /**
      * Updates the integer provided when the text field is changed
      */
-    private static class IntegerSavingJTextField extends JTextField {
+     static class IntegerSavingJTextField extends JTextField {
 
         int[] savedNumber;
 

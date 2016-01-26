@@ -116,6 +116,9 @@ public class Posts {
             if (files[i] == null) {
                 return;
             }
+            if (files[i].getScore() < Search.minimumScore[0]) {
+                continue;
+            }
 
             String text = files[i].getContent();
             String fileType = files[i].getFileName().contains("#") ? "answer" : "question";
