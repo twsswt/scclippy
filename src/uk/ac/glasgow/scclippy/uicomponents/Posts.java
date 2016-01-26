@@ -119,9 +119,11 @@ public class Posts {
 
             String text = files[i].getContent();
             String fileType = files[i].getFileName().contains("#") ? "answer" : "question";
+            int score = files[i].getScore();
+
             String url = "<a href=\"http://stackoverflow.com/questions/"
                     + files[i].getFileName()
-                    + "\">Link to Stack Overflow " + fileType + "</a>";
+                    + "\">Link to Stack Overflow " + fileType + " (" + score + ")" + "</a>";
             postPane[i].setText(text + url);
 
             postPane[i].setEnabled(true);

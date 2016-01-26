@@ -18,7 +18,7 @@ import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 @Path("/search")
 public class SearchService {
  
-	private static String indexPath = "D:/index"; //TODO
+	private static String indexPath = "D:/finalIndex"; //TODO
 	
 	@GET
 	@Path("/{query}")
@@ -43,6 +43,7 @@ public class SearchService {
 			JSONObject obj = new JSONObject();
 			obj.put("id", output[i].getFileName());
 			obj.put("content", output[i].getContent());
+			obj.put("score", output[i].getScore());
 			arr.add(obj);
 		}
 		JSONObject finalObject = new JSONObject();

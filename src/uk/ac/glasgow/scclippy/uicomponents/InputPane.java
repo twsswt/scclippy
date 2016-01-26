@@ -88,6 +88,11 @@ public class InputPane {
             } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
                 msg = Search.stackExchangeSearch(query);
             }
+
+            if (Search.currentSortOption == Search.SortType.BY_SCORE) {
+                Search.sortResultsByScore();
+            }
+
             SearchTab.posts.update(msg);
         }
     }

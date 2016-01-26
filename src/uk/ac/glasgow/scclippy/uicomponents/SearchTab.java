@@ -34,9 +34,25 @@ public class SearchTab {
         searchOptions.addActionListener(e -> {
             JComboBox cb = (JComboBox)e.getSource();
             String selectedSearchOption = (String)cb.getSelectedItem();
+
             for (int i = 0; i < searchOption.length; i++) {
                 if (searchOption[i].equals(selectedSearchOption)) {
                     Search.currentSearchType = Search.SearchType.values()[i];
+                    break;
+                }
+            }
+        });
+
+        String[] sortOption = {"Relevance", "Score"};
+        JComboBox sortOptions = new ComboBox(sortOption);
+        sortOptions.setSelectedIndex(0);
+        sortOptions.addActionListener(e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            String selectedSortOption = (String) cb.getSelectedItem();
+
+            for (int i = 0; i < sortOption.length; i++) {
+                if (sortOption[i].equals(selectedSortOption)) {
+                    Search.currentSortOption = Search.SortType.values()[i];
                     break;
                 }
             }
@@ -50,6 +66,7 @@ public class SearchTab {
         JComponent topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         topPanel.add(searchOptions);
+        topPanel.add(sortOptions);
         topPanel.add(searchWithGoogleButton);
 
         // add components to search panel
@@ -91,6 +108,11 @@ public class SearchTab {
                 } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
                     msg = Search.stackExchangeSearch(query);
                 }
+
+                if (Search.currentSortOption == Search.SortType.BY_SCORE) {
+                    Search.sortResultsByScore();
+                }
+
                 SearchTab.posts.update(msg);
             }
         }
