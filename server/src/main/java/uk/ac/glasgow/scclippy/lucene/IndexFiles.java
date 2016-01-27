@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.lucene;
+package uk.ac.glasgow.scclippy.plugin.lucene;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -28,7 +28,6 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +35,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Date;
 
 /**
  * Index all text files under a directory.

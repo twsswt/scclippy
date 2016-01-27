@@ -14,10 +14,6 @@
 		<dependency org="com.intellij" name="extensions" rev="15.0.1"/>
 		<dependency org="com.intellij" name="annotations" rev="15.0.1"/>
 		<dependency org="com.intellij" name="util" rev="15.0.1"/>
-		<!--dependency org="com.intellij" name="idea" rev="15.0.1"/-->
-
-		<dependency org="org.codehaus.groovy" name="groovy-all" rev="2.3.9" conf="default"/>
-
 	</dependencies>
 	
 </ivy-module>

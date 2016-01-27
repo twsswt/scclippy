@@ -12,8 +12,8 @@ import javax.ws.rs.core.Response;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import uk.ac.glasgow.scclippy.lucene.File;
-import uk.ac.glasgow.scclippy.lucene.SearchFiles;
+import uk.ac.glasgow.scclippy.plugin.lucene.File;
+import uk.ac.glasgow.scclippy.plugin.lucene.SearchFiles;
  
 @Path("/search")
 public class SearchService {
