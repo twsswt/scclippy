@@ -109,7 +109,7 @@ public class SettingsTab {
             updateIndex = update[0];
         }
 
-        /*
+        /**
          * Main task. Executed in background thread.
          */
         @Override
@@ -118,7 +118,7 @@ public class SettingsTab {
             return null;
         }
 
-        /*
+        /**
          * Executed in event dispatching thread
          */
         @Override

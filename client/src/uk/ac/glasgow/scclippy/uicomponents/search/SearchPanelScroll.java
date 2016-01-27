@@ -41,14 +41,13 @@ public class SearchPanelScroll extends JScrollPane {
         }
 
         public void adjustmentValueChanged(AdjustmentEvent evt) {
-
             int value = evt.getValue();
             int extent = getVerticalScrollBar().getModel().getExtent();
             int maximum = getVerticalScrollBar().getMaximum();
 
             boolean jump = false;
             // detect jumps from updated posts
-            if (Math.abs(lastValue - value) > SCROLL_JUMP_BOUND)
+            if (value > lastValue && Math.abs(lastValue - value) > SCROLL_JUMP_BOUND)
                 jump = true;
 
             lastValue = value;
