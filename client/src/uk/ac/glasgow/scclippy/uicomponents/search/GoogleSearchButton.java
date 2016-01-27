@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.uicomponents;
+package uk.ac.glasgow.scclippy.uicomponents.search;
 
 import javax.swing.*;
 import java.awt.*;

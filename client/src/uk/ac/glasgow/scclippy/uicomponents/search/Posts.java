@@ -1,8 +1,9 @@
-package uk.ac.glasgow.scclippy.uicomponents;
+package uk.ac.glasgow.scclippy.uicomponents.search;
 
 import com.intellij.ui.JBColor;
-import uk.ac.glasgow.scclippy.lucene.File;
-import uk.ac.glasgow.scclippy.plugin.Search;
+import uk.ac.glasgow.scclippy.plugin.lucene.File;
+import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
+import uk.ac.glasgow.scclippy.plugin.search.Search;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -19,7 +20,7 @@ import java.net.URISyntaxException;
  */
 public class Posts {
 
-    private static JEditorPane[] postPane;
+    private JEditorPane[] postPane;
 
     public static int[] defaultPostCount = new int[]{5};
     public static int[] maxPostCount = new int[]{20};
@@ -45,7 +46,7 @@ public class Posts {
             postPane[i].setEditable(false);
             postPane[i].setBorder(border);
             postPane[i].setEditorKit(kit);
-            postPane[i].addMouseListener(new DoubleClickOnPostListener(i));
+            postPane[i].addMouseListener(new DoubleClickOnPostListener(postPane[i], i));
             postPane[i].addHyperlinkListener(new PostHyperlinkListener());
         }
     }
@@ -53,7 +54,7 @@ public class Posts {
     /**
      * Enables code highlights through css rules
      */
-    static void enableHighlights() {
+    public static void enableHighlights() {
         kit.getStyleSheet().addRule("code {color: #909090;}");
         kit.getStyleSheet().addRule("span.highlight {background-color: olive;}");
     }
@@ -61,7 +62,7 @@ public class Posts {
     /**
      * Disables code highlights through css rules
      */
-    static void disableHighlights() {
+    public static void disableHighlights() {
         kit.getStyleSheet().removeStyle("code");
         kit.getStyleSheet().removeStyle("span.highlight");
     }
@@ -70,7 +71,7 @@ public class Posts {
      * Sets colour to text by default in posts
      * @param colourName name of the colour
      */
-    static void applyTextColour(String colourName) {
+    public void applyTextColour(String colourName) {
         kit.getStyleSheet().addRule("body {color: " + colourName + "}");
         updatePostsUI();
     }
@@ -78,7 +79,7 @@ public class Posts {
     /**
      * Removes colour to text by default in posts
      */
-    static void removeTextColour() {
+    public void removeTextColour() {
         kit.getStyleSheet().removeStyle("body");
         updatePostsUI();
     }
@@ -86,7 +87,7 @@ public class Posts {
     /**
      * Updates UI of every post (JEditorPane)
      */
-    private static void updatePostsUI() {
+    private void updatePostsUI() {
         for (JEditorPane aPostPane : postPane) {
             aPostPane.updateUI();
         }
@@ -116,7 +117,7 @@ public class Posts {
             if (files[i] == null) {
                 return;
             }
-            if (files[i].getScore() <= Search.minimumScore[0]) {
+            if (files[i].getScore() <= ResultsSorter.minimumScore[0]) {
                 continue;
             }
 

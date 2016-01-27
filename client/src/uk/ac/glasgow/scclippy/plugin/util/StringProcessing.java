@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.plugin;
+package uk.ac.glasgow.scclippy.plugin.util;
 
 /**
  * String processing (static functions)
@@ -11,7 +11,7 @@ public class StringProcessing {
      * @param snippetText the text
      * @return the html variant of the text
      */
-    static String textToHTML(String snippetText) {
+    public static String textToHTML(String snippetText) {
         snippetText = replaceAll(snippetText, '\n', "<br/>");
         snippetText = replaceAll(snippetText, ' ', "&nbsp ");
 

@@ -1,16 +1,16 @@
-package uk.ac.glasgow.scclippy.actions;
+package uk.ac.glasgow.scclippy.uicomponents.main;
 
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.glasgow.scclippy.uicomponents.SearchTab;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
 
 /**
- * Handles user input
+ * Handles user key input
  */
-public class CustomTypedHandlerDelegate extends TypedHandlerDelegate {
+public class KeyInput extends TypedHandlerDelegate {
 
     // Special characters that trigger search
     private static char[] triggerSearchChars = new char[] {

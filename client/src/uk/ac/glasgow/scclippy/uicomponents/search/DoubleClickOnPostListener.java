@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.uicomponents;
+package uk.ac.glasgow.scclippy.uicomponents.search;
 
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.application.ApplicationManager;
@@ -8,7 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import uk.ac.glasgow.scclippy.plugin.Search;
+import uk.ac.glasgow.scclippy.plugin.search.Search;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -28,7 +28,10 @@ public class DoubleClickOnPostListener extends MouseAdapter {
     private final static String CODE_END_TAG = "</code>"; // marks snippet's end
     private final static int INPUT_DIALOG_MAX_SNIPPET_LENGTH = 100; // length of snippets in the JOptionPane
 
-    public DoubleClickOnPostListener(int id) {
+    JEditorPane jEditorPane;
+
+    public DoubleClickOnPostListener(JEditorPane jEditorPane, int id) {
+        this.jEditorPane = jEditorPane;
         this.id = id;
     }
 
@@ -93,7 +96,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
      * @param text the text to be inserted
      */
     private void insertTextIntoEditor(String text) {
-        Editor editor = uk.ac.glasgow.scclippy.plugin.Editor.getEditor();
+        Editor editor = uk.ac.glasgow.scclippy.plugin.editor.Editor.getEditor();
         if (editor == null)
             return;
 
@@ -129,7 +132,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
      */
     public String getChosenSnippet(Object[] possibilities) {
         return (String) JOptionPane.showInputDialog(
-                SearchTab.searchPanel,
+                jEditorPane,
                 "Choose which code snippet:\n",
                 "Code snippet",
                 JOptionPane.PLAIN_MESSAGE,

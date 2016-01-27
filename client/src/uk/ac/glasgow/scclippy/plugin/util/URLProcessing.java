@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.plugin;
+package uk.ac.glasgow.scclippy.plugin.util;
 
 import org.json.JSONObject;
 
@@ -53,7 +53,7 @@ public class URLProcessing {
      * @param url the URL
      * @return the result
      */
-    static JSONObject readJsonFromUrl(String url) {
+    public static JSONObject readJsonFromUrl(String url) {
         JSONObject json = null;
 
         try (InputStream is = new URL(url).openStream()) {

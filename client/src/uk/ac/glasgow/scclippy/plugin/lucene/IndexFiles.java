@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.lucene;
+package uk.ac.glasgow.scclippy.plugin.lucene;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

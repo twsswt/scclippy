@@ -1,15 +1,15 @@
-package uk.ac.glasgow.scclippy.uicomponents;
+package uk.ac.glasgow.scclippy.uicomponents.settings;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
-import uk.ac.glasgow.scclippy.lucene.IndexFiles;
-import uk.ac.glasgow.scclippy.plugin.Settings;
+import uk.ac.glasgow.scclippy.plugin.lucene.IndexFiles;
+import uk.ac.glasgow.scclippy.plugin.settings.Settings;
+import uk.ac.glasgow.scclippy.uicomponents.search.InputPane;
+import uk.ac.glasgow.scclippy.uicomponents.search.Posts;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 
@@ -18,11 +18,19 @@ import java.awt.event.ItemEvent;
  */
 public class SettingsTab {
 
-    static JComponent settingsPanel = new JPanel();
-    static JBScrollPane settingsPanelScroll = new JBScrollPane(settingsPanel);
+    private JComponent settingsPanel = new JPanel();
+    private JScrollPane scroll = new JBScrollPane(settingsPanel);
+
     static JTextField webAppURL;
 
-    static void initSettingsPanel() {
+    Posts posts;
+
+    public SettingsTab(Posts posts) {
+        this.posts = posts;
+        initSettingsPanel();
+    }
+
+    void initSettingsPanel() {
         Settings.loadSettings();
 
         Border lineBorder = BorderFactory.createLineBorder(JBColor.cyan);
@@ -48,7 +56,7 @@ public class SettingsTab {
         JTextField maxPostCountTextField = new IntegerSavingJTextField(Posts.maxPostCount);
         generalSettings.add(maxPostCountTextField);
         // Text in posts colour by name
-        JTextField postsTextColourTextField = new ColourChangerTextField(Posts.textColour);
+        JTextField postsTextColourTextField = new PostColourChangerJTextField(posts);
         generalSettings.add(postsTextColourTextField);
 
         // Index settings
@@ -213,120 +221,7 @@ public class SettingsTab {
         }
     }
 
-    /**
-     * Updates the string provided when the text field is changed
-     */
-    private static class StringSavingJTextField extends JTextField {
-
-        String[] savedText;
-
-        public StringSavingJTextField(String[] text) {
-            super(text[0]);
-            savedText = text;
-
-            this.getDocument().addDocumentListener(new DocumentListener() {
-
-                public void changedUpdate(DocumentEvent e) {
-                    saveChange(e);
-                }
-
-                public void removeUpdate(DocumentEvent e) {
-                    saveChange(e);
-                }
-
-                public void insertUpdate(DocumentEvent e) {
-                    saveChange(e);
-                }
-
-                private void saveChange(DocumentEvent e) {
-                    try {
-                        savedText[0] = e.getDocument().getText(0, e.getDocument().getLength());
-                        Settings.saveSettings();
-                    } catch (BadLocationException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-        }
-    }
-
-    /**
-     * Updates the integer provided when the text field is changed
-     */
-     static class IntegerSavingJTextField extends JTextField {
-
-        int[] savedNumber;
-
-        public IntegerSavingJTextField(int[] number) {
-            super(number[0]);
-            setText(String.valueOf(number[0]));
-
-            savedNumber = number;
-
-            this.getDocument().addDocumentListener(new DocumentListener() {
-
-                public void changedUpdate(DocumentEvent e) {
-                    saveChange(e);
-                }
-
-                public void removeUpdate(DocumentEvent e) {
-                    saveChange(e);
-                }
-
-                public void insertUpdate(DocumentEvent e) {
-                    saveChange(e);
-                }
-
-                private void saveChange(DocumentEvent e) {
-                    try {
-                        savedNumber[0] = Integer.parseInt(e.getDocument().getText(0, e.getDocument().getLength()));
-                        Settings.saveSettings();
-                    } catch (BadLocationException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-        }
-    }
-
-    private static class ColourChangerTextField extends JTextField {
-
-        public ColourChangerTextField(String colour) {
-            super(colour);
-            Posts.applyTextColour(colour);
-
-            getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    applyColour(e);
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    applyColour(e);
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    applyColour(e);
-                }
-
-                private void applyColour(DocumentEvent e) {
-                    try {
-                        String newColour = e.getDocument().getText(0, e.getDocument().getLength());
-                        Posts.textColour = newColour;
-                        Settings.saveSettings();
-
-                        if (newColour.equals("")) {
-                            Posts.removeTextColour();
-                        } else {
-                            Posts.applyTextColour(newColour);
-                        }
-                    } catch (BadLocationException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-        }
+    public JScrollPane getScroll() {
+        return scroll;
     }
 }

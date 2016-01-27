@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.plugin;
+package uk.ac.glasgow.scclippy.plugin.editor;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;

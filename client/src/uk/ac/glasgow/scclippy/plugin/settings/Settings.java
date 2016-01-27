@@ -1,9 +1,10 @@
-package uk.ac.glasgow.scclippy.plugin;
+package uk.ac.glasgow.scclippy.plugin.settings;
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.extensions.PluginId;
-import uk.ac.glasgow.scclippy.uicomponents.Posts;
+import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
+import uk.ac.glasgow.scclippy.uicomponents.search.Posts;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class Settings {
             pw.write("\n");
             pw.write(String.valueOf(Posts.textColour));
             pw.write("\n");
-            pw.write(String.valueOf(Search.minimumScore[0]));
+            pw.write(String.valueOf(ResultsSorter.minimumScore[0]));
             pw.write("\n");
             pw.close();
         } catch (FileNotFoundException e) {
@@ -90,7 +91,7 @@ public class Settings {
                 Posts.textColour = sc.nextLine();
             }
             if (sc.hasNextLine()) {
-                Search.minimumScore[0] = Integer.parseInt(sc.nextLine());
+                ResultsSorter.minimumScore[0] = Integer.parseInt(sc.nextLine());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.uicomponents;
+package uk.ac.glasgow.scclippy.uicomponents.main;
 
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -7,7 +7,9 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBTabbedPane;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.glasgow.scclippy.actions.TextSelectionListener;
+import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
+import uk.ac.glasgow.scclippy.uicomponents.settings.SettingsTab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,28 +20,33 @@ import java.awt.event.KeyEvent;
  */
 public class MainWindow implements ToolWindowFactory {
 
-    static JTabbedPane tabsPanel;
+    JTabbedPane tabsPanel = new JBTabbedPane();
+
+    SearchTab searchTab;
+    SearchHistoryTab searchHistoryTab;
+    SettingsTab settingsTab;
 
     /**
-     * Creates tool window content
+     * Creates tool main content
      */
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        // init panels
+        searchHistoryTab = new SearchHistoryTab();
+        searchTab = new SearchTab(searchHistoryTab);
+        settingsTab = new SettingsTab(searchTab.getPosts());
+
+        // init tabs
         initTabsPanel();
         Component component = toolWindow.getComponent();
         component.getParent().add(tabsPanel);
-
-        // init panels
-        SearchTab.initSearchPanel();
-        SearchHistoryTab.initHistoryPanel();
-        SettingsTab.initSettingsPanel();
 
         // init mouse selection listener
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         if (editor == null)
             return;
 
-        editor.addEditorMouseListener(new TextSelectionListener());
+        editor.addEditorMouseListener(new TextSelectionMouseListener());
     }
 
     /**
@@ -47,12 +54,12 @@ public class MainWindow implements ToolWindowFactory {
      * for search, history and settings
      * (and sets a mnemonic for each)
      */
-    private static void initTabsPanel() {
+    private void initTabsPanel() {
         tabsPanel = new JBTabbedPane();
 
-        tabsPanel.addTab("Search", null, SearchTab.searchPanelScroll, "Searching by index or using Stackoverflow API");
-        tabsPanel.addTab("History", null, SearchHistoryTab.historyPanelScroll, "View input history");
-        tabsPanel.addTab("Settings", null, SettingsTab.settingsPanelScroll, "Change settings");
+        tabsPanel.addTab("Search", null, searchTab.getScroll(), "Searching by index or using Stackoverflow API");
+        tabsPanel.addTab("History", null, searchHistoryTab.getScroll(), "View input history");
+        tabsPanel.addTab("Settings", null, settingsTab.getScroll(), "Change settings");
 
         tabsPanel.setMnemonicAt(0, KeyEvent.VK_1);
         tabsPanel.setMnemonicAt(1, KeyEvent.VK_2);

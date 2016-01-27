@@ -25,9 +25,9 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-      <toolWindow id="SourceCodeClippy" anchor="bottom" factoryClass="uk.ac.glasgow.scclippy.uicomponents.MainWindow">
+      <toolWindow id="SourceCodeClippy" anchor="bottom" factoryClass="uk.ac.glasgow.scclippy.uicomponents.main.MainWindow">
       </toolWindow>
-      <typedHandler implementation="uk.ac.glasgow.scclippy.actions.CustomTypedHandlerDelegate"/>
+      <typedHandler implementation="uk.ac.glasgow.scclippy.uicomponents.main.KeyInput"/>
   </extensions>
 
   <application-components>

@@ -1,9 +1,11 @@
-package uk.ac.glasgow.scclippy.uicomponents;
+package uk.ac.glasgow.scclippy.uicomponents.search;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
-import uk.ac.glasgow.scclippy.plugin.Search;
-import uk.ac.glasgow.scclippy.plugin.Settings;
+import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
+import uk.ac.glasgow.scclippy.plugin.search.Search;
+import uk.ac.glasgow.scclippy.plugin.settings.Settings;
+import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,10 +17,17 @@ import javax.swing.event.DocumentListener;
  */
 public class InputPane {
 
-    final static int INPUT_TEXT_AREA_ROWS = 5;
+    public final static int INPUT_TEXT_AREA_ROWS = 5;
+    private final SearchHistoryTab searchHistoryTab;
+
+    private Posts posts;
 
     public JTextArea inputArea = new JTextArea();
     JScrollPane inputScrollPane = new JBScrollPane(inputArea);
+
+    Search localSearch;
+    Search webServiceSearch;
+    Search stackExchangeSearch;
 
     private static Border border;
 
@@ -28,7 +37,14 @@ public class InputPane {
         border = BorderFactory.createCompoundBorder(matteBorder, marginBorder);
     }
 
-    InputPane() {
+    InputPane(Posts posts, SearchHistoryTab searchHistoryTab, Search localSearch, Search webServiceSearch, Search stackExchangeSearch) {
+        this.posts = posts;
+        this.searchHistoryTab = searchHistoryTab;
+
+        this.localSearch = localSearch;
+        this.webServiceSearch = webServiceSearch;
+        this.stackExchangeSearch = stackExchangeSearch;
+
         inputArea.setLineWrap(true);
         inputArea.setWrapStyleWord(true);
         inputArea.setBorder(border);
@@ -40,10 +56,10 @@ public class InputPane {
         return inputScrollPane;
     }
 
-    private static class InputPaneListener implements DocumentListener {
+    private class InputPaneListener implements DocumentListener {
 
         JTextArea inputPane;
-        static String lastText = "";
+        String lastText = "";
 
         InputPaneListener(JTextArea inputPane) {
             this.inputPane = inputPane;
@@ -74,26 +90,26 @@ public class InputPane {
             lastText = query;
 
             if (Settings.indexPath == null) {
-                SearchTab.posts.update("Set index path from 'SettingsTab' first");
+                posts.update("Set index path from 'SettingsTab' first");
                 return;
             }
 
-            SearchHistoryTab.update(query);
+            searchHistoryTab.update(query);
 
             String msg = null;
             if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
-                msg = Search.localIndexSearch(query, Posts.defaultPostCount[0]);
+                msg = localSearch.search(query, Posts.defaultPostCount[0]);
             } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
-                msg = Search.webAppSearch(query, Posts.defaultPostCount[0]);
+                msg = webServiceSearch.search(query, Posts.defaultPostCount[0]);
             } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
-                msg = Search.stackExchangeSearch(query);
+                msg = stackExchangeSearch.search(query, Posts.defaultPostCount[0]);
             }
 
-            if (Search.currentSortOption == Search.SortType.BY_SCORE) {
-                Search.sortResultsByScore();
+            if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
+                ResultsSorter.sortFilesByScore();
             }
 
-            SearchTab.posts.update(msg);
+            posts.update(msg);
         }
     }
 

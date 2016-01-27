@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.lucene;
+package uk.ac.glasgow.scclippy.plugin.lucene;
 
 import org.jetbrains.annotations.NotNull;
 
