@@ -116,7 +116,7 @@ public class Posts {
             if (files[i] == null) {
                 return;
             }
-            if (files[i].getScore() < Search.minimumScore[0]) {
+            if (files[i].getScore() <= Search.minimumScore[0]) {
                 continue;
             }
 
