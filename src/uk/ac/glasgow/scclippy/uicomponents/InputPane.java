@@ -65,7 +65,7 @@ public class InputPane {
         }
 
         private void searchAction() {
-            if (Settings.resizable)
+            if (Settings.resizableInputArea)
                 inputPane.setRows(inputPane.getLineCount());
 
             String query = inputPane.getText();
@@ -88,6 +88,11 @@ public class InputPane {
             } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
                 msg = Search.stackExchangeSearch(query);
             }
+
+            if (Search.currentSortOption == Search.SortType.BY_SCORE) {
+                Search.sortResultsByScore();
+            }
+
             SearchTab.posts.update(msg);
         }
     }

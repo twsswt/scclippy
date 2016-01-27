@@ -1,6 +1,5 @@
 package uk.ac.glasgow.scclippy.plugin;
 
-import groovy.io.FileType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.ac.glasgow.scclippy.lucene.File;
@@ -8,7 +7,7 @@ import uk.ac.glasgow.scclippy.lucene.SearchFiles;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Locale;
+import java.util.Arrays;
 
 /**
  * Search functionality
@@ -20,9 +19,14 @@ public class Search {
     public enum SearchType { LOCAL_INDEX, WEB_SERVICE, STACKEXCHANGE_API }
     public static SearchType currentSearchType = SearchType.WEB_SERVICE;
 
-    private final static String LOCAL_INDEX_DEFAULT_FIELD = "contents";
+    public enum SortType { RELEVANCE, BY_SCORE }
+    public static SortType currentSortOption = SortType.RELEVANCE;
 
+    public static int[] minimumScore = new int[]{0};
+
+    private final static String LOCAL_INDEX_DEFAULT_FIELD = "contents";
     private final static String STACKEXCHANGE_EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
+
     private final static String STACKEXCHANGE_PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
 
     /**
@@ -57,7 +61,7 @@ public class Search {
         JSONArray items = json.getJSONArray("items");
         if (items.length() == 0) {
             return "No results. Consider changing the query " +
-                    "(e.g. removing variable names) or using another option";
+                   "(e.g. removing variable names) or using another option";
         }
 
         files = new File[items.length()];
@@ -65,14 +69,14 @@ public class Search {
             JSONObject item = (JSONObject) items.get(i);
             String id = "" + item.getInt(item.getString("item_type") + "_id");
             String content = StringProcessing.textToHTML(item.getString("excerpt")) + "<br/>";
+            int score = item.getInt("score");
 
-            files[i] = new File(id, content);
+            files[i] = new File(id, content, score);
         }
         Search.currentSearchType = SearchType.STACKEXCHANGE_API;
 
         return null;
     }
-
     /**
      * Performs search by querying app server using RESTful services
      * @param query query string
@@ -104,7 +108,7 @@ public class Search {
         files = new File[items.length()];
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = (JSONObject) items.get(i);
-            files[i] = new File("" + item.getString("id"), item.getString("content"));
+            files[i] = new File("" + item.getString("id"), item.getString("content"), (int) item.get("score"));
         }
         Search.currentSearchType = SearchType.WEB_SERVICE;
 
@@ -135,6 +139,13 @@ public class Search {
         Search.currentSearchType = SearchType.LOCAL_INDEX;
 
         return null;
+    }
+
+    /**
+     * Sorts results/files by score
+     */
+    public static void sortResultsByScore() {
+        Arrays.sort(files);
     }
 
 }

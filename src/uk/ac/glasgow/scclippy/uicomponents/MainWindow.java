@@ -12,10 +12,6 @@ import uk.ac.glasgow.scclippy.actions.TextSelectionListener;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.Paths;
-import java.util.Scanner;
 
 /**
  * Main Tool Window class
@@ -23,10 +19,6 @@ import java.util.Scanner;
 public class MainWindow implements ToolWindowFactory {
 
     static JTabbedPane tabsPanel;
-
-    static SearchTab search;
-    static SearchHistoryTab history;
-    static SettingsTab settings;
 
     /**
      * Creates tool window content
@@ -46,7 +38,8 @@ public class MainWindow implements ToolWindowFactory {
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         if (editor == null)
             return;
-        editor.getSelectionModel().addSelectionListener(new TextSelectionListener());
+
+        editor.addEditorMouseListener(new TextSelectionListener());
     }
 
     /**
