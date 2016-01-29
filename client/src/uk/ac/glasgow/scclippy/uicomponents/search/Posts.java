@@ -70,6 +70,7 @@ public class Posts {
 
     /**
      * Sets colour to text by default in posts
+     *
      * @param colourName name of the colour
      */
     public void applyTextColour(String colourName) {
@@ -125,14 +126,19 @@ public class Posts {
             }
 
             String text = files[i].getContent();
-            String fileType = files[i].getFileName().contains("#") ? "answer" : "question";
+            String fileType = files[i].getFileName().contains("#") ? "Answer" : "Question";
             int score = files[i].getScore();
 
-            String url = "<a href=\"http://stackoverflow.com/questions/"
-                    + files[i].getFileName()
-                    + "\">Link to Stack Overflow " + fileType + " (" + score + ")" + "</a>";
+            String url;
+            if (Search.currentSearchType == Search.SearchType.LOCAL_INDEX) {
+                url = "<br/>" + "> " + files[i].getPath();
+            } else {
+                url = "<br/>" + "> " + fileType + " (score: " + score + "; "
+                        + "<a href=\"http://stackoverflow.com/questions/"
+                        + files[i].getFileName()
+                        + "\">link</a>" + ")";
+            }
             postPane[i].setText(text + url);
-
             postPane[i].setEnabled(true);
             postPane[i].updateUI();
         }
@@ -145,6 +151,7 @@ public class Posts {
     /**
      * Updates the first pane with the message and the rest with empty strings
      * If message is null, normal update of posts is carried out
+     *
      * @param message the message to display
      */
     public void update(String message) {

@@ -20,7 +20,8 @@ public class Notification {
      */
     public static void createErrorNotification(String message) {
         ApplicationManager.getApplication().invokeLater(() -> {
-            com.intellij.notification.Notification notification = notificationGroup.createNotification(message, NotificationType.ERROR);
+            com.intellij.notification.Notification notification
+                    = notificationGroup.createNotification(message, NotificationType.ERROR);
 
             com.intellij.openapi.editor.Editor editor = Editor.getEditor();
             if (editor != null) {

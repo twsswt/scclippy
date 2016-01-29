@@ -8,6 +8,7 @@ public class File implements Comparable<File> {
 
     private String content;
     private String fileName;
+    private String path;
     private int score;
 
     /**
@@ -17,10 +18,16 @@ public class File implements Comparable<File> {
      * @param content  content of the file
      * @param score    the score/upvotes of the file
      */
-    public File(String fileName, String content, int score) {
+    public File(String fileName, String content, Integer score) {
         this.fileName = fileName;
         this.content = content;
         this.score = score;
+    }
+
+    public File(String fileName, String content, String path) {
+        this.fileName = fileName;
+        this.content = content;
+        this.path = path;
     }
 
     public String getContent() {
@@ -42,22 +49,15 @@ public class File implements Comparable<File> {
      */
     public static File getNewFileFromPath(String path, String content) {
         String filename = Paths.get(path).getFileName().toString();
-        String[] field = filename.substring(0, filename.length() - ".txt".length()).split("#");
-
-        try {
-            if (field.length == 2) {
-                return new File(field[0], content, Integer.parseInt(field[1]));
-            } else if (field.length == 3) {
-                return new File(field[0] + "#" + field[1], content, Integer.parseInt(field[2]));
-            }
-        } catch (NumberFormatException nfe) {
-            nfe.printStackTrace();
-        }
-        return new File("", "", 0);
+        return new File(filename, content, path);
     }
 
     @Override
     public int compareTo(@NotNull File otherFile) {
         return otherFile.getScore() - score;
+    }
+
+    public String getPath() {
+        return path;
     }
 }
