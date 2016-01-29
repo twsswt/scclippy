@@ -17,7 +17,7 @@ public class IntegerSavingJTextField extends JTextField {
     int[] savedNumber;
 
     public IntegerSavingJTextField(int[] number) {
-        super(number[0]);
+        super(5);
         setText(String.valueOf(number[0]));
 
         savedNumber = number;
