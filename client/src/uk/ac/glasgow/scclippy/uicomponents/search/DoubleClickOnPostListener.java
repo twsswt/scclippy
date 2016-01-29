@@ -44,11 +44,11 @@ public class DoubleClickOnPostListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
 
         // double click
-        if (e.getClickCount() != 2 || Search.files == null || Search.files[id] == null) {
+        if (e.getClickCount() != 2 || Search.getFiles() == null || Search.getFiles()[id] == null) {
             return;
         }
 
-        String text = Search.files[id].getContent();
+        String text = Search.getFiles()[id].getContent();
         List<String> snippets = getSnippetsFromText(text);
 
         if (snippets.size() == 1) {

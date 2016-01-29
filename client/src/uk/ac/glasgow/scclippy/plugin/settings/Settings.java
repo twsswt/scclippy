@@ -29,35 +29,31 @@ public class Settings {
     /**
      * Saves the current settings
      */
-    public static void saveSettings() {
+    public static void saveSettings() throws FileNotFoundException {
         java.io.File f = new java.io.File(settingsPath);
 
-        try {
-            PrintWriter pw = new PrintWriter(f);
-            pw.write(indexPath);
-            pw.write("\n");
-            pw.write(String.valueOf(resizableInputArea));
-            pw.write("\n");
-            pw.write(webServiceURI[0]);
-            pw.write("\n");
-            pw.write(String.valueOf(Posts.defaultPostCount[0]));
-            pw.write("\n");
-            pw.write(String.valueOf(Posts.maxPostCount[0]));
-            pw.write("\n");
-            pw.write(String.valueOf(Posts.textColour));
-            pw.write("\n");
-            pw.write(String.valueOf(ResultsSorter.minimumScore[0]));
-            pw.write("\n");
-            pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        PrintWriter pw = new PrintWriter(f);
+        pw.write(indexPath);
+        pw.write("\n");
+        pw.write(String.valueOf(resizableInputArea));
+        pw.write("\n");
+        pw.write(webServiceURI[0]);
+        pw.write("\n");
+        pw.write(String.valueOf(Posts.defaultPostCount[0]));
+        pw.write("\n");
+        pw.write(String.valueOf(Posts.maxPostCount[0]));
+        pw.write("\n");
+        pw.write(String.valueOf(Posts.textColour));
+        pw.write("\n");
+        pw.write(String.valueOf(ResultsSorter.minimumScore[0]));
+        pw.write("\n");
+        pw.close();
     }
 
     /**
      * Loads settings from a file
      */
-    public static void loadSettings() {
+    public static void loadSettings() throws FileNotFoundException, NumberFormatException {
         java.io.File f = new java.io.File(settingsPath);
 
         if (!f.exists()) {
@@ -70,31 +66,27 @@ public class Settings {
             return;
         }
 
-        try {
-            Scanner sc = new Scanner(f);
-            if (sc.hasNextLine()) {
-                indexPath = sc.nextLine();
-            }
-            if (sc.hasNextLine()) {
-                resizableInputArea = Boolean.parseBoolean(sc.nextLine());
-            }
-            if (sc.hasNextLine()) {
-                webServiceURI[0] = sc.nextLine();
-            }
-            if (sc.hasNextLine()) {
-                Posts.defaultPostCount[0] = Integer.parseInt(sc.nextLine());
-            }
-            if (sc.hasNextLine()) {
-                Posts.maxPostCount[0] = Integer.parseInt(sc.nextLine());
-            }
-            if (sc.hasNextLine()) {
-                Posts.textColour = sc.nextLine();
-            }
-            if (sc.hasNextLine()) {
-                ResultsSorter.minimumScore[0] = Integer.parseInt(sc.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        Scanner sc = new Scanner(f);
+        if (sc.hasNextLine()) {
+            indexPath = sc.nextLine();
+        }
+        if (sc.hasNextLine()) {
+            resizableInputArea = Boolean.parseBoolean(sc.nextLine());
+        }
+        if (sc.hasNextLine()) {
+            webServiceURI[0] = sc.nextLine();
+        }
+        if (sc.hasNextLine()) {
+            Posts.defaultPostCount[0] = Integer.parseInt(sc.nextLine());
+        }
+        if (sc.hasNextLine()) {
+            Posts.maxPostCount[0] = Integer.parseInt(sc.nextLine());
+        }
+        if (sc.hasNextLine()) {
+            Posts.textColour = sc.nextLine();
+        }
+        if (sc.hasNextLine()) {
+            ResultsSorter.minimumScore[0] = Integer.parseInt(sc.nextLine());
         }
     }
 

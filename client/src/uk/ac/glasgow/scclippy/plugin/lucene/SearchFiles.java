@@ -22,6 +22,7 @@ import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -29,6 +30,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -41,9 +43,9 @@ public class SearchFiles {
      * @param queryString the query
      * @param desiredHits how many hits per page
      * @return array of files with the content
-     * @throws Exception
+     * @throws IOException when performing I/O; ParseException when parsing query
      */
-    public static File[] search(String indexPath, String field, String queryString, int desiredHits) throws Exception {
+    public static File[] search(String indexPath, String field, String queryString, int desiredHits) throws IOException, ParseException {
         if (indexPath == null || field == null || queryString == null)
             return null;
 

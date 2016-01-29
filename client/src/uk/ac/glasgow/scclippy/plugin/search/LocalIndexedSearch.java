@@ -1,7 +1,10 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
+import org.apache.lucene.queryparser.classic.ParseException;
 import uk.ac.glasgow.scclippy.plugin.lucene.SearchFiles;
 import uk.ac.glasgow.scclippy.plugin.settings.Settings;
+
+import java.io.IOException;
 
 /**
  * Class for searching with a local index
@@ -11,15 +14,15 @@ public class LocalIndexedSearch extends Search {
     private final static String DEFAULT_FIELD = "contents";
 
     /**
-     * Performs search using a local index
-     * @param query query string
-     * @param posts number of returned results/posts
-     * @return error message or null if successful
+     * Updates the files with the search from a local index
+     * @See Search#search
      */
-    public String search(String query, int posts) {
+    public void search(String query, int posts) throws Exception {
         query = query.trim();
-        if (query.equals(""))
-            return "";
+        if (query.equals("")) {
+            files = null;
+            return;
+        }
 
         try {
             files = SearchFiles.search(
@@ -28,11 +31,12 @@ public class LocalIndexedSearch extends Search {
                     query,
                     posts
             );
-        } catch (Exception e2) {
-            System.err.println(e2.getMessage());
+        } catch (IOException e) {
+            throw new Exception("Searching failed due to I/O problems. Try again.");
+        } catch (ParseException e) {
+            throw new Exception("Searching failed. Try again.");
         }
-        Search.currentSearchType = SearchType.LOCAL_INDEX;
 
-        return null;
+        Search.currentSearchType = SearchType.LOCAL_INDEX;
     }
 }

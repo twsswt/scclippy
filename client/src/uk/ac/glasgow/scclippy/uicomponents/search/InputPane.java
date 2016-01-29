@@ -2,6 +2,7 @@ package uk.ac.glasgow.scclippy.uicomponents.search;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
+import uk.ac.glasgow.scclippy.plugin.editor.Notification;
 import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
 import uk.ac.glasgow.scclippy.plugin.search.Search;
 import uk.ac.glasgow.scclippy.plugin.settings.Settings;
@@ -90,26 +91,29 @@ public class InputPane {
             lastText = query;
 
             if (Settings.indexPath == null) {
-                posts.update("Set index path from 'SettingsTab' first");
+                Notification.createErrorNotification("Set index path from 'SettingsTab' first");
                 return;
             }
 
             searchHistoryTab.update(query);
 
-            String msg = null;
-            if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
-                msg = localSearch.search(query, Posts.defaultPostCount[0]);
-            } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
-                msg = webServiceSearch.search(query, Posts.defaultPostCount[0]);
-            } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
-                msg = stackExchangeSearch.search(query, Posts.defaultPostCount[0]);
-            }
+            try {
+                if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
+                    localSearch.search(query, Posts.defaultPostCount[0]);
+                } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
+                    webServiceSearch.search(query, Posts.defaultPostCount[0]);
+                } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
+                    stackExchangeSearch.search(query, Posts.defaultPostCount[0]);
+                }
 
-            if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
-                ResultsSorter.sortFilesByScore();
-            }
+                if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
+                    ResultsSorter.sortFilesByScore();
+                }
 
-            posts.update(msg);
+                posts.update();
+            } catch (Exception e) {
+                Notification.createErrorNotification(e.getMessage());
+            }
         }
     }
 

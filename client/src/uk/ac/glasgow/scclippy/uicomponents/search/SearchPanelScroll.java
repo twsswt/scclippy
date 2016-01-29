@@ -1,5 +1,6 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
+import uk.ac.glasgow.scclippy.plugin.editor.Notification;
 import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
 import uk.ac.glasgow.scclippy.plugin.search.Search;
 
@@ -59,20 +60,24 @@ public class SearchPanelScroll extends JScrollPane {
 
             if (value + extent == maximum) {
                 String query = SearchTab.inputPane.inputArea.getText();
-                String msg = null;
-                if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
-                    msg = localSearch.search(query, Posts.maxPostCount[0]);
-                } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
-                    msg = webServiceSearch.search(query, Posts.maxPostCount[0]);
-                } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
-                    msg = stackExchangeSearch.search(query, Posts.maxPostCount[0]);
-                }
 
-                if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
-                    ResultsSorter.sortFilesByScore();
-                }
+                try {
+                    if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
+                        localSearch.search(query, Posts.maxPostCount[0]);
+                    } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
+                        webServiceSearch.search(query, Posts.maxPostCount[0]);
+                    } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
+                        stackExchangeSearch.search(query, Posts.maxPostCount[0]);
+                    }
 
-                posts.update(msg);
+                    if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
+                        ResultsSorter.sortFilesByScore();
+                    }
+
+                    posts.update();
+                } catch (Exception e) {
+                    Notification.createErrorNotification(e.getMessage());
+                }
             }
         }
     }

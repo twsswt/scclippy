@@ -1,6 +1,7 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
 import com.intellij.ui.JBColor;
+import uk.ac.glasgow.scclippy.plugin.editor.Notification;
 import uk.ac.glasgow.scclippy.plugin.lucene.File;
 import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
 import uk.ac.glasgow.scclippy.plugin.search.Search;
@@ -108,16 +109,18 @@ public class Posts {
      * Updates all the panes with the files provided
      */
     public void update() {
-        File[] files = Search.files;
+        File[] files = Search.getFiles();
 
-        if (files == null)
+        if (files == null) {
+            update("");
             return;
+        }
 
         for (int i = 0; i < files.length && i < postPane.length; i++) {
             if (files[i] == null) {
                 return;
             }
-            if (files[i].getScore() <= ResultsSorter.minimumScore[0]) {
+            if (files[i].getScore() < ResultsSorter.minimumScore[0]) {
                 continue;
             }
 
@@ -133,6 +136,7 @@ public class Posts {
             postPane[i].setEnabled(true);
             postPane[i].updateUI();
         }
+
         for (int i = files.length; i < postPane.length; i++) {
             postPane[i].setText("");
         }
@@ -144,10 +148,8 @@ public class Posts {
      * @param message the message to display
      */
     public void update(String message) {
-        if (message == null) {
-            update();
+        if (message == null)
             return;
-        }
 
         postPane[0].setText(message);
         for (int i = 1; i < postPane.length; i++) {
@@ -165,7 +167,7 @@ public class Posts {
                     try {
                         Desktop.getDesktop().browse(e.getURL().toURI());
                     } catch (IOException | URISyntaxException e1) {
-                        e1.printStackTrace();
+                        Notification.createErrorNotification(e1.getMessage());
                     }
                 }
             }

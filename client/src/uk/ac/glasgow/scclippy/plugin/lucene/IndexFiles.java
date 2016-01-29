@@ -48,12 +48,13 @@ public class IndexFiles {
 
     /**
      * Index all text files under a directory.
-     * @param indexPath path to the index
-     * @param dataPath path to the data
+     *
+     * @param indexPath   path to the index
+     * @param dataPath    path to the data
      * @param updateIndex update the index or create new instead
      * @return successful/unsuccessful creation of index
      */
-    public static boolean index(String indexPath, String dataPath, boolean updateIndex) {
+    public static boolean index(String indexPath, String dataPath, boolean updateIndex) throws IOException {
         filesIndexed = 0;
 
         if (dataPath == null)
@@ -63,27 +64,22 @@ public class IndexFiles {
         if (!Files.isReadable(docDir))
             return false;
 
-        try {
-            Directory dir = FSDirectory.open(Paths.get(indexPath));
-            Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
-            IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+        Directory dir = FSDirectory.open(Paths.get(indexPath));
+        Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
+        IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
-            if (updateIndex) {
-                // Create a new index in the directory
-                iwc.setOpenMode(OpenMode.CREATE);
-            } else {
-                // Add new documents to an existing index:
-                iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
-            }
-
-            IndexWriter writer = new IndexWriter(dir, iwc);
-            indexDocs(writer, docDir);
-
-            writer.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (updateIndex) {
+            // Create a new index in the directory
+            iwc.setOpenMode(OpenMode.CREATE);
+        } else {
+            // Add new documents to an existing index:
+            iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
         }
+
+        IndexWriter writer = new IndexWriter(dir, iwc);
+        indexDocs(writer, docDir);
+
+        writer.close();
 
         return true;
     }

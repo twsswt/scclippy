@@ -6,7 +6,6 @@ import uk.ac.glasgow.scclippy.plugin.lucene.File;
 import uk.ac.glasgow.scclippy.plugin.settings.Settings;
 import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
@@ -16,30 +15,26 @@ public class WebServiceSearch extends Search {
 
     /**
      * Performs search by querying app server using RESTful services
-     * @param query query string
-     * @param posts number of posts to return
-     * @return error message or null if successful
+     * @See Search#search
      */
-    public String search(String query, int posts) {
+    public void search(String query, int posts) throws Exception {
         query = query.trim();
-        if (query.equals(""))
-            return "";
-
-        try {
-            query = URLEncoder.encode(query, "UTF-8");
-        } catch (UnsupportedEncodingException e1) {
-            e1.printStackTrace();
+        if (query.equals("")) {
+            files = null;
+            return;
         }
 
+        query = URLEncoder.encode(query, "UTF-8");
         JSONObject json = URLProcessing.readJsonFromUrl(Settings.webServiceURI[0] + query + "?posts=" + posts);
 
         if (json == null) {
-            return "Connection problems / Query failed";
+            throw new Exception("Query failed. Check connection to server.");
         }
 
         JSONArray items = json.getJSONArray("results");
         if (items.length() == 0) {
-            return "No results";
+            files = null;
+            return;
         }
 
         files = new File[items.length()];
@@ -48,7 +43,5 @@ public class WebServiceSearch extends Search {
             files[i] = new File("" + item.getString("id"), item.getString("content"), (int) item.get("score"));
         }
         Search.currentSearchType = SearchType.WEB_SERVICE;
-
-        return null;
     }
 }

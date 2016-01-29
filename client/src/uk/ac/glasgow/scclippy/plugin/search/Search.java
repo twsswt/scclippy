@@ -7,11 +7,20 @@ import uk.ac.glasgow.scclippy.plugin.lucene.File;
  */
 public abstract class Search {
 
-    public static File[] files = null;
+    protected static File[] files = null;
 
-    public enum SearchType { LOCAL_INDEX, WEB_SERVICE, STACKEXCHANGE_API }
-
+    public enum SearchType { LOCAL_INDEX, WEB_SERVICE, STACKEXCHANGE_API}
     public static SearchType currentSearchType = SearchType.WEB_SERVICE;
 
-    public abstract String search(String query, int posts);
+    /**
+     * Performs search using a local index
+     * @param query query string
+     * @param posts number of returned results/posts
+     * @throws Exception
+     */
+    public abstract void search(String query, int posts) throws Exception;
+
+    public static File[] getFiles() {
+        return files;
+    }
 }

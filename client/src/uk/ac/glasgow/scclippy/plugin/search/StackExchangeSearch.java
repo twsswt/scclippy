@@ -6,7 +6,6 @@ import uk.ac.glasgow.scclippy.plugin.lucene.File;
 import uk.ac.glasgow.scclippy.plugin.util.StringProcessing;
 import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
@@ -14,42 +13,34 @@ import java.net.URLEncoder;
  */
 public class StackExchangeSearch extends Search {
 
-    private final static String STACKEXCHANGE_EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
-    private final static String STACKEXCHANGE_PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
+    private final static String EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
+    private final static String EXCERPTS_PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
 
     /**
      * Performs a search using StackExchange API v2.2
-     * @param query query string
-     * @return error message or null if successful
+     * @See Search#search
      */
-    public String search(String query, int posts) {
+    public void search(String query, int posts) throws Exception {
         query = query.trim();
-        if (query.equals(""))
-            return "";
-
-        Search.files = null;
-
-        String body = "";
-        try {
-            body = URLEncoder.encode(query, "UTF-8");
-        } catch (UnsupportedEncodingException e1) {
-            e1.printStackTrace();
+        if (query.equals("")) {
+            files = null;
+            return;
         }
 
-        JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(STACKEXCHANGE_EXCERPTS_URL + "body=" + body + STACKEXCHANGE_PARAMS);
+        String body = URLEncoder.encode(query, "UTF-8");
+        JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(EXCERPTS_URL + "body=" + body + EXCERPTS_PARAMS);
 
         if (json == null) {
-            return "Connection problems / Query failed";
+            throw new Exception("Query failed. Check connection to server.");
         }
 
         if (json.getInt("quota_remaining") == 0) {
-            return "Cannot make more requests today";
+            throw new Exception("Cannot make more requests today");
         }
 
         JSONArray items = json.getJSONArray("items");
         if (items.length() == 0) {
-            return "No results. Consider changing the query " +
-                    "(e.g. removing variable names) or using another option";
+            throw new Exception("No results. Consider removing variable names or using another option");
         }
 
         files = new File[items.length()];
@@ -62,8 +53,6 @@ public class StackExchangeSearch extends Search {
             files[i] = new File(id, content, score);
         }
         Search.currentSearchType = SearchType.STACKEXCHANGE_API;
-
-        return null;
     }
 
 }

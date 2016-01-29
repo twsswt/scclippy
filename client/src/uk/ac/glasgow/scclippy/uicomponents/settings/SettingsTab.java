@@ -2,6 +2,7 @@ package uk.ac.glasgow.scclippy.uicomponents.settings;
 
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
+import uk.ac.glasgow.scclippy.plugin.editor.Notification;
 import uk.ac.glasgow.scclippy.plugin.lucene.IndexFiles;
 import uk.ac.glasgow.scclippy.plugin.settings.Settings;
 import uk.ac.glasgow.scclippy.uicomponents.search.InputPane;
@@ -12,6 +13,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Represents a class that contains components in the settings panel/tab
@@ -31,7 +34,11 @@ public class SettingsTab {
     }
 
     void initSettingsPanel() {
-        Settings.loadSettings();
+        try {
+            Settings.loadSettings();
+        } catch (FileNotFoundException | NumberFormatException e) {
+            Notification.createErrorNotification(e.getMessage());
+        }
 
         Border lineBorder = BorderFactory.createLineBorder(JBColor.cyan);
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.PAGE_AXIS));
@@ -97,7 +104,7 @@ public class SettingsTab {
         createIndexOptions.add(statusLabel);
     }
 
-    static class IndexTask extends SwingWorker<Void, Void> {
+    class IndexTask extends SwingWorker<Void, Void> {
 
         String indexPath;
         String dataPath;
@@ -114,7 +121,11 @@ public class SettingsTab {
          */
         @Override
         public Void doInBackground() {
-            IndexFiles.index(indexPath, dataPath, updateIndex);
+            try {
+                IndexFiles.index(indexPath, dataPath, updateIndex);
+            } catch (IOException e) {
+                Notification.createErrorNotification(e.getMessage());
+            }
             return null;
         }
 
@@ -128,7 +139,7 @@ public class SettingsTab {
     }
 
 
-    private static class ResizableInputPaneCheckBox extends JCheckBox {
+    private class ResizableInputPaneCheckBox extends JCheckBox {
         public ResizableInputPaneCheckBox(String s) {
             super(s);
             setSelected(true);
@@ -143,7 +154,7 @@ public class SettingsTab {
         }
     }
 
-    private static class IndexSearchHighlightCheckBox extends JCheckBox {
+    private class IndexSearchHighlightCheckBox extends JCheckBox {
         public IndexSearchHighlightCheckBox(String s) {
             super(s);
             setSelected(true);
@@ -157,7 +168,7 @@ public class SettingsTab {
         }
     }
 
-    private static class IndexChooserButton extends JButton {
+    private class IndexChooserButton extends JButton {
         public IndexChooserButton(String s, JLabel indexChosenLabel) {
             super(s);
             addActionListener(e -> {
@@ -167,7 +178,11 @@ public class SettingsTab {
 
                 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     Settings.indexPath = chooser.getSelectedFile().getAbsolutePath();
-                    Settings.saveSettings();
+                    try {
+                        Settings.saveSettings();
+                    } catch (FileNotFoundException e1) {
+                        Notification.createErrorNotification(e1.getMessage());
+                    }
                     indexChosenLabel.setText(chooser.getSelectedFile().getName());
                     indexChosenLabel.setToolTipText(chooser.getSelectedFile().getPath());
                 }
@@ -175,7 +190,7 @@ public class SettingsTab {
         }
     }
 
-    private static class FolderChooserButton extends JButton {
+    private class FolderChooserButton extends JButton {
 
         public FolderChooserButton(String s, JLabel indexFolderLabel, String[] path) {
             super(s);
@@ -193,7 +208,7 @@ public class SettingsTab {
         }
     }
 
-    private static class UpdateIndex extends JCheckBox {
+    private class UpdateIndex extends JCheckBox {
 
         public UpdateIndex(String s, boolean[] update) {
             super(s);
@@ -208,7 +223,7 @@ public class SettingsTab {
         }
     }
 
-    private static class IndexButton extends JButton {
+    private class IndexButton extends JButton {
         public IndexButton(String s, String[] index, String[] data, boolean[] update, JLabel statusLabel) {
             super(s);
             addActionListener(e -> {

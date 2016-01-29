@@ -64,7 +64,8 @@ public class SearchTab {
         });
 
         IntegerSavingJTextField minimumUpvotes = new IntegerSavingJTextField(ResultsSorter.minimumScore);
-        minimumUpvotes.setColumns(3);
+        int minimumUpvotesFieldSize = 3;
+        minimumUpvotes.setColumns(minimumUpvotesFieldSize);
         minimumUpvotes.setToolTipText("Minimum upvotes filter of results");
 
         // google button
