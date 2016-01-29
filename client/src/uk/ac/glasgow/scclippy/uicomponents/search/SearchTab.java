@@ -39,8 +39,8 @@ public class SearchTab {
         JComboBox searchOptions = new ComboBox(searchOption);
         searchOptions.setSelectedIndex(1);
         searchOptions.addActionListener(e -> {
-            JComboBox cb = (JComboBox)e.getSource();
-            String selectedSearchOption = (String)cb.getSelectedItem();
+            JComboBox cb = (JComboBox) e.getSource();
+            String selectedSearchOption = (String) cb.getSelectedItem();
 
             for (int i = 0; i < searchOption.length; i++) {
                 if (searchOption[i].equals(selectedSearchOption)) {
@@ -81,6 +81,9 @@ public class SearchTab {
         JButton searchWithGoogleButton = new GoogleSearchButton("Google Search");
         searchWithGoogleButton.setToolTipText("Open browser to search for Stackoverflow posts");
 
+        // write a question button
+        JButton writeQuestionButton = new AskAQuestionButton("Ask a question");
+
         // top panel
         JComponent topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -89,6 +92,7 @@ public class SearchTab {
         topPanel.add(sortOptions);
         topPanel.add(minimumUpvotes);
         topPanel.add(searchWithGoogleButton);
+        topPanel.add(writeQuestionButton);
 
         // add components to search panel
         searchPanel.add(topPanel);

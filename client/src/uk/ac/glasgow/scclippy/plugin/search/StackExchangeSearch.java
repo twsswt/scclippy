@@ -16,7 +16,7 @@ public class StackExchangeSearch extends Search {
     private final static String EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
     private final static String EXCERPTS_PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
 
-    public static int remainingCalls;
+    private static int remainingCalls;
 
     /**
      * Performs a search using StackExchange API v2.2
