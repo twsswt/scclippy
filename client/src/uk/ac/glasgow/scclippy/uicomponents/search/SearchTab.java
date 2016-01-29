@@ -23,6 +23,8 @@ public class SearchTab {
     public static InputPane inputPane;
     public Posts posts = new Posts();
 
+    JLabel stackExchangeSearchRequestsLabel = new JLabel("Unknown requests left");
+
     public SearchTab(SearchHistoryTab searchHistoryTab) {
         initSearchPanel(searchHistoryTab);
     }
@@ -31,7 +33,7 @@ public class SearchTab {
         searchPanel = new JPanel();
         searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.PAGE_AXIS));
         scroll = new SearchPanelScroll(searchPanel, posts, localSearch, webServiceSearch, stackExchangeSearch);
-        inputPane = new InputPane(posts, searchHistoryTab, localSearch, webServiceSearch, stackExchangeSearch);
+        inputPane = new InputPane(posts, searchHistoryTab, this);
 
         String[] searchOption = {"Local Index", "Web Service", "StackExchange API"};
         JComboBox searchOptions = new ComboBox(searchOption);
@@ -46,7 +48,14 @@ public class SearchTab {
                     break;
                 }
             }
+            if (searchOption[2].equals(selectedSearchOption)) {
+                stackExchangeSearchRequestsLabel.setVisible(true);
+            } else {
+                stackExchangeSearchRequestsLabel.setVisible(false);
+            }
         });
+
+        stackExchangeSearchRequestsLabel.setVisible(false);
 
         String[] sortOption = {"Relevance", "Score"};
         JComboBox sortOptions = new ComboBox(sortOption);
@@ -76,6 +85,7 @@ public class SearchTab {
         JComponent topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         topPanel.add(searchOptions);
+        topPanel.add(stackExchangeSearchRequestsLabel);
         topPanel.add(sortOptions);
         topPanel.add(minimumUpvotes);
         topPanel.add(searchWithGoogleButton);
@@ -92,5 +102,17 @@ public class SearchTab {
 
     public JScrollPane getScroll() {
         return scroll;
+    }
+
+    public Search getLocalSearch() {
+        return localSearch;
+    }
+
+    public Search getWebServiceSearch() {
+        return webServiceSearch;
+    }
+
+    public Search getStackExchangeSearch() {
+        return stackExchangeSearch;
     }
 }

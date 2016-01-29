@@ -16,6 +16,8 @@ public class StackExchangeSearch extends Search {
     private final static String EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
     private final static String EXCERPTS_PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
 
+    public static int remainingCalls;
+
     /**
      * Performs a search using StackExchange API v2.2
      * @See Search#search
@@ -38,6 +40,7 @@ public class StackExchangeSearch extends Search {
             throw new Exception("Cannot make more requests today");
         }
 
+        remainingCalls = json.getInt("quota_remaining");
         JSONArray items = json.getJSONArray("items");
         if (items.length() == 0) {
             throw new Exception("No results. Consider removing variable names or using another option");
@@ -53,6 +56,10 @@ public class StackExchangeSearch extends Search {
             files[i] = new File(id, content, score);
         }
         Search.currentSearchType = SearchType.STACKEXCHANGE_API;
+    }
+
+    public static int getRemainingCalls() {
+        return remainingCalls;
     }
 
 }

@@ -5,6 +5,7 @@ import com.intellij.ui.components.JBScrollPane;
 import uk.ac.glasgow.scclippy.plugin.editor.Notification;
 import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
 import uk.ac.glasgow.scclippy.plugin.search.Search;
+import uk.ac.glasgow.scclippy.plugin.search.StackExchangeSearch;
 import uk.ac.glasgow.scclippy.plugin.settings.Settings;
 import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
 
@@ -26,9 +27,7 @@ public class InputPane {
     public JTextArea inputArea = new JTextArea();
     JScrollPane inputScrollPane = new JBScrollPane(inputArea);
 
-    Search localSearch;
-    Search webServiceSearch;
-    Search stackExchangeSearch;
+    SearchTab searchTab;
 
     private static Border border;
 
@@ -38,13 +37,10 @@ public class InputPane {
         border = BorderFactory.createCompoundBorder(matteBorder, marginBorder);
     }
 
-    InputPane(Posts posts, SearchHistoryTab searchHistoryTab, Search localSearch, Search webServiceSearch, Search stackExchangeSearch) {
+    InputPane(Posts posts, SearchHistoryTab searchHistoryTab, SearchTab searchTab) {
         this.posts = posts;
         this.searchHistoryTab = searchHistoryTab;
-
-        this.localSearch = localSearch;
-        this.webServiceSearch = webServiceSearch;
-        this.stackExchangeSearch = stackExchangeSearch;
+        this.searchTab = searchTab;
 
         inputArea.setLineWrap(true);
         inputArea.setWrapStyleWord(true);
@@ -99,11 +95,13 @@ public class InputPane {
 
             try {
                 if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
-                    localSearch.search(query, Posts.defaultPostCount[0]);
+                    searchTab.getLocalSearch().search(query, Posts.defaultPostCount[0]);
                 } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
-                    webServiceSearch.search(query, Posts.defaultPostCount[0]);
+                    searchTab.getWebServiceSearch().search(query, Posts.defaultPostCount[0]);
                 } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
-                    stackExchangeSearch.search(query, Posts.defaultPostCount[0]);
+                    searchTab.getStackExchangeSearch().search(query, Posts.defaultPostCount[0]);
+                    int requests = StackExchangeSearch.getRemainingCalls();
+                    searchTab.stackExchangeSearchRequestsLabel.setText(requests + " requests left");
                 }
 
                 if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
