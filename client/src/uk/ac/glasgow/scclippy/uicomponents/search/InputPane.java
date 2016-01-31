@@ -13,21 +13,24 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Represents an InputPane (JTextArea)
  */
 public class InputPane {
 
-    public final static int INPUT_TEXT_AREA_ROWS = 5;
-    private final SearchHistoryTab searchHistoryTab;
-
-    private Posts posts;
+    private static final String TEXT_SUBMIT = "text-submit";
+    private static final String INSERT_BREAK = "insert-break";
+    public static final int INPUT_TEXT_AREA_ROWS = 5;
 
     public JTextArea inputArea = new JTextArea();
-    JScrollPane inputScrollPane = new JBScrollPane(inputArea);
+    private String lastText = "";
 
-    SearchTab searchTab;
+    private JScrollPane inputScrollPane = new JBScrollPane(inputArea);
+    private Posts posts;
+    private SearchTab searchTab;
+    private SearchHistoryTab searchHistoryTab;
 
     private static Border border;
 
@@ -46,7 +49,25 @@ public class InputPane {
         inputArea.setWrapStyleWord(true);
         inputArea.setBorder(border);
         inputArea.setRows(INPUT_TEXT_AREA_ROWS);
-        inputArea.getDocument().addDocumentListener(new InputPaneListener(inputArea));
+        inputArea.getDocument().addDocumentListener(new InputPaneListener());
+
+        InputMap input = inputArea.getInputMap();
+
+        // 'shift + enter' for typing a new line
+        KeyStroke shiftEnter = KeyStroke.getKeyStroke("shift ENTER");
+        input.put(shiftEnter, INSERT_BREAK);
+
+        // 'enter' to perform search
+        KeyStroke enter = KeyStroke.getKeyStroke("ENTER");
+        input.put(enter, TEXT_SUBMIT);
+
+        ActionMap actions = inputArea.getActionMap();
+        actions.put(TEXT_SUBMIT, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchAction();
+            }
+        });
     }
 
     public JComponent getComponent() {
@@ -55,63 +76,59 @@ public class InputPane {
 
     private class InputPaneListener implements DocumentListener {
 
-        JTextArea inputPane;
-        String lastText = "";
-
-        InputPaneListener(JTextArea inputPane) {
-            this.inputPane = inputPane;
-        }
-
         @Override
         public void insertUpdate(DocumentEvent e) {
-            searchAction();
+            checkRows();
         }
 
         @Override
         public void removeUpdate(DocumentEvent e) {
-            searchAction();
+            checkRows();
         }
 
         @Override
         public void changedUpdate(DocumentEvent e) {
-            // not fired
+            // no effect
         }
 
-        private void searchAction() {
+        private void checkRows() {
             if (Settings.resizableInputArea)
-                inputPane.setRows(inputPane.getLineCount());
+                inputArea.setRows(inputArea.getLineCount());
+        }
+    }
 
-            String query = inputPane.getText();
-            if (query.equals("") || query.equals(lastText))
-                return;
-            lastText = query;
+    private void searchAction() {
 
-            if (Settings.indexPath == null) {
-                Notification.createErrorNotification("Set index path from 'SettingsTab' first");
-                return;
+        String query = inputArea.getText();
+        if (query.equals("") || query.equals(lastText))
+            return;
+        lastText = query;
+
+        if (Settings.indexPath == null) {
+            Notification.createErrorNotification("Set index path from 'SettingsTab' first");
+            return;
+        }
+
+        searchHistoryTab.update(query);
+
+        try {
+            if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
+                searchTab.getLocalSearch().search(query, Posts.defaultPostCount[0]);
+            } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
+                searchTab.getWebServiceSearch().search(query, Posts.defaultPostCount[0]);
+            } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
+                searchTab.getStackExchangeSearch().search(query, Posts.defaultPostCount[0]);
+                int requests = StackExchangeSearch.getRemainingCalls();
+                searchTab.stackExchangeSearchRequestsLabel.setText(requests + " requests left.");
             }
 
-            searchHistoryTab.update(query);
-
-            try {
-                if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
-                    searchTab.getLocalSearch().search(query, Posts.defaultPostCount[0]);
-                } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
-                    searchTab.getWebServiceSearch().search(query, Posts.defaultPostCount[0]);
-                } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
-                    searchTab.getStackExchangeSearch().search(query, Posts.defaultPostCount[0]);
-                    int requests = StackExchangeSearch.getRemainingCalls();
-                    searchTab.stackExchangeSearchRequestsLabel.setText(requests + " requests left.");
-                }
-
-                if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
-                    ResultsSorter.sortFilesByScore();
-                }
-
-                posts.update();
-            } catch (Exception e) {
-                Notification.createErrorNotification(e.getMessage());
+            if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
+                ResultsSorter.sortFilesByScore();
             }
+
+            posts.update();
+        } catch (Exception e) {
+            Notification.createErrorNotification(e.getMessage());
         }
     }
 
