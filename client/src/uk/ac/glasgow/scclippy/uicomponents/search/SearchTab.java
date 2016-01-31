@@ -23,7 +23,7 @@ public class SearchTab {
     public static InputPane inputPane;
     public Posts posts = new Posts();
 
-    JLabel stackExchangeSearchRequestsLabel = new JLabel("Unknown requests left");
+    JLabel stackExchangeSearchRequestsLabel = new JLabel("Unknown requests left.");
 
     public SearchTab(SearchHistoryTab searchHistoryTab) {
         initSearchPanel(searchHistoryTab);
@@ -32,11 +32,14 @@ public class SearchTab {
     void initSearchPanel(SearchHistoryTab searchHistoryTab) {
         searchPanel = new JPanel();
         searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.PAGE_AXIS));
+
         scroll = new SearchPanelScroll(searchPanel, posts, localSearch, webServiceSearch, stackExchangeSearch);
         inputPane = new InputPane(posts, searchHistoryTab, this);
 
         String[] searchOption = {"Local Index", "Web Service", "StackExchange API"};
         JComboBox searchOptions = new ComboBox(searchOption);
+        JLabel searchOptionsLabel = new JLabel("Search with");
+        searchOptionsLabel.setLabelFor(searchOptions);
         searchOptions.setSelectedIndex(1);
         searchOptions.addActionListener(e -> {
             JComboBox cb = (JComboBox) e.getSource();
@@ -59,6 +62,8 @@ public class SearchTab {
 
         String[] sortOption = {"Relevance", "Score"};
         JComboBox sortOptions = new ComboBox(sortOption);
+        JLabel sortOptionsLabel = new JLabel("Sort results by");
+        sortOptionsLabel.setLabelFor(sortOptions);
         sortOptions.setSelectedIndex(0);
         sortOptions.addActionListener(e -> {
             JComboBox cb = (JComboBox) e.getSource();
@@ -71,6 +76,7 @@ public class SearchTab {
                 }
             }
         });
+
 
         JTextField minimumUpvotes = new IntegerSavingJTextField(ResultsSorter.minimumScore);
         int minimumUpvotesFieldSize = 3;
@@ -87,8 +93,10 @@ public class SearchTab {
         // top panel
         JComponent topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        topPanel.add(searchOptionsLabel);
         topPanel.add(searchOptions);
         topPanel.add(stackExchangeSearchRequestsLabel);
+        topPanel.add(sortOptionsLabel);
         topPanel.add(sortOptions);
         topPanel.add(minimumUpvotes);
         topPanel.add(searchWithGoogleButton);

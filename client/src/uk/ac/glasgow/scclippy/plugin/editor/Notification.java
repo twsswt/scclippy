@@ -19,9 +19,17 @@ public class Notification {
      * @param message the message of the notification
      */
     public static void createErrorNotification(String message) {
+        createNotification(message, NotificationType.ERROR);
+    }
+
+    public static void createInfoNotification(String message) {
+        createNotification(message, NotificationType.INFORMATION);
+    }
+
+    private static void createNotification(String message, NotificationType type) {
         ApplicationManager.getApplication().invokeLater(() -> {
             com.intellij.notification.Notification notification
-                    = notificationGroup.createNotification(message, NotificationType.ERROR);
+                    = notificationGroup.createNotification(message, type);
 
             com.intellij.openapi.editor.Editor editor = Editor.getEditor();
             if (editor != null) {
@@ -29,5 +37,4 @@ public class Notification {
             }
         });
     }
-
 }

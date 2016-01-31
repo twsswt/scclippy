@@ -22,7 +22,7 @@ public class SearchPanelScroll extends JScrollPane {
         this.posts = posts;
 
         getVerticalScrollBar().setUnitIncrement(SCROLL_STEP);
-        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         getVerticalScrollBar().addAdjustmentListener(new PostsScrollListener(localSearch, webServiceSearch, stackExchangeSearch));
     }
 

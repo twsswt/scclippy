@@ -43,65 +43,145 @@ public class SettingsTab {
         Border lineBorder = BorderFactory.createLineBorder(JBColor.cyan);
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.PAGE_AXIS));
 
-        // General settings
+        //// General settings
         JPanel generalSettings = new JPanel();
+        generalSettings.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.ipadx = 10;
+        gbc.ipady = 10;
+//        generalSettings.setLayout(new BoxLayout(generalSettings, BoxLayout.PAGE_AXIS));
         generalSettings.setBorder(BorderFactory.createTitledBorder(lineBorder, "General settings"));
         settingsPanel.add(generalSettings);
+
         // resizable input
         JCheckBox resizableInputPaneCheckBox = new ResizableInputPaneCheckBox("Auto-resizable query input text area");
-        generalSettings.add(resizableInputPaneCheckBox);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        generalSettings.add(resizableInputPaneCheckBox, gbc);
+
         // highlighted results
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         JCheckBox indexSearchHighlightCheckBox = new IndexSearchHighlightCheckBox("Highlighted results");
-        generalSettings.add(indexSearchHighlightCheckBox);
-        // Web App RESTful URL
-        webAppURL = new StringSavingJTextField(Settings.webServiceURI);
-        generalSettings.add(webAppURL);
+        generalSettings.add(indexSearchHighlightCheckBox, gbc);
+
+        JPanel mergePanel;
         // Default post count
         JTextField defaultPostCountTextField = new IntegerSavingJTextField(Posts.defaultPostCount);
-        generalSettings.add(defaultPostCountTextField);
+        JLabel defaultPostCountLabel = new JLabel("Total number of posts after search (influences efficiency)");
+        defaultPostCountLabel.setLabelFor(defaultPostCountTextField);
+        mergePanel = new JPanel();
+        mergePanel.add(defaultPostCountLabel);
+        mergePanel.add(defaultPostCountTextField);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        generalSettings.add(mergePanel, gbc);
+
         // Max post count
         JTextField maxPostCountTextField = new IntegerSavingJTextField(Posts.maxPostCount);
-        generalSettings.add(maxPostCountTextField);
-        // Text in posts colour by name
-        JTextField postsTextColourTextField = new PostColourChangerJTextField(posts);
-        generalSettings.add(postsTextColourTextField);
+        JLabel maxPostCountLabel = new JLabel("Total number of posts after scrolling down search (influences efficiency)");
+        maxPostCountLabel.setLabelFor(maxPostCountTextField);
+        mergePanel = new JPanel();
+        mergePanel.add(maxPostCountLabel);
+        mergePanel.add(maxPostCountTextField);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        generalSettings.add(mergePanel, gbc);
 
-        // Index settings
-        JPanel indexOptions = new JPanel();
-        indexOptions.setBorder(BorderFactory.createTitledBorder(lineBorder, "Index options"));
-        settingsPanel.add(indexOptions);
-        // index used option
+        // Colour of text in posts
+        JTextField postsTextColourTextField = new PostColourChangerJTextField(posts);
+        JLabel postsTextColourLabel = new JLabel("Colour of text (hex colours e.g. #FF0000; colours by name e.g. red)");
+        postsTextColourLabel.setLabelFor(postsTextColourTextField);
+        mergePanel = new JPanel();
+        mergePanel.add(postsTextColourLabel);
+        mergePanel.add(postsTextColourTextField);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        generalSettings.add(mergePanel, gbc);
+
+        //// Web service settings
+        JPanel webServiceOptions = new JPanel(new GridBagLayout());
+        webServiceOptions.setBorder(BorderFactory.createTitledBorder(lineBorder, "Web service options"));
+        settingsPanel.add(webServiceOptions);
+
+        // Web App RESTful URL
+        webAppURL = new StringSavingJTextField(Settings.webServiceURI);
+        JLabel webAppURLLabel = new JLabel("Web service URI:");
+        webAppURLLabel.setLabelFor(webAppURL);
+        mergePanel = new JPanel();
+        mergePanel.add(webAppURLLabel);
+        mergePanel.add(webAppURL);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        webServiceOptions.add(mergePanel, gbc);
+
+        //// Local Index settings
+        JPanel localIndexOptions = new JPanel();
+        localIndexOptions.setBorder(BorderFactory.createTitledBorder(lineBorder, "Local index options"));
+        localIndexOptions.setLayout(new GridBagLayout());
+        settingsPanel.add(localIndexOptions);
+
+        // Local index used option
         String text = Settings.indexPath == null ? "Index directory not selected" : Settings.indexPath;
         JLabel indexChosenLabel = new JLabel(text);
-        indexOptions.add(indexChosenLabel);
         JButton indexChooserButton = new IndexChooserButton("Choose index", indexChosenLabel);
-        indexOptions.add(indexChooserButton);
+        mergePanel = new JPanel();
+        mergePanel.add(indexChosenLabel);
+        mergePanel.add(indexChooserButton);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        localIndexOptions.add(mergePanel, gbc);
 
         // Creating/Updating index
         JPanel createIndexOptions = new JPanel();
-        createIndexOptions.setBorder(BorderFactory.createTitledBorder(lineBorder, "Create or Update index"));
-        settingsPanel.add(createIndexOptions);
+        createIndexOptions.setLayout(new GridBagLayout());
+        createIndexOptions.setBorder(BorderFactory.createTitledBorder(lineBorder, "Create/Update Local Index"));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        localIndexOptions.add(createIndexOptions, gbc);
+
         // index chooser
         JLabel indexFolderLabel = new JLabel("Index directory not selected");
-        createIndexOptions.add(indexFolderLabel);
         String[] index = new String[1];
         JButton indexFolderChooser = new FolderChooserButton("Choose index folder", indexFolderLabel, index);
-        createIndexOptions.add(indexFolderChooser);
+        mergePanel = new JPanel(new GridBagLayout());
+        mergePanel.add(indexFolderLabel);
+        mergePanel.add(indexFolderChooser);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        createIndexOptions.add(mergePanel, gbc);
+
         // data chooser
         JLabel dataFolderLabel = new JLabel("Data directory not selected");
-        createIndexOptions.add(dataFolderLabel);
         String[] data = new String[1];
         JButton dataFolderChooser = new FolderChooserButton("Choose data folder", dataFolderLabel, data);
-        createIndexOptions.add(dataFolderChooser);
+        mergePanel = new JPanel(new GridBagLayout());
+        mergePanel.add(dataFolderLabel);
+        mergePanel.add(dataFolderChooser);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        createIndexOptions.add(mergePanel, gbc);
+
         // update index option
         boolean[] update = new boolean[1];
         JCheckBox updateIndex = new UpdateIndex("Update index", update);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         createIndexOptions.add(updateIndex);
+
         // start indexing button
         JLabel statusLabel = new JLabel("");
         JButton indexButton = new IndexButton("Create/Update Index", index, data, update, statusLabel);
-        createIndexOptions.add(indexButton);
-        createIndexOptions.add(statusLabel);
+        mergePanel = new JPanel(new GridBagLayout());
+        mergePanel.add(indexButton);
+        mergePanel.add(statusLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        createIndexOptions.add(mergePanel, gbc);
     }
 
     class IndexTask extends SwingWorker<Void, Void> {
@@ -134,7 +214,7 @@ public class SettingsTab {
          */
         @Override
         public void done() {
-            Toolkit.getDefaultToolkit().beep();
+            Notification.createInfoNotification("Finished Indexing");
         }
     }
 
@@ -226,6 +306,7 @@ public class SettingsTab {
     private class IndexButton extends JButton {
         public IndexButton(String s, String[] index, String[] data, boolean[] update, JLabel statusLabel) {
             super(s);
+            setBackground(JBColor.orange);
             addActionListener(e -> {
                         statusLabel.setText("Indexing files...");
                         IndexTask task = new IndexTask(index, data, update);

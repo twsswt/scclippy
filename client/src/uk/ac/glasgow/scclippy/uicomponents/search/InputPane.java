@@ -101,7 +101,7 @@ public class InputPane {
                 } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
                     searchTab.getStackExchangeSearch().search(query, Posts.defaultPostCount[0]);
                     int requests = StackExchangeSearch.getRemainingCalls();
-                    searchTab.stackExchangeSearchRequestsLabel.setText(requests + " requests left");
+                    searchTab.stackExchangeSearchRequestsLabel.setText(requests + " requests left.");
                 }
 
                 if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
