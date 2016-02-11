@@ -19,8 +19,9 @@ public class InfoTab {
         scroll = new JBScrollPane(infoPanel);
 
         JEditorPane info = new JEditorPane();
+        info.setEditable(false);
         info.setText(getInfoText());
-        info.addHyperlinkListener(new BrowserHyperlinkListener());
+
         // add components to info panel
         infoPanel.add(info);
     }
