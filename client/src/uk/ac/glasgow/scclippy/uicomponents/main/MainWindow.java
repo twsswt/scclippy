@@ -1,3 +1,4 @@
+
 package uk.ac.glasgow.scclippy.uicomponents.main;
 
 import com.intellij.openapi.editor.Editor;
@@ -8,6 +9,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBTabbedPane;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
+import uk.ac.glasgow.scclippy.uicomponents.infotab.InfoTab;
 import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
 import uk.ac.glasgow.scclippy.uicomponents.settings.SettingsTab;
 
@@ -25,6 +27,7 @@ public class MainWindow implements ToolWindowFactory {
     SearchTab searchTab;
     SearchHistoryTab searchHistoryTab;
     SettingsTab settingsTab;
+    InfoTab infoTab;
 
     /**
      * Creates tool main content
@@ -35,6 +38,7 @@ public class MainWindow implements ToolWindowFactory {
         searchHistoryTab = new SearchHistoryTab();
         searchTab = new SearchTab(searchHistoryTab);
         settingsTab = new SettingsTab(searchTab.getPosts());
+        infoTab = new InfoTab();
 
         // init tabs
         initTabsPanel();
@@ -60,10 +64,12 @@ public class MainWindow implements ToolWindowFactory {
         tabsPanel.addTab("Search", null, searchTab.getScroll(), "Searching by index or using Stackoverflow API");
         tabsPanel.addTab("History", null, searchHistoryTab.getScroll(), "View input history");
         tabsPanel.addTab("Settings", null, settingsTab.getScroll(), "Change settings");
+        tabsPanel.addTab("Info", null, infoTab.getScroll(), "Description of the plugin");
 
         tabsPanel.setMnemonicAt(0, KeyEvent.VK_1);
         tabsPanel.setMnemonicAt(1, KeyEvent.VK_2);
         tabsPanel.setMnemonicAt(2, KeyEvent.VK_3);
+        tabsPanel.setMnemonicAt(3, KeyEvent.VK_4);
     }
 
 }
