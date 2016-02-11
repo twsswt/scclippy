@@ -1,6 +1,5 @@
 package uk.ac.glasgow.scclippy.uicomponents.infotab;
 
-import com.intellij.ui.BrowserHyperlinkListener;
 import com.intellij.ui.components.JBScrollPane;
 
 import javax.swing.*;
