@@ -8,6 +8,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBTabbedPane;
 import org.jetbrains.annotations.NotNull;
+import uk.ac.glasgow.scclippy.uicomponents.feedbacktab.FeedbackTab;
 import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
 import uk.ac.glasgow.scclippy.uicomponents.infotab.InfoTab;
 import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
@@ -24,10 +25,11 @@ public class MainWindow implements ToolWindowFactory {
 
     JTabbedPane tabsPanel = new JBTabbedPane();
 
-    SearchTab searchTab;
-    SearchHistoryTab searchHistoryTab;
-    SettingsTab settingsTab;
-    InfoTab infoTab;
+    private SearchTab searchTab;
+    private SearchHistoryTab searchHistoryTab;
+    private SettingsTab settingsTab;
+    private InfoTab infoTab;
+    private FeedbackTab feedbackTab;
 
     /**
      * Creates tool main content
@@ -39,6 +41,7 @@ public class MainWindow implements ToolWindowFactory {
         searchTab = new SearchTab(searchHistoryTab);
         settingsTab = new SettingsTab(searchTab.getPosts());
         infoTab = new InfoTab();
+        feedbackTab = new FeedbackTab();
 
         // init tabs
         initTabsPanel();
@@ -65,11 +68,13 @@ public class MainWindow implements ToolWindowFactory {
         tabsPanel.addTab("History", null, searchHistoryTab.getScroll(), "View input history");
         tabsPanel.addTab("Settings", null, settingsTab.getScroll(), "Change settings");
         tabsPanel.addTab("Info", null, infoTab.getScroll(), "Description of the plugin");
+        tabsPanel.addTab("Feedback", null, feedbackTab.getScroll(), "Provide feedback");
 
         tabsPanel.setMnemonicAt(0, KeyEvent.VK_1);
         tabsPanel.setMnemonicAt(1, KeyEvent.VK_2);
         tabsPanel.setMnemonicAt(2, KeyEvent.VK_3);
         tabsPanel.setMnemonicAt(3, KeyEvent.VK_4);
+        tabsPanel.setMnemonicAt(4, KeyEvent.VK_5);
     }
 
 }
