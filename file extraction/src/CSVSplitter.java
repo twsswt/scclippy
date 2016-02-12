@@ -24,7 +24,7 @@ public class CSVSplitter {
                 lines.append("\n");
 
                 int index;
-                while ((index = lines.indexOf(delimiter)) < 0) {
+                while ((index = lines.indexOf(delimiter)) >= 0) {
 
                     list.add(lines.substring(0, index));
                     lines.delete(0, index + delimiter.length());
