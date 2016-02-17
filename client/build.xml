@@ -48,11 +48,10 @@
 
 			<classpath refid="project.classpath" />
 			<formatter type="xml" />
+			<formatter type="plain" />
 
 			<batchtest fork="yes" todir="${junit.reports.dir}">
-				<fileset dir="tests">
-					<include name="**/*Test*.java" />
-				</fileset>
+				<fileset dir="tests" includes="**/*Test*.java"/>
 			</batchtest>
 
 		</junit>
