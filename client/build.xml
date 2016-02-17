@@ -12,17 +12,19 @@
 	</path>
 
 	<property name="version" value="0.0.1-PREALPHA"/>
-	
+	<property name="junit.reports.dir" value="target/reports/junit"/>
+
 	<target name="clean">
 		<delete dir="bin" />
 	</target>
-	
+
+
 	<target	name="cleanall" depends="clean">
 		<delete dir="lib" />
 		<delete dir="." includes="*.jar"/>
 		<ivy:cleancache />
 	</target>
-		
+
 	<target name="init">
 		<mkdir dir="bin"/>
 	</target>
@@ -30,7 +32,7 @@
 	<target name="resolve">
 		<ivy:retrieve />
 	</target>
-		
+
 	<target name="compile" depends="init,resolve">
 		<javac
 			srcdir="src"
@@ -38,6 +40,22 @@
 			debuglevel="lines,vars,source"
 			classpathref="project.classpath"/>
 	
+	</target>
+
+	<target name="junit" depends="compile">
+
+		<junit printsummary="yes" haltonfailure="no">
+
+			<classpath refid="project.classpath" />
+			<formatter type="xml" />
+
+			<batchtest fork="yes" todir="${junit.reports.dir}">
+				<fileset dir="tests">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+
+		</junit>
 	</target>
 	
 	<target	name="jar" depends="compile">

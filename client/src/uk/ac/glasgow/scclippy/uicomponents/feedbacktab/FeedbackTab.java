@@ -60,7 +60,8 @@ public class FeedbackTab {
         return
                 "<h2><b>Participant Consent Form: Source Code Clippy IntelliJ Recommender Plugin</b><h2>" +
                 "<p>" +
-                "The aim of this experiment is to evaluate the usability of the Source Code Clippy plugin." +
+                "SCClippy is part of an experiment to investigate the efficacy of code snippet recommendations for" +
+                "<br/>micro programming tasks. The aim of this experiment is to evaluate the usability of the Source Code Clippy plugin." +
                 "<br/>" +
                 "<br/>The experiment will take time defined by the participant – feedback is provided when they are " +
                 "<br/>ready to do so." +
@@ -94,7 +95,7 @@ public class FeedbackTab {
                 "<br/>committee of The University of Glasgow. Whilst you are free to discuss your participation in this " +
                 "<br/>study with the experimenter, if you would like to speak to someone not involved in the study, " +
                 "<br/>you may contact the chair of the DCS Ethics Committee: Prof Stephen Brewster " +
-                "<br/><stephen@dcs.gla.ac.uk>.</i>" +
+                "<br/>&lt;stephen@dcs.gla.ac.uk&gt;.</i>" +
                 "</p>";
     }
 
