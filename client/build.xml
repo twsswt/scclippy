@@ -35,22 +35,27 @@
 
 	<target name="compile" depends="init,resolve">
 		<javac
-			srcdir="src"
 			destdir="bin"
 			debuglevel="lines,vars,source"
-			classpathref="project.classpath"/>
+			classpathref="project.classpath"
+		>
+			<src path="src"/>
+			<src path="tests"/>
+		</javac>
 	
 	</target>
 
 	<target name="test" depends="compile">
 
-		<junit printsummary="yes" haltonfailure="no">
+		<mkdir dir="${junit.reports.dir}" />
+
+		<junit printsummary="yes" haltonfailure="no" showoutput="true">
 
 			<classpath refid="project.classpath" />
 			<formatter type="xml" />
 			<formatter type="plain" />
 
-			<batchtest fork="yes" todir="${junit.reports.dir}">
+			<batchtest todir="${junit.reports.dir}">
 				<fileset dir="tests" includes="**/*Test*.java"/>
 			</batchtest>
 
