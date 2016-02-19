@@ -3,19 +3,21 @@ package uk.ac.glasgow.scclippy.plugin.search;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import uk.ac.glasgow.scclippy.plugin.settings.Settings;
 
 import java.io.FileNotFoundException;
 
 import static junit.framework.Assert.assertTrue;
 
 
-public class StackExchangeSearchTest {
+public class LocalIndexedSearchTest {
 
     Search searcher;
 
     @Before
-    public void setUp() {
-        searcher = new StackExchangeSearch();
+    public void setUp() throws FileNotFoundException {
+        searcher = new LocalIndexedSearch();
+        Settings.indexPath = "D:/finalIndex";
     }
 
     @Test
@@ -26,11 +28,8 @@ public class StackExchangeSearchTest {
 
     @Test
     public void testNullSearch() throws Exception {
-        try {
-            searcher.search(null, 10);
-        } catch (NullPointerException e) {
-            assertTrue(true);
-        }
+        searcher.search(null, 10);
+        assertTrue(Search.getFiles() == null);
     }
 
     @Test

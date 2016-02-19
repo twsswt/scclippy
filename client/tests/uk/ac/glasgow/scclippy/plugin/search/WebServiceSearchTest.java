@@ -1,36 +1,24 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.FileNotFoundException;
-
-import static junit.framework.Assert.assertTrue;
-
-
-public class StackExchangeSearchTest {
-
+public class WebServiceSearchTest {
+/*
     Search searcher;
 
     @Before
     public void setUp() {
-        searcher = new StackExchangeSearch();
+        searcher = new WebServiceSearch();
     }
 
     @Test
     public void testBasicSearch() throws Exception {
         searcher.search("String", 10);
-        assertTrue(Search.getFiles() != null);
+        assertTrue(Search.files != null);
     }
 
     @Test
     public void testNullSearch() throws Exception {
-        try {
-            searcher.search(null, 10);
-        } catch (NullPointerException e) {
-            assertTrue(true);
-        }
+        searcher.search(null, 10);
+        assertTrue(Search.getFiles() == null);
     }
 
     @Test
@@ -38,6 +26,7 @@ public class StackExchangeSearchTest {
         searcher.search("", 10);
         assertTrue(Search.getFiles() == null);
     }
+
 
     @Test
     public void testZeroResultsSearch() throws Exception {
@@ -61,5 +50,7 @@ public class StackExchangeSearchTest {
     public void tearDown() throws FileNotFoundException {
         Search.files = null;
     }
+
+    */
 
 }
