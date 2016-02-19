@@ -1,5 +1,6 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
+import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.plugin.lucene.File;
 
 /**
@@ -18,7 +19,23 @@ public abstract class Search {
      * @param posts number of returned results/posts
      * @throws Exception
      */
-    public abstract void search(String query, int posts) throws Exception;
+    public abstract void search(@NotNull String query, int posts) throws Exception;
+
+    /**
+     * Input validator for search
+     * @param query query string
+     * @param posts number of posts
+     * @return false if invalid input, true otherwise
+     */
+    protected boolean inputValidator(String query, int posts) {
+        if (query == null || posts <= 0) {
+            return false;
+        }
+        if (query.trim().equals("") || posts > 1000) {
+            return false;
+        }
+        return true;
+    }
 
     public static File[] getFiles() {
         return files;

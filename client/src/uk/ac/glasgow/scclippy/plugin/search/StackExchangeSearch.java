@@ -1,5 +1,6 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.ac.glasgow.scclippy.plugin.lucene.File;
@@ -22,12 +23,12 @@ public class StackExchangeSearch extends Search {
      * Performs a search using StackExchange API v2.2
      * @See Search#search
      */
-    public void search(String query, int posts) throws Exception {
-        query = query.trim();
-        if (query.equals("")) {
+    public void search(@NotNull String query, int posts) throws Exception {
+        if (!inputValidator(query, posts)) {
             files = null;
             return;
         }
+        query = query.trim();
 
         String body = URLEncoder.encode(query, "UTF-8");
         JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(EXCERPTS_URL + "body=" + body + EXCERPTS_PARAMS);

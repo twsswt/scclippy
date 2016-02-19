@@ -1,6 +1,7 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.plugin.lucene.SearchFiles;
 import uk.ac.glasgow.scclippy.plugin.settings.Settings;
 
@@ -17,12 +18,12 @@ public class LocalIndexedSearch extends Search {
      * Updates the files with the search from a local index
      * @See Search#search
      */
-    public void search(String query, int posts) throws Exception {
-        query = query.trim();
-        if (query.equals("")) {
+    public void search(@NotNull String query, int posts) throws Exception {
+        if (!inputValidator(query, posts)) {
             files = null;
             return;
         }
+        query = query.trim();
 
         try {
             files = SearchFiles.search(
