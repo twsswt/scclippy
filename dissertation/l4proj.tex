@@ -5,9 +5,11 @@
 %
 % put any packages here
 %
+\usepackage{graphicx}
+\graphicspath{ {images/} }
 
 \begin{document}
-\title{Source Code Clippy}
+\title{Source Code Clippy (Scclippy) - IDE Micro-Task Recommender Plugin}
 \author{Boris Nikolov}
 \date{2015/2016}
 \maketitle
@@ -28,14 +30,21 @@ text
 \pagenumbering{arabic}
 
 \section{Project context}
-The quick brown fox jumped over the lazy dog.
-
+...
 
 \section{Motivation}
+...
+The goal is to help beginner or expert enough Java programmers find the code they need – for example, when the user does not know or cannot remember the code for serializing an object, they can quickly get the information required. More importantly, there is an interest in how effective searching for excerpts of code is.
+...
 
 \section{Objectives}
+...
+The project Source Code Clippy consists of creating a tool that allows the user to search for Java code from Stack Exchange – by indexing files on disk, using a Web Service that has already indexed a collection of Stack Overflow documents, and, finally, using the provided API for excerpts. Searching for code should be done automatically when the user is typing as well as when the user selects part of their code. 
+...
 
 \section{Achievements}
+
+The required plugin was implemented as a plugin for the IntelliJ IDE (Integrated Development Environment), which is used on regular basis by developers.
 
 \section{Dissertation structure}
 
@@ -45,54 +54,205 @@ The quick brown fox jumped over the lazy dog.
 The quick brown fox jumped over the lazy dog.
 The quick brown fox jumped over the lazy dog.
 
-\section{Survey of related work}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over Uroborus (Figure \ref{uroborus}).
+\section{Related work}
 
-\section{Similar technologies}
+\subsection{Similar technologies}
 
-\section{Evaluation of similar ideas}
+\subsection{Evaluation of similar ideas}
 
 \section{Description of Tomasz's prototype}
+The Source Code Clippy plugin is a continuation of an already build prototype for Sublime.
+features, progress, what was learned
 
 \section{Requirements}
+Informal weekly customer meeting
+tracking requirements (issues in github)
+summary of functional features
 
 \chapter{Design and Implementation}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
+
+
+\begin{figure}[h]
+\caption{Architecture diagram}
+\includegraphics[scale=0.5]{scc-architecture}
+\centering
+\label{fig:architecture}
+\end{figure}
+As you can see in the figure \ref{fig:architecture}, the 
+IntelliJ SCClippy plugin sends requests to the StackExchange API and the Web Service and in return gets a JSON response. The system also has a hyperlink to an online survey that the user can fill. Finally, the plugin can use/create/update a local index on the file system.
 
 \section{Iterations}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over Uroborus (Figure \ref{uroborus}).
+Consecutive iterations of developing the plugin consisted of several stages:
 
-\section{Different options/choices, layouts, technologies}
+- Familiarisation with developing a plugin, indexing, and extracting data from the given PostgreSQL database
 
-\section{Summary of final design features}
-The quick brown fox jumped over the lazy dog.
-...
+The process of extracting files from the initially provided database consists of the following steps:\\
+1. Writing a query for retrieving questions and another one for answers, both of which add extra empty column for record separation.\\
+2. Exporting the results to a csv file with a unique separator\\
+3. Using a custom written CSV splitter to create the files used for indexing purposes
+
+- Building an initial version of the plugin that uses a local index, as well as Stack Exchange API search
+
+- Improving the plugin by automation (automatically captured input from IntelliJ's Editor, as well as implementing mouse selection listener). Other improvements include adding configuration settings, search history, additional search options, feedback and information tabs
+
+- User Evaluation
+
+\section{Design decisions}
+choice of language and IDE
+Java Swing vs Java FX\\
+The plugin's user interface was chosen to be implemented with the toolkit Java Swing rather than Java FX mainly because of familiarity reasons.
+
+Different ways of searching for excerpts - why do we have them; Web service Server\\
+Automation - what is automated and what is not and why\\
+
+Querying is performed only when the user presses 'Enter' to avoid too many requests as there is a limit on the requests that can be made to Stack Overflow, and to avoid sending too many requests to the web service as they will not be handled at a sufficient pace.
+
+When typing the input field is set to contain the text being typed. The text
+that is captured is the text of the last command (semi colon for Java, unless 
+there is a brace – the main reason being that the import statements are not
+taken into account and the text searched is not too irrelevant e.g. declaring a
+class should be explicitly selected).
+
+Code insertion in query pane on selection\\
+Can be done in multiple ways:
+
+- Standard copy paste
+
+- When selecting text the user could right click and select an option to allow him to set the text of the query (search begins automatically) 
+
+- Instant copy paste on highlight
+The final options was chosen due to better usability and efficiency.
+
+Post size\\
+Currently, posts of all sizes are displayed. The size of posts could have a fixed number of rows and an added scroll. However, the latter idea was not regarded as a particularly good option. If the row number is low, the user would have to scroll. The problem with that is if the result is a single line long, then there would be empty space - a check for query size may be added to avoid that, but there is not much benefit in doing that. It is also more complex. The initial idea does not have drawbacks, therefore, it was implemented.
+
+Query input handling options include:
+
+- Standard way - using a button
+
+- Automatic search listener which listens for any activity (typing, deleting or pasting text) which saves time – one less click per query - and is more intuitive.
+
+- Search on 'Enter' key pressed (faster than a button, slower than automatic search)
+Although automatic search seems the best, the last option was chosen due to the fact that the requests should not be made frequently because of the limited number of requests to Stack Exchange and avoiding sending too many requests to the web service.
+
+Indexing vs Full-Text Search\\
+Indexing was regarded as more suitable than Full-Text search to do the task of retrieving code snippets. The main reason is that indexing platforms are more efficient and flexible - they offer more customization and retrieval is done much faster.
+
+Terrier vs Lucene\\
+The choice of an open source indexing platform came down mainly from easiness of implementation. Terrier did not have a proper straightforward tutorial showing a programmatic way of calling the API. Thus, Apache Lucene Core (https://lucene.apache.org/core/) was used for indexing and retrieval of files.
+
+Lucene ranking\\
+Default settings for ranking are used (https://link)
+
+Displaying more results for a query\\
+Additional search request is made (if necessary) when the scroll reaches the bottom of the plugin's tool window. Other options to be considered are: having a button instead (has to be clicked every time, less interactive); making search infinite (not very practical since only the top results are mostly being looked at).
+
+IntelliJ notifications are used to inform the user with feedback. Other
+
+\section{Final design features}
+The plugin has its own closable window (ToolWindow) in IntelliJ that features five tabs.
+
+The first tab is for searching. It contains four different types of search for excerpts - one for Google search with the domain of Stack Overflow (clickable by a button) and the rest three are selectable by a combo box:
+
+- Local index
+
+- Web service (uses indexed collection of Stack Overflow Java documents)
+
+- Stack Exchange excerpts API (v2.2)
+
+The search is performed when 'Enter' is typed on the content of an input field which the user can use to write a query. The input field can be used directly, as well as by selecting a code in the current project. The content is also automatically modified by capturing the user's types statements.
+
+More results are also displayed when the scroll reaches the bottom - search is triggered if necessary.
+
+The output of a query comes in forms of posts in the tool window each of
+which contains posts from Stack Overflow. The code is highlighted based on code tags.
+
+Along with the content, each post also displays a number of features in the bottom of the post:
+The score\\
+Type of post (question or answer)\\
+The link to the Stack Overflow article is included (or the path to the file if local index is used)\\
+
+For local index and web service search, formatted code insertion can be performed by double clicking on a code snippet in a post - if there are more than one code snippets in a post, the user will be prompt to choose which one.
+
+When searching with Stack Exchange API, the number of calls left are displayed.
+
+The default sorting used is by relevance for all search methods, however, the user could change to see the gathered results sorted by score.
+
+A filter for results can be done by typing a number into a text box that will show only the posts with the minimum number of votes specified.
+
+The plugin offers a feature to go to Stack Overflow to ask a question in case the answer was not found.
+
+The second tab is the search 'History' tab, which enables the user to see recent query searches. Each new entry is displayed at the top.
+
+The third tab is the 'Settings' tab that allows configuring the plugin. The options include:
+- General settings\\
+> Auto-resizable query input text area (checkbox)\\
+> Highlighted results (checkbox)\\
+> Posts after basic search using 'Enter' key (number pane)\\
+> Posts after extended search when scrolling to bottom (number pane)\\
+> Text colour in posts - by name or hex number (see HTML blabla)\\
+- Web service options\\
+> Web service URI path\\
+- Local index options\\
+> Current index folder\\
+> Create/Update local index by specifying index directory, data directory.\\
+
+Fourth tab is for plugin information which explains some details of the plugin.
+
+Fifth tab contains the participant consent form and is used to submit feedback by completing an online survey.
+
+All features can be seen in the issues section of the project in GitHub: https://github.com/thrios/SourceCodeClippy/
+
 
 \section{Challenges}
+- Using Terrier for indexing was initially planned for indexing and querying (http://terrier.org/), however, due to the lack of examples and information on how to use its API programmatically, the use of Lucene was considered and used instead.
+
+- Time constraints
 
 \chapter{Evaluation}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
+As already seen, the users can participate in the evaluation of the plugin by going through the following steps:
+
+1. Installing the plugin from IntelliJ (plugin was deployed to the JetBrains plugin repository)
+
+2. Using the plugin's features for a desired period of time
+
+3. Clicking on 'Feedback' tab
+
+4. Reading the participant consent form
+
+5. Clicking on a button, which will open the browser and take them to a survey
+
+6. Answering at least all mandatory questions in the survey, and possibly even optional ones as well
+
+7. Submitting the results
 
 \section{Unit Testing}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over Uroborus (Figure \ref{uroborus}).
+The main functionality of the code was tested using JUnit.
 
 \section{User evaluation (Acceptance testing) and ethics checklist}
 
 \chapter{Conclusion}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
 
 \section{Project outcome}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over Uroborus (Figure \ref{uroborus}).
 
 \section{Future work}
+It is reasonable to say that the plugin could benefit from having a more intelligent search which can be done using various techniques:
 
+- More weight could be assigned to keywords and relevant code so that less important code such as variable names are not regarded as significant. 
+
+- Making use of tags could prove to be beneficial by matching the user's needs - specifically when they would like to get results only from a subset of the data. Tags can be included for all three types of search (local index, web service, Stack Exchange API).
+
+- Extracting other information from the provided database could help to include more data when returning results or for filtering purposes. For example, one or more of the following columns could be taken into account: 'creationdate', 'viewcount', 'answercount', 'commentcount', 'favouritecount'. The Stack Exchange excerpts API can also be used to its full potential. (http://api.stackexchange.com/docs/)
+
+The plugin can be extended to have:
+
+- Support for multiple languages
+
+- Caching results (not much benefit since retrieval is fast)
+
+- Storing search history permanently
+
+- Options for better interaction with Stack Exchange - login/logout, notification when someone has answered the user's question
 \section{Learning outcomes}
 
 \chapter{Bibliography}
@@ -107,25 +267,6 @@ The quick brown fox jumped over Uroborus (Figure \ref{uroborus}).
 \end{figure}
 
 The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over \cite{ckt} the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-
-\section{The Lazy Dog}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-
-The quick brown fox jumped over the lazy dog.
-The quick brown fox \cite{am97} jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
 
 %%%%%%%%%%%%%%%%
 %              %
@@ -139,12 +280,6 @@ An example of running from the command line is as follows:
 \begin{verbatim}
 \end{verbatim}
 
-
-\chapter{Generating Random Graphs}
-\label{sec:randomGraph}
-
-\begin{verbatim}
-\end{verbatim}
 \end{appendices}
 
 %%%%%%%%%%%%%%%%%%%%
