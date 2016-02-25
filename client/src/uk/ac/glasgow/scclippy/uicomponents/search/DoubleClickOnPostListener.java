@@ -51,9 +51,12 @@ public class DoubleClickOnPostListener extends MouseAdapter {
         String text = Search.getFiles()[id].getContent();
         List<String> snippets = getSnippetsFromText(text);
 
+        Editor editor = uk.ac.glasgow.scclippy.plugin.editor.Editor.getEditor();
+
+        // Note: do not refactor to avoid insertion on cancel
         if (snippets.size() == 1) {
             // insert directly into code
-            insertTextIntoEditor(snippets.get(0));
+            insertTextIntoEditor(editor, snippets.get(0));
         }
         else if (snippets.size() > 1) {
             // ask user for input before inserting
@@ -61,7 +64,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
 
             if ((chosenSnippet != null) && (chosenSnippet.length() > 0)) {
                 int index = indexOfChosenSnippet(chosenSnippet);
-                insertTextIntoEditor(snippets.get(index));
+                insertTextIntoEditor(editor, snippets.get(index));
             }
         }
     }
@@ -95,8 +98,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
      * Inserts text into editor
      * @param text the text to be inserted
      */
-    private void insertTextIntoEditor(String text) {
-        Editor editor = uk.ac.glasgow.scclippy.plugin.editor.Editor.getEditor();
+    private void insertTextIntoEditor(Editor editor, String text) {
         if (editor == null)
             return;
 
