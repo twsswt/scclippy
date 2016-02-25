@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.ac.glasgow.scclippy.plugin.lucene.File;
-import uk.ac.glasgow.scclippy.plugin.util.StringProcessing;
 import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
 import java.net.URLEncoder;
@@ -51,7 +50,7 @@ public class StackExchangeSearch extends Search {
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = (JSONObject) items.get(i);
             String id = "" + item.getInt(item.getString("item_type") + "_id");
-            String content = StringProcessing.textToHTML(item.getString("excerpt")) + "<br/>";
+            String content = textToHTML(item.getString("excerpt")) + "<br/>";
             int score = item.getInt("score");
 
             files[i] = new File(id, content, score);
@@ -63,4 +62,16 @@ public class StackExchangeSearch extends Search {
         return remainingCalls;
     }
 
+    /**
+     * Converts text to HTML by adding breaks and nbsp
+     *
+     * @param snippetText the text
+     * @return the html variant of the text
+     */
+    public static String textToHTML(String snippetText) {
+        snippetText = snippetText.replaceAll("\n", "<br/>");
+        snippetText = snippetText.replaceAll(" ", "&nbsp ");
+
+        return snippetText;
+    }
 }

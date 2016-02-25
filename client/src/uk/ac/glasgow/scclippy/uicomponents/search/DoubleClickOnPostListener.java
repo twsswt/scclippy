@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
+
 import uk.ac.glasgow.scclippy.plugin.search.Search;
 
 import javax.swing.*;
@@ -56,7 +57,8 @@ public class DoubleClickOnPostListener extends MouseAdapter {
         // Note: do not refactor to avoid insertion on cancel
         if (snippets.size() == 1) {
             // insert directly into code
-            insertTextIntoEditor(editor, snippets.get(0));
+            String insertedText = HTMLtoText(snippets.get(0));
+            insertTextIntoEditor(editor, insertedText);
         }
         else if (snippets.size() > 1) {
             // ask user for input before inserting
@@ -64,7 +66,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
 
             if ((chosenSnippet != null) && (chosenSnippet.length() > 0)) {
                 int index = indexOfChosenSnippet(chosenSnippet);
-                insertTextIntoEditor(editor, snippets.get(index));
+                insertTextIntoEditor(editor, HTMLtoText(snippets.get(index)));
             }
         }
     }
@@ -158,5 +160,16 @@ public class DoubleClickOnPostListener extends MouseAdapter {
         }
 
         return snippetOptions;
+    }
+
+    /**
+     * Performs simple convertion of HTML to text
+     * @param s html text to be converted
+     * @return the text as a result
+     */
+    public static String HTMLtoText(String s) {
+        s = s.replaceAll("&lt;", "<");
+        s = s.replaceAll("&gt;", ">");
+        return s;
     }
 }
