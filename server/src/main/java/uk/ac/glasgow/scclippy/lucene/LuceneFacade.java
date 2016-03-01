@@ -97,6 +97,7 @@ public class LuceneFacade {
 			System.out.println(format("indexed document with Id [%s]", document.get("Id")));
 			
 		}
+		indexWriter.close();
 	}
 
 	private boolean indexExists() {
