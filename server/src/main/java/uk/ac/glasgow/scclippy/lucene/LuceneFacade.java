@@ -104,6 +104,7 @@ public class LuceneFacade {
 		resultSet.close();
 		statement.close();
 		indexWriter.close();
+		System.out.println("Closed index.");
 	}
 
 	private boolean indexExists() {
@@ -227,7 +228,9 @@ public class LuceneFacade {
 		return searcher;
 	}	
 	
+	
 	public class StackoverflowEntry {
+	
 		public final float score;
 		public final String body;
 		public final String id;
