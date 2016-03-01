@@ -86,7 +86,9 @@ public class LuceneFacade {
 		
 		Statement statement = connection.createStatement();
 		
-		ResultSet resultSet = statement.executeQuery("SELECT * FROM posts");
+		ResultSet resultSet = 
+			statement.executeQuery(
+				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%'");
 		
 		while (resultSet.next()){
 						

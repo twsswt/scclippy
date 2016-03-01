@@ -31,7 +31,7 @@ public class SearchService {
 	
 	private static final String dbURL = "jdbc:postgresql://localhost:5432/stackoverflow";
 	private static final String dbUsername = "stackoverflow";
-	private static final String dbPassword = "everstepf00t";
+	private static final String dbPassword = "deepdarkw00d";
 	
 	private LuceneFacade luceneFacade;
 	
