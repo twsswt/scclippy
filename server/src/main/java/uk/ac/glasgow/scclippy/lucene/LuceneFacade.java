@@ -94,7 +94,6 @@ public class LuceneFacade {
 			Document document = createDocument(resultSet);
 			indexWriter.addDocument(document);		
 			documentsIndexed ++;
-			System.out.println(format("indexed document with Id [%s]", document.get("Id")));
 			
 		}
 		indexWriter.close();
@@ -129,8 +128,8 @@ public class LuceneFacade {
 		Timestamp lastEditDate = resultSet.getTimestamp("LastEditDate");
 			
 		Document document = new Document();
-		Field pathField = new StringField("Id", postId, Field.Store.YES);
-		document.add(pathField);
+		Field idField = new StringField("Id", postId, Field.Store.YES);
+		document.add(idField);
 		document.add(new LongField("LastEditDate", lastEditDate==null?0l:lastEditDate.getTime(), Field.Store.NO));
 		document.add(new TextField("Body", new StringReader(body)));
 		return document;

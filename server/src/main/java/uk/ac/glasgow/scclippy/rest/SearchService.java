@@ -83,8 +83,8 @@ public class SearchService {
 			try {
 				document = luceneFacade.getDocument(scoreDoc.doc);
 				
-				record.put("id", document.getField("Id"));
-				record.put("content", document.getField("Content"));
+				record.put("id", document.getField("Id").stringValue());
+				record.put("body", document.getField("Body").stringValue());
 				record.put("score", scoreDoc.score);
 				
 				records.add(record);
