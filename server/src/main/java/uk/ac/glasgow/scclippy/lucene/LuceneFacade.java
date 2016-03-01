@@ -89,7 +89,7 @@ public class LuceneFacade {
 		
 		ResultSet resultSet = 
 			statement.executeQuery(
-				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%'");
+				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%' limit 1000");
 		
 		while (resultSet.next()){
 						
@@ -128,7 +128,7 @@ public class LuceneFacade {
 		Document document = new Document();
 		Field pathField = new StringField("Id", postId, Field.Store.YES);
 		document.add(pathField);
-		document.add(new LongField("LastEditDate", lastEditDate.getTime(), Field.Store.NO));
+		document.add(new LongField("LastEditDate", lastEditDate==null?0l:lastEditDate.getTime(), Field.Store.NO));
 		document.add(new TextField("Body", new StringReader(body)));
 		return document;
 	}
