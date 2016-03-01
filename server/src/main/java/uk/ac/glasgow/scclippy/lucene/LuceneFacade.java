@@ -66,7 +66,7 @@ public class LuceneFacade {
 		this.connection = connection;		
 		this.indexDirectoryPath = indexDirectoryPath;
 		
-		if (!indexIsReady()){
+		if (!indexExists()){
 			new Thread (){
 				public void run (){
 					try {
@@ -77,8 +77,6 @@ public class LuceneFacade {
 				}
 			}.start();
 		}
-			
-		
 	}	
 
 	private void indexDocuments() throws IOException, SQLException {
@@ -100,14 +98,17 @@ public class LuceneFacade {
 		}
 	}
 
-	private boolean indexIsReady() {
+	private boolean indexExists() {
 		File indexDirectory = indexDirectoryPath.toFile();
 
 		return 	indexDirectory.exists() && 
 				indexDirectory.isDirectory() &&
-				indexDirectory.listFiles().length > 0 &&
-				!asList(indexDirectory.list()).contains("write.lock");
-				
+				indexDirectory.listFiles().length > 0;
+	}
+	
+	private boolean indexIsBeingWritten (){
+		File indexDirectory = indexDirectoryPath.toFile();
+		return asList(indexDirectory.list()).contains("write.lock");
 	}
 	
 	private IndexWriter createIndexWriter() throws IOException {
@@ -139,7 +140,7 @@ public class LuceneFacade {
 	
 	public TopDocs searchDocuments (String queryString, Integer desiredHits) throws IOException, ParseException {
 		
-		if (!indexIsReady())
+		if (!indexExists() || indexIsBeingWritten())
 			throw new IOException (
 				format(
 					"The index at path [%s] is not currently available.  Perhaps it is being prepared for use?.",
