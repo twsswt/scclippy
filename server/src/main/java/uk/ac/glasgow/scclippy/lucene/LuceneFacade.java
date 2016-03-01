@@ -69,10 +69,10 @@ public class LuceneFacade {
 	public LuceneFacade (Connection connection, Path indexDirectoryPath) {
 		this.connection = connection;		
 		this.indexDirectoryPath = indexDirectoryPath;
-		
 		if (!indexExists()){
 			new Thread (){
 				public void run (){
+					System.out.println("Started indexing.");
 					try {
 						indexDocuments();
 					} catch (IOException | SQLException e) {
@@ -91,8 +91,10 @@ public class LuceneFacade {
 		
 		ResultSet resultSet = 
 			statement.executeQuery(
-				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%' limit 1000");
-				
+				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%' limit 100");
+		
+		System.out.println("Completed database query.");
+		
 		while (resultSet.next()){
 						
 			Document document = createDocument(resultSet);
@@ -156,6 +158,8 @@ public class LuceneFacade {
 	}
 	
 	public List<StackoverflowEntry> searchDocuments (String queryString, Integer desiredHits) throws IOException, ParseException {
+		
+		System.out.println("here");
 		
 		if (!indexExists() || indexIsBeingWritten())
 			throw new IOException (
