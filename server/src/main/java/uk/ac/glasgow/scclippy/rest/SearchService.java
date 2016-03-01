@@ -78,6 +78,7 @@ public class SearchService {
 			return Response.status(200).entity(finalObject.toJSONString()).build();
 		
 		} catch (IOException e) {
+			e.printStackTrace();
 			return Response.status(200).entity("Search index is not currently available.").build();
 		} catch (ParseException e) {
 			return Response.status(200).entity("Invalid query.").build();

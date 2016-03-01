@@ -91,7 +91,7 @@ public class LuceneFacade {
 		
 		ResultSet resultSet = 
 			statement.executeQuery(
-				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%' limit 100");
+				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%'");
 		
 		System.out.println("Completed database query.");
 		
@@ -101,12 +101,14 @@ public class LuceneFacade {
 			indexWriter.addDocument(document);
 			indexWriter.commit();
 			documentsIndexed ++;
+			if (documentsIndexed % 100 == 0) System.out.print(".");
+			if (documentsIndexed % 8000 == 0) System.out.println();
 			
 		}
 		resultSet.close();
 		statement.close();
 		indexWriter.close();
-		System.out.println("Closed index.");
+		System.out.println(format("Finished indexing [%d] records.", documentsIndexed));
 	}
 
 	private boolean indexExists() {
@@ -158,15 +160,13 @@ public class LuceneFacade {
 	}
 	
 	public List<StackoverflowEntry> searchDocuments (String queryString, Integer desiredHits) throws IOException, ParseException {
-		
-		System.out.println("here");
-		
+				
 		if (!indexExists() || indexIsBeingWritten())
 			throw new IOException (
 				format(
 					"The index at path [%s] is not currently available.  Perhaps it is being prepared for use?.",
 					indexDirectoryPath));
-		
+
 		IndexSearcher searcher = getSearcher();
 		Query query = createQuery(queryString);
 		TopDocs topDocs = searcher.search(query, desiredHits);
@@ -214,9 +214,9 @@ public class LuceneFacade {
 			String id = document.getField("Id").stringValue();
 			
 			ResultSet resultSet = 
-				statement.executeQuery(format("SELECT Body FROM posts WHERE Id=[%s]", id));
+				statement.executeQuery(format("SELECT Body FROM posts WHERE Id='%s'", id));
 			
-			resultSet.beforeFirst();
+			resultSet.next();
 			String body = resultSet.getString("Body");
 			return
 				new StackoverflowEntry(id, scoreDoc.score, body);
@@ -226,7 +226,7 @@ public class LuceneFacade {
 		}
 	}
 	
-	private IndexSearcher getSearcher()	throws IOException {
+	private IndexSearcher getSearcher() throws IOException {
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(indexDirectoryPath));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		return searcher;
