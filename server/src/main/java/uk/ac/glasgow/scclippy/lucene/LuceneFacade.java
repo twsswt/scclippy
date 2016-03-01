@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -122,12 +123,12 @@ public class LuceneFacade {
 		
 		String body = resultSet.getString("Body");
 		String postId = resultSet.getString("Id");
-		Long lastEditDate = resultSet.getLong("LastEditDate");
-		
+		Timestamp lastEditDate = resultSet.getTimestamp("LastEditDate");
+			
 		Document document = new Document();
 		Field pathField = new StringField("Id", postId, Field.Store.YES);
 		document.add(pathField);
-		document.add(new LongField("LastEditDate", lastEditDate, Field.Store.NO));
+		document.add(new LongField("LastEditDate", lastEditDate.getTime(), Field.Store.NO));
 		document.add(new TextField("Body", new StringReader(body)));
 		return document;
 	}
