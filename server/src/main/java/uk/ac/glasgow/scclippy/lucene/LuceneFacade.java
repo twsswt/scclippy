@@ -92,8 +92,9 @@ public class LuceneFacade {
 		while (resultSet.next()){
 						
 			Document document = createDocument(resultSet);
-			documentsIndexed ++;
 			indexWriter.addDocument(document);		
+			documentsIndexed ++;
+			System.out.println(format("indexed document with Id [%s]", document.get("Id")));
 			
 		}
 	}
@@ -165,6 +166,6 @@ public class LuceneFacade {
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(indexDirectoryPath));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		return searcher;
-	}
+	}	
 	
 }
