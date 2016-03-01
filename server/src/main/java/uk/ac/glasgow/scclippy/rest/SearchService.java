@@ -68,10 +68,9 @@ public class SearchService {
 		try {
 			searchResults = luceneFacade.searchDocuments(query, postCount);
 			JSONArray records = new JSONArray();
-			searchResults
-				.stream()
-				.map(searchResult -> searchResult.toJSONObject())
-				.forEach(jSONObject -> records.add(jSONObject));
+			
+			for (StackoverflowEntry stackoverflowEntry: searchResults)
+				records.add(stackoverflowEntry.toJSONObject());
 			
 			JSONObject finalObject = new JSONObject();
 			finalObject.put("results", records);
