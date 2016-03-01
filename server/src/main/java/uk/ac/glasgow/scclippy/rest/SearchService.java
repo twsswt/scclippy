@@ -16,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
@@ -83,8 +85,10 @@ public class SearchService {
 			try {
 				document = luceneFacade.getDocument(scoreDoc.doc);
 				
+				IndexableField body = document.getField("Body");
+				
 				record.put("id", document.getField("Id").stringValue());
-				record.put("body", document.getField("Body").stringValue());
+				record.put("body",body == null?"":body.stringValue());
 				record.put("score", scoreDoc.score);
 				
 				records.add(record);
