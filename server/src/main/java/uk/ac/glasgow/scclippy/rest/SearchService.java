@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -15,16 +16,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import uk.ac.glasgow.scclippy.lucene.LuceneFacade;
+import uk.ac.glasgow.scclippy.lucene.LuceneFacade.StackoverflowEntry;
  
 @Path("/search")
 public class SearchService {
@@ -67,42 +64,26 @@ public class SearchService {
 		if (luceneFacade == null)
 			return Response.status(200).entity("Couldn't connect to search index.").build();
 
-		TopDocs topDocs;
+		List<StackoverflowEntry> searchResults = null;
 		try {
-			topDocs = luceneFacade.searchDocuments(query, postCount);
+			searchResults = luceneFacade.searchDocuments(query, postCount);
+			JSONArray records = new JSONArray();
+			searchResults
+				.stream()
+				.map(searchResult -> searchResult.toJSONObject())
+				.forEach(jSONObject -> records.add(jSONObject));
+			
+			JSONObject finalObject = new JSONObject();
+			finalObject.put("results", records);
+			
+			return Response.status(200).entity(finalObject.toJSONString()).build();
+		
 		} catch (IOException e) {
 			return Response.status(200).entity("Search index is not currently available.").build();
 		} catch (ParseException e) {
 			return Response.status(200).entity("Invalid query.").build();
-		}			
-		
-		JSONArray records = new JSONArray();
-		
-		for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
-			JSONObject record = new JSONObject();
-			
-			Document document;
-			try {
-				document = luceneFacade.getDocument(scoreDoc.doc);
-				
-				IndexableField body = document.getField("Body");
-				
-				record.put("id", document.getField("Id").stringValue());
-				record.put("body",body == null?"":body.stringValue());
-				record.put("score", scoreDoc.score);
-				
-				records.add(record);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
 		}
 		
-		JSONObject finalObject = new JSONObject();
-		finalObject.put("results", records);
-		
-		return Response.status(200).entity(finalObject.toJSONString()).build();
 	}
  
 }

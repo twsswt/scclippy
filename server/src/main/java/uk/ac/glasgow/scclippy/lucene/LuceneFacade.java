@@ -18,7 +18,6 @@ package uk.ac.glasgow.scclippy.lucene;
  */
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +28,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -47,9 +48,12 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.Lock;
+import org.json.simple.JSONObject;
 
 /**
  * Utility class for indexing the Stackoverflow Postgres Database.s
@@ -88,14 +92,17 @@ public class LuceneFacade {
 		ResultSet resultSet = 
 			statement.executeQuery(
 				"SELECT Id,Body,LastEditDate FROM posts WHERE tags LIKE '%<java>%' limit 1000");
-		
+				
 		while (resultSet.next()){
 						
 			Document document = createDocument(resultSet);
-			indexWriter.addDocument(document);		
+			indexWriter.addDocument(document);
+			indexWriter.commit();
 			documentsIndexed ++;
 			
 		}
+		resultSet.close();
+		statement.close();
 		indexWriter.close();
 	}
 
@@ -108,8 +115,16 @@ public class LuceneFacade {
 	}
 	
 	private boolean indexIsBeingWritten (){
-		File indexDirectory = indexDirectoryPath.toFile();
-		return asList(indexDirectory.list()).contains("write.lock");
+		try {
+			FSDirectory indexDirectory = FSDirectory.open(indexDirectoryPath);
+			Lock lock = indexDirectory.obtainLock("write.lock");
+			lock.close();
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return true;
+		}
+		
 	}
 	
 	private IndexWriter createIndexWriter() throws IOException {
@@ -139,7 +154,7 @@ public class LuceneFacade {
 		return documentsIndexed;
 	}
 	
-	public TopDocs searchDocuments (String queryString, Integer desiredHits) throws IOException, ParseException {
+	public List<StackoverflowEntry> searchDocuments (String queryString, Integer desiredHits) throws IOException, ParseException {
 		
 		if (!indexExists() || indexIsBeingWritten())
 			throw new IOException (
@@ -148,24 +163,89 @@ public class LuceneFacade {
 					indexDirectoryPath));
 		
 		IndexSearcher searcher = getSearcher();
+		Query query = createQuery(queryString);
+		TopDocs topDocs = searcher.search(query, desiredHits);
+		
+		List<StackoverflowEntry> result = new ArrayList<StackoverflowEntry>();
+		
+		Statement statement = null;
+		
+		try {
+			statement = connection.createStatement();
+			for (ScoreDoc scoreDoc : topDocs.scoreDocs){
+				StackoverflowEntry stackoverflowEntry = 
+					creatStackoverflowEntry(searcher, statement, scoreDoc);
+				result.add(stackoverflowEntry);
+			}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
 
+	}
+
+	private Query createQuery(String queryString)
+		throws ParseException {
 		Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
 		QueryParser parser = new QueryParser("Body", analyzer);
 		String line = queryString.trim();
 		Query query = parser.parse(QueryParser.escape(line));
+		return query;
+	}
 
-		return searcher.search(query, desiredHits);
-
+	private StackoverflowEntry creatStackoverflowEntry(
+		IndexSearcher searcher, Statement statement, ScoreDoc scoreDoc) throws IOException {
+		
+		try {			
+			Document document = searcher.doc(scoreDoc.doc);		
+			String id = document.getField("Id").stringValue();
+			
+			ResultSet resultSet = 
+				statement.executeQuery(format("SELECT Body FROM posts WHERE Id=[%s]", id));
+			
+			resultSet.beforeFirst();
+			String body = resultSet.getString("Body");
+			return
+				new StackoverflowEntry(id, scoreDoc.score, body);
+			
+		} catch (SQLException | IOException e) {
+			throw new IOException("Couldn't retrieve information for entry.", e);
+		}
 	}
 	
-	public Document getDocument(int documentIndex) throws IOException{
-		return getSearcher().doc(documentIndex);
-	}
-
 	private IndexSearcher getSearcher()	throws IOException {
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(indexDirectoryPath));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		return searcher;
 	}	
+	
+	public class StackoverflowEntry {
+		public final float score;
+		public final String body;
+		public final String id;
+		
+		public StackoverflowEntry(String id, float score, String body){
+			this.id = id;
+			this.score = score;
+			this.body = body;
+		}
+		
+		@SuppressWarnings("unchecked")
+		public JSONObject toJSONObject () {
+			JSONObject record = new JSONObject ();
+			record.put("id", id);
+			record.put("body", body);
+			record.put("score",score);
+			return record;
+		}
+	}
 	
 }
