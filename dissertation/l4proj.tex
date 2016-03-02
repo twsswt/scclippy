@@ -15,7 +15,10 @@
 \maketitle
 
 \begin{abstract}
-text
+The Source Code Clippy plugin enables searching for code snippets from different sources and provides them to the developer. 
+SHOULD DIFFERENT WAYS OF SEARCHING BE EXPLAINED?
+The main objective of the project is to build a plugin for an IDE that will support the user with searching and helpful related features, as well as giving them the ability to configure the system. There is a research interest in how beneficial excerpts of code are to the developers. Thus, the application's purpose is to provide tools with which the user can easily and intuitively interact. 
+The system has been evaluated ... . The findings of the study show that ... . Feedback from users ... . Besides personal purposes, the plugin can be used ... ???
 \end{abstract}
 
 \educationalconsent
@@ -30,47 +33,106 @@ text
 \pagenumbering{arabic}
 
 \section{Project context}
-...
+
+We have recently begun to explore a new area of research on micro-scale or end user software engineering. The goal of this project is to address the needs of end user software developers who are engaged in short term micro scale software development projects. Examples include the development of a script to configure an Arduino project; an excel macro for processing a spreadsheet of data or a python script to batch process a large number of pictures. Existing software engineering tools are not suitable for these projects because they are generally targeted at long term large scale efforts and require a considerable upfront investment. 
+
+Various recommendation systems designed for software engineering purposes have been becoming more popular in recent years. Their purpose is to assist developers of all skills to find the information they need. This project is about building a tool that can help users to see usages of similar code by suggesting excerpts of code.
 
 \section{Motivation}
-...
-The goal is to help beginner or expert enough Java programmers find the code they need – for example, when the user does not know or cannot remember the code for serializing an object, they can quickly get the information required. More importantly, there is an interest in how effective searching for excerpts of code is.
-...
+
+The motivation for this project is to gain understanding of how useful code snippets are to developers. In addition, there are not many applications that provide searching for excerpts by retrieving data from different sources inside an IDE (Integrated Development Environment). This provides a chance to build such system, which will give the user the ability to choose between multiple options and be configured according to their preferences.
 
 \section{Objectives}
-...
-The project Source Code Clippy consists of creating a tool that allows the user to search for Java code from Stack Exchange – by indexing files on disk, using a Web Service that has already indexed a collection of Stack Overflow documents, and, finally, using the provided API for excerpts. Searching for code should be done automatically when the user is typing as well as when the user selects part of their code. 
-...
+
+A prototype code snippet recommender system for Sublime was developed by Tomasz Sadowski. This prototype continually monitors the contents of a developer's editor and searches Stack Overflow for similar snippets of code using an information retrieval engine (Terrier is used in the prototype). For example, a developer is working on a script to process text files and has started on the task of opening files. The recommender tool searches for relevant code snippets on Stack Overflow and presents them for auto insertion into the editor.
+
+The goal of this project is to re-develop the prototype as a production quality plugin for an Integrated Development Environment such as Eclipse, IntelliJ, Visual Studio, Emacs or PyCharm. The plugin will help developers achieve small tasks and therefore should be highly usable so that the user can do their work seamlessly. In addition, the scope of the recommender's input should also be controllable, so that recommendations can be made on the basis of the currently typed command, or a selected range of text.
 
 \section{Achievements}
 
-The required plugin was implemented as a plugin for the IntelliJ IDE (Integrated Development Environment), which is used on regular basis by developers.
+The required plugin Source Code Clippy was implemented as an IntelliJ IDE plugin for the Java programming language. It allows the user to search for code snippets in four different ways - by making requests to Stack Exchange excerpts API; by indexing files on disk; using a Web Service that has already indexed a collection of Stack Overflow documents; by performing Google search on the query. Searching for code is done automatically when the user is typing as well as when the user selects part of their code.
+In terms of qualities, the plugin could be described as highly usable, efficient, customizable, and extensible.
 
 \section{Dissertation structure}
+The dissertation is structured in a chronological order. It starts with the background and requirements, follows the design and implementation process, and ends with the results of the evaluation and a discussion on the outcome of the project. The table below describes the report's structure.
+
+TABLE
 
 \section{Terminology}
+SCC refers to the Source Code Clippy (SCClippy) plugin.
+
+RSSE is an abbreviation for Recommendation Systems for Software Engineering.
 
 \chapter{Background and Requirements}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over the lazy dog.
 
 \section{Related work}
 
+In the previous years, a number of recommendation systems for Software Engineering have been developed to help developers with information and evaluation of alternative decisions. Most such systems have been focused on assisting while the users are in the process of programming.
+
 \subsection{Similar technologies}
 
+INCLUDE REFERENCES
+
+There are many RSSE systems that use different input, as well as processing and visualisation techniques. Similar plugins have been outlined below:
+
+The Eclipse IDE plugin eRose mines data from repositories such as Concurrent Versions System (CVS). It tracks consecutive changes in code and makes suggestions based on that information. The data is displayed in a separate view, after each save operation.
+
+Another example is the Strathcona system which extracts data about the structure of a code fragment in order to search a PostgreSQL database and use heuristics to rank the results. It shows a structural overview, as well as highlights based on the difference from the user's code. This system is particularly useful for frameworks that have been poorly documented.
+
+Suade is also an Eclipse plugin which is specialised in automatically presenting suggestions by retrieving related elements (fields, methods). By design, it contains a dependency graph of the elements that can be interactively and iteratively updated by the developer.
+
+CodeBroker uses as input the comments written by developers to assist them. A recommendation is produced every time a comment is written by analyzing the text and doing type-signature matching. The system also manages user-specific lists.
+
+Dhruv is a system that recommends people and artifacts based on bug reports. It extracts data from the open source community (different types of users and content and their interactions) to create a Semantic Web, which later is used to match that to the bug report's information.
+
+Expertise Browser recommends people for a particular piece of code by considering the people who have modified the content in the past. However, an assumption is made that whoever made changes beforehand is an expert.
+
+ParseWeb is useful in situations when the developer needs an object to perform methods on, but cannot recall how to get the object. The tool crawls the web based on the user's input (object types) to search for recommendations.
+
 \subsection{Evaluation of similar ideas}
+Most systems and tools described above have something in common - they do recommendation by going through several stages - input handling, intermediate analyzing of some sort, and visualisation technique. However, they also have a unique approach that focuses on certain aspects. Source Code Clippy is special because it features different ways of searching for excerpts and it offers additional helpful features as well.
+
 
 \section{Description of Tomasz's prototype}
-The Source Code Clippy plugin is a continuation of an already build prototype for Sublime.
-features, progress, what was learned
+The Source Code Clippy plugin is a continuation of an already build prototype for Sublime which Tomasz Sadowski developed. The prototype has a single feature that enables the user use the developer's editor and search Stack Overflow for similar snippets of code using an information retrieval engine (Terrier is used in the prototype). 
 
-\section{Requirements}
-Informal weekly customer meeting
-tracking requirements (issues in github)
-summary of functional features
+For example, a developer could be working on a script to process text files and has started on the task of opening files. The recommender tool searches for relevant code snippets on Stack Overflow and presents them for auto insertion into the editor. 
+
+The prototype was not evaluated.
+
+\section{Requirements Elicitation and Gathering}
+Requirements were gathered and discussed during informal weekly customer meetings.
+The requirements and tasks were prioritised based on the MoSCoW approach (link). Github's issue tracker was used to list all of them and track their progress. (https://github.com/thrios/SourceCodeClippy/issues)
+
+Below is a summary of the functional features: (SHOULD ALL REQUIREMENTS BE LISTED?)
+
+- Searching with local index
+
+- Searching with Stack Exchange API
+
+- Searching using a Web Service
+
+- Searching with Google for the Stack Overflow domain
+
+- Configuration panel
+
+- Handling selection input and last statement key input
+
+- A lot of other helpful features such as insertion of code + formatting on double click (instead of standard copy-paste), additional search request on scrolling down; search history; output filters; query input listener; additional data included in posts; notifications; write a question button; provide feedback tab;
+
+In terms of non-functional requirements, the system should have:
+
+- Intuitive interface - users should not get confused and feel the plugin as something they are familiar with
+
+- High responsiveness/performance in general - the user should not have to wait more than a few seconds 
+
+- High usability - good user interface, good responsiveness, but also provide helpful features e.g. automating the process if possible and reasonable to do so
+
+- Good documentation - well-documented code allows for easy extension of the plugin
+
+- Extensibility - the system should allow for easy future extensions
 
 \chapter{Design and Implementation}
-
 
 \begin{figure}[h]
 \caption{Architecture diagram}
@@ -79,7 +141,17 @@ summary of functional features
 \label{fig:architecture}
 \end{figure}
 As you can see in the figure \ref{fig:architecture}, the 
-IntelliJ SCClippy plugin sends requests to the StackExchange API and the Web Service and in return gets a JSON response. The system also has a hyperlink to an online survey that the user can fill. Finally, the plugin can use/create/update a local index on the file system.
+user can use the IntelliJ SCClippy plugin to retrieve excerpts data from a number of data sources:
+
+- by using a local index on the user's file system (created beforehand).
+
+- by sending requests to the Web Service which in return will return a JSON response
+
+- by using the Stack Exchange API to make the request.
+
+- by clicking on a button that will open a browser window and search the query using Google for the domain of Stack Overflow. 
+
+The system also has a hyperlink to an online survey that the user can follow, fill and submit online.
 
 \section{Iterations}
 Consecutive iterations of developing the plugin consisted of several stages:
@@ -102,7 +174,20 @@ choice of language and IDE
 Java Swing vs Java FX\\
 The plugin's user interface was chosen to be implemented with the toolkit Java Swing rather than Java FX mainly because of familiarity reasons.
 
-Different ways of searching for excerpts - why do we have them; Web service Server\\
+Searching for excerpts\\
+Searching for code snippets with one method e.g. Stack Exchange API was not enough as it had its limitations and other ways that can provide complementing results existed. Therefore, the system offers a number of techniques for searching excerpts that have been outlined below:
+
+Local index - offers the user to freely create/update an index on a chosen data set. The major benefit of this approach is that the user can use it while being offline. The downside is that it requires documents, which the user might need, but does not have on their machine - if the user requires more information, about a topic, they may likely not have it.  
+
+Web Service - has an already indexed collection of Stack Overflow posts for the Java programming language.  The benefit of the web service is that it covers a large dataset - about 2 million documents. In addition, it offers unlimited requests. The negative side is that it is not kept up to date like the Stack Exchange API. \\
+This method required creating a custom server that provides a RESTful Web Service that will perform search using Apache Lucene and return only the number of documents specified (default is 5) that contain the id, body and score for each post. 
+
+Stack Exchange excerpts API (link) - provides up to date Stack Overflow snippets, but each user has a limited number of requests, equal to 300 daily (by default). Other downside is that it is dependant on variable names e.g. if the user chooses to search \textbf{for String hsaudhqwudhyqgwd = "";}, then most likely they will not get any results back.
+
+Google Search - opens a browser tab that searches using the index created by Google on the Stack Overflow's domain. This is a generally good option since it is not so variable independent as the previous type of search.
+
+All of the above methods use an index to process requests quickly and make the plugin more usable. Since they use a different ranking mechanism, the result they return when queried will be different from the others.
+
 Automation - what is automated and what is not and why\\
 
 Querying is performed only when the user presses 'Enter' to avoid too many requests as there is a limit on the requests that can be made to Stack Overflow, and to avoid sending too many requests to the web service as they will not be handled at a sufficient pace.
@@ -142,12 +227,15 @@ Terrier vs Lucene\\
 The choice of an open source indexing platform came down mainly from easiness of implementation. Terrier did not have a proper straightforward tutorial showing a programmatic way of calling the API. Thus, Apache Lucene Core (https://lucene.apache.org/core/) was used for indexing and retrieval of files.
 
 Lucene ranking\\
-Default settings for ranking are used (https://link)
+Default settings for ranking were used (https://link). COMMENT WHY
 
 Displaying more results for a query\\
 Additional search request is made (if necessary) when the scroll reaches the bottom of the plugin's tool window. Other options to be considered are: having a button instead (has to be clicked every time, less interactive); making search infinite (not very practical since only the top results are mostly being looked at).
 
-IntelliJ notifications are used to inform the user with feedback. Other
+IntelliJ notifications are used to inform the user with feedback. Examples include "Check connection to server. ..." which is displayed when the user is not connected to the Internet or other connection problems have occurred.
+
+IntelliJ themes
+The plugin provides the user with the option to change the colour of text. This is done so that the plugin is not strictly dependent on the theme used by the user. In addition, it enables the them to choose to configure the look of the plugin to match their subjective preferences.
 
 \section{Final design features}
 The plugin has its own closable window (ToolWindow) in IntelliJ that features five tabs.
@@ -186,28 +274,23 @@ The second tab is the search 'History' tab, which enables the user to see recent
 
 The third tab is the 'Settings' tab that allows configuring the plugin. The options include:
 - General settings\\
-> Auto-resizable query input text area (checkbox)\\
-> Highlighted results (checkbox)\\
-> Posts after basic search using 'Enter' key (number pane)\\
-> Posts after extended search when scrolling to bottom (number pane)\\
-> Text colour in posts - by name or hex number (see HTML blabla)\\
+> "Auto-resizable query input text area" (checkbox) - offers dynamically resizable query input area or static one that is long 5 rows and uses a scroll\\
+> "Highlighted results" (checkbox) - can turn on/off highlighting of results\\
+> "Total number of posts" (number pane) - the number of posts after basic search using 'Enter' key \\
+> "Total number of posts after scroling down search" (number pane) - controls the number of posts after extended search activated when scrolling to the bottom\\
+> "Colour of text" - text colour in posts chosen by typing its name or hex number (see HTML blabla)\\
 - Web service options\\
-> Web service URI path\\
+> "Web service URI" (key input pane) - for setting the URI to the chosen service\\
 - Local index options\\
-> Current index folder\\
-> Create/Update local index by specifying index directory, data directory.\\
+> "Current index folder" - path to the index directory for local search\\
+> "Create/Update local index" - creates or updates an index by specifying index directory, data directory, and which of the two options.\\
 
 Fourth tab is for plugin information which explains some details of the plugin.
 
 Fifth tab contains the participant consent form and is used to submit feedback by completing an online survey.
 
-All features can be seen in the issues section of the project in GitHub: https://github.com/thrios/SourceCodeClippy/
-
-
 \section{Challenges}
 - Using Terrier for indexing was initially planned for indexing and querying (http://terrier.org/), however, due to the lack of examples and information on how to use its API programmatically, the use of Lucene was considered and used instead.
-
-- Time constraints
 
 \chapter{Evaluation}
 As already seen, the users can participate in the evaluation of the plugin by going through the following steps:
@@ -224,7 +307,7 @@ As already seen, the users can participate in the evaluation of the plugin by go
 
 6. Answering at least all mandatory questions in the survey, and possibly even optional ones as well
 
-7. Submitting the results
+7. Submitting the survey
 
 \section{Unit Testing}
 The main functionality of the code was tested using JUnit.
@@ -234,6 +317,12 @@ The main functionality of the code was tested using JUnit.
 \chapter{Conclusion}
 
 \section{Project outcome}
+
+Source Code Clippy is a configurable plugin that enables the search of excerpts from different sources, along with other helpful functionalities.
+
+The plugin was successfully implemented, tested, deployed and evaluated. All requirements were fulfilled, except one 'would-have' responsible for making search more sophisticated - adding tags and/or assigning less weight to variable names as they typically tend to be more irrelevant for a given query.
+
+The evaluation showed that SOMETHING FROM EVALUATION.
 
 \section{Future work}
 It is reasonable to say that the plugin could benefit from having a more intelligent search which can be done using various techniques:
@@ -253,7 +342,10 @@ The plugin can be extended to have:
 - Storing search history permanently
 
 - Options for better interaction with Stack Exchange - login/logout, notification when someone has answered the user's question
+
 \section{Learning outcomes}
+
+At the beginning of this project, there was a lack of experience of how to build an IntelliJ plugin and insufficient knowledge about information retrieval along with its according available platforms. However, by going through the process of creating the plugin, the required skills were learned. In addition, the existing skills of developing software were enhanced by making decisions about ideas and their implementation in practice.
 
 \chapter{Bibliography}
 
