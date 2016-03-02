@@ -214,12 +214,14 @@ public class LuceneFacade {
 			String id = document.getField("Id").stringValue();
 			
 			ResultSet resultSet = 
-				statement.executeQuery(format("SELECT Body FROM posts WHERE Id='%s'", id));
+				statement.executeQuery(format("SELECT Body, Score FROM posts WHERE Id='%s'", id));
 			
 			resultSet.next();
 			String body = resultSet.getString("Body");
+			int score = resultSet.getInt("Score");
+			
 			return
-				new StackoverflowEntry(id, scoreDoc.score, body);
+				new StackoverflowEntry(id, score, body);
 			
 		} catch (SQLException | IOException e) {
 			throw new IOException("Couldn't retrieve information for entry.", e);
@@ -235,11 +237,11 @@ public class LuceneFacade {
 	
 	public class StackoverflowEntry {
 	
-		public final float score;
+		public final Integer score;
 		public final String body;
 		public final String id;
 		
-		public StackoverflowEntry(String id, float score, String body){
+		public StackoverflowEntry(String id, int score, String body){
 			this.id = id;
 			this.score = score;
 			this.body = body;
