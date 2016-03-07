@@ -58,10 +58,11 @@ public class FeedbackTab {
 
     private String generateParticipantConsentFormInHTML() {
         return
-                "<h2><b>Participant Consent Form: Source Code Clippy IntelliJ Recommender Plugin</b><h2>" +
+                "<h2><b>Participant Consent Form:<br/> Source Code Clippy IntelliJ Recommender Plugin</b><h2>" +
                 "<p>" +
-                "SCClippy is part of an experiment to investigate the efficacy of code snippet recommendations for" +
-                "<br/>micro programming tasks. The aim of this experiment is to evaluate the usability of the Source Code Clippy plugin." +
+                "SCClippy is part of an experiment to investigate the efficacy of code snippet recommendations" +
+                "<br/>for micro programming tasks. The aim of this experiment is to evaluate the usability of the" +
+                "<br/>Source Code Clippy plugin." +
                 "<br/>" +
                 "<br/>The experiment will take time defined by the participant – feedback is provided when they are " +
                 "<br/>ready to do so." +

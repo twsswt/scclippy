@@ -34,8 +34,6 @@ public class LocalIndexedSearch extends Search {
             );
         } catch (IOException e) {
             throw new Exception("Searching failed due to I/O problems. Try again.");
-        } catch (ParseException e) {
-            throw new Exception("Searching failed. Try again.");
         }
 
         Search.currentSearchType = SearchType.LOCAL_INDEX;

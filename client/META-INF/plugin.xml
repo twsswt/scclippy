@@ -1,17 +1,18 @@
 <idea-plugin version="2">
   <id>uk.ac.glasgow.scclippy</id>
-  <name>SourceCodeClippy</name>
+  <name>Scclippy</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="boris.ts.nikolov@gmail.com" url=""/>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Source Code Clippy allows searching for Java code snippets from Stack Overflow by using:<br/>
+      - The Stack Exchange API<br/>
+      - A web service (requires login to sibu.dcs.gla.ac.uk)<br/>
+      - Google<br/>
+      - Local index on files<br/>
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
     ]]>
   </change-notes>
 

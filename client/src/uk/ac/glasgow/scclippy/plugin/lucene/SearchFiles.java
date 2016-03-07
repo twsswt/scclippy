@@ -45,7 +45,7 @@ public class SearchFiles {
      * @return array of files with the content
      * @throws IOException when performing I/O; ParseException when parsing query
      */
-    public static File[] search(String indexPath, String field, String queryString, int desiredHits) throws IOException, ParseException {
+    public static File[] search(String indexPath, String field, String queryString, int desiredHits) throws IOException {
         if (indexPath == null || field == null || queryString == null)
             return null;
 
@@ -58,7 +58,12 @@ public class SearchFiles {
         Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
         QueryParser parser = new QueryParser(field, analyzer);
         String line = queryString.trim();
-        Query query = parser.parse(QueryParser.escape(line));
+        Query query;
+        try {
+            query = parser.parse(QueryParser.escape(line));
+        } catch (ParseException e) {
+            return null;
+        }
 
         TopDocs results = searcher.search(query, desiredHits);
         ScoreDoc[] hits = results.scoreDocs;

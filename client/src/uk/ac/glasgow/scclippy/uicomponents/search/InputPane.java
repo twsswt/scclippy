@@ -25,7 +25,6 @@ public class InputPane {
     public static final int INPUT_TEXT_AREA_ROWS = 5;
 
     public JTextArea inputArea = new JTextArea();
-    private String lastText = "";
 
     private JScrollPane inputScrollPane = new JBScrollPane(inputArea);
     private Posts posts;
@@ -100,9 +99,8 @@ public class InputPane {
     private void searchAction() {
 
         String query = inputArea.getText();
-        if (query.equals("") || query.equals(lastText))
+        if (query.equals(""))
             return;
-        lastText = query;
 
         if (Settings.indexPath == null) {
             Notification.createErrorNotification("Set index path from 'SettingsTab' first");
