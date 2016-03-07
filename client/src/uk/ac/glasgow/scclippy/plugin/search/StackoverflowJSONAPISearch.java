@@ -3,62 +3,59 @@ package uk.ac.glasgow.scclippy.plugin.search;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import uk.ac.glasgow.scclippy.plugin.lucene.File;
+
+import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
 import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Class for searching with a Stack Exchange API for code excerpts
+ * Class for searching with a Stackoverflow API v2.2
  */
-public class StackExchangeSearch extends Search {
+public class StackoverflowJSONAPISearch extends StackoverflowSearch {
 
     private final static String EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
     private final static String EXCERPTS_PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
 
-    private static int remainingCalls;
+    private int remainingCalls;
 
-    /**
-     * Performs a search using StackExchange API v2.2
-     * @See Search#search
-     */
-    public void search(@NotNull String query, int posts) throws Exception {
-        if (!inputValidator(query, posts)) {
-            files = null;
-            return;
-        }
-        query = query.trim();
+    @Override
+    public List<StackoverflowEntry> searchIndex(@NotNull String query, int posts) throws Exception {
 
         String body = URLEncoder.encode(query, "UTF-8");
         JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(EXCERPTS_URL + "body=" + body + EXCERPTS_PARAMS);
 
-        if (json == null) {
+        if (json == null)
             throw new Exception("Query failed. Check connection to server.");
-        }
+        
 
         if (json.getInt("quota_remaining") == 0) {
             throw new Exception("Cannot make more requests today");
         }
 
         remainingCalls = json.getInt("quota_remaining");
+        
         JSONArray items = json.getJSONArray("items");
-        if (items.length() == 0) {
-            throw new Exception("No results. Consider removing variable names or using another option");
-        }
 
-        files = new File[items.length()];
+        List<StackoverflowEntry> result = new ArrayList<StackoverflowEntry>();
+
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = (JSONObject) items.get(i);
+            
             String id = "" + item.getInt(item.getString("item_type") + "_id");
             String content = textToHTML(item.getString("excerpt")) + "<br/>";
             int score = item.getInt("score");
 
-            files[i] = new File(id, content, score);
+            StackoverflowEntry entry = new StackoverflowEntry(id, null ,score, content);
+            result.add(entry);
         }
-        Search.currentSearchType = SearchType.STACKEXCHANGE_API;
+        
+        return result;
     }
 
-    public static int getRemainingCalls() {
+    public int getRemainingCalls() {
         return remainingCalls;
     }
 

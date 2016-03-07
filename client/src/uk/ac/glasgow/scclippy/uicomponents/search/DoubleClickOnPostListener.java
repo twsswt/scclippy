@@ -1,5 +1,16 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
+import static java.util.Arrays.asList;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
+
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
@@ -9,13 +20,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 
-import uk.ac.glasgow.scclippy.plugin.search.Search;
-
-import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.LinkedList;
-import java.util.List;
+import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
 
 
 /**
@@ -23,17 +28,14 @@ import java.util.List;
  */
 public class DoubleClickOnPostListener extends MouseAdapter {
 
-    int id; // id of the post
-
     private final static String CODE_START_TAG = "<code>"; // marks snippet's start
     private final static String CODE_END_TAG = "</code>"; // marks snippet's end
     private final static int INPUT_DIALOG_MAX_SNIPPET_LENGTH = 100; // length of snippets in the JOptionPane
 
-    JEditorPane jEditorPane;
+    private JEditorPane jEditorPane;
 
-    public DoubleClickOnPostListener(JEditorPane jEditorPane, int id) {
+    public DoubleClickOnPostListener(JEditorPane jEditorPane) {
         this.jEditorPane = jEditorPane;
-        this.id = id;
     }
 
     /**
@@ -45,39 +47,24 @@ public class DoubleClickOnPostListener extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
 
         // double click
-        if (e.getClickCount() != 2 || Search.getFiles() == null || Search.getFiles()[id] == null) {
-            return;
+        if (e.getClickCount() < 2) return;
+
+        String text = jEditorPane.getText();
+        List<String> codeSnippets = getCodeSnippetsFromText(text);
+        if (codeSnippets.size() < 1) return;
+
+        String chosenSnippet = null;
+        
+        if (codeSnippets.size() == 1) 
+        	chosenSnippet = codeSnippets.get(0);
+        else if (codeSnippets.size() > 1) 
+            chosenSnippet = getUserToChooseASnippet(codeSnippets);
+        
+        if ((chosenSnippet != null) && (chosenSnippet.length() > 0)) {
+            String textToInsert = HTMLtoText(chosenSnippet);
+            insertTextIntoEditor(textToInsert);
         }
-
-        String text = Search.getFiles()[id].getContent();
-        List<String> snippets = getSnippetsFromText(text);
-
-        Editor editor = uk.ac.glasgow.scclippy.plugin.editor.Editor.getEditor();
-
-        // Note: do not refactor to avoid insertion on cancel
-        if (snippets.size() == 1) {
-            // insert directly into code
-            String insertedText = HTMLtoText(snippets.get(0));
-            insertTextIntoEditor(editor, insertedText);
-        }
-        else if (snippets.size() > 1) {
-            // ask user for input before inserting
-            String chosenSnippet = getChosenSnippet(getSnippetOptions(snippets));
-
-            if ((chosenSnippet != null) && (chosenSnippet.length() > 0)) {
-                int index = indexOfChosenSnippet(chosenSnippet);
-                insertTextIntoEditor(editor, HTMLtoText(snippets.get(index)));
-            }
-        }
-    }
-
-    /**
-     * Returns the index of the chosen snippet
-     * @param chosenSnippet the string of the chosen snippet
-     * @return the index
-     */
-    private int indexOfChosenSnippet(String chosenSnippet) {
-        return Integer.parseInt(chosenSnippet.substring(0, chosenSnippet.indexOf(":"))) - 1;
+        
     }
 
     /**
@@ -85,7 +72,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
      * @param text the input string
      * @return the list of snippets
      */
-    private List<String> getSnippetsFromText(String text) {
+    private List<String> getCodeSnippetsFromText(String text) {
         List<String> snippets = new LinkedList<>();
         int start, end = 0;
         while ((start = text.indexOf(CODE_START_TAG, end)) != -1 &&
@@ -96,17 +83,13 @@ public class DoubleClickOnPostListener extends MouseAdapter {
         return snippets;
     }
 
-    /**
-     * Inserts text into editor
-     * @param text the text to be inserted
-     */
-    private void insertTextIntoEditor(Editor editor, String text) {
-        if (editor == null)
-            return;
+    private void insertTextIntoEditor(String text) {
+    	
+        Editor editor = IntelijFacade.getEditor();
+        if (editor == null) return;
 
         Project project = editor.getProject();
-        if (project == null)
-            return;
+        if (project == null)return;
 
         Document doc = editor.getDocument();
         int offset = editor.getCaretModel().getOffset();
@@ -130,12 +113,15 @@ public class DoubleClickOnPostListener extends MouseAdapter {
 
 
     /**
-     * Displays a JOptionPane and asks the user for input
-     * @param possibilities the options
-     * @return the user's choice
+     * Displays a JOptionPane and asks the user to choose a snippet.
+     * @param codeSnippets the available snippet options
+     * @return the user's choice of snippet or null if the user cancels.
      */
-    public String getChosenSnippet(Object[] possibilities) {
-        return (String) JOptionPane.showInputDialog(
+    private String getUserToChooseASnippet(List<String> codeSnippets) {
+    	
+    	Object[] possibilities = getSnippetOptions(codeSnippets);
+    	
+        String result = (String) JOptionPane.showInputDialog(
                 jEditorPane,
                 "Choose which code snippet:\n",
                 "Code snippet",
@@ -143,23 +129,31 @@ public class DoubleClickOnPostListener extends MouseAdapter {
                 null,
                 possibilities,
                 possibilities[0]);
+        
+        Integer index = asList(possibilities).indexOf(result);
+        return codeSnippets.get(index);
     }
 
     /**
-     * Takes a list of snippets and returns a formatted list of options
+     * Takes a list of snippets and returns a formatted array of options.
      * @param snippets the input snippets
      * @return the options
      */
-    public Object[] getSnippetOptions(List<String> snippets) {
-        Object[] snippetOptions = new Object[snippets.size()];
-        for (int i = 0; i < snippets.size(); i++) {
-            if (snippets.get(i).length() > 100)
-                snippetOptions[i] = (i + 1) + ":" + snippets.get(i).substring(0, INPUT_DIALOG_MAX_SNIPPET_LENGTH);
-            else
-                snippetOptions[i] = (i + 1) + ":" + snippets.get(i);
+    private Object[] getSnippetOptions(List<String> snippets) {
+        List<Object> snippetOptions = new ArrayList<Object>();
+        
+        int i = 0;
+        for (String snippet: snippets) {
+            String snippetPreview = snippet;
+
+            if (snippetPreview.length() > 100)
+                snippetPreview = snippetPreview.substring(0, INPUT_DIALOG_MAX_SNIPPET_LENGTH);
+
+        	snippetPreview = (++i) +":"+ snippetPreview;
+        	snippetOptions.add(snippetPreview);
         }
 
-        return snippetOptions;
+        return snippetOptions.toArray();
     }
 
     /**
@@ -167,7 +161,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
      * @param s html text to be converted
      * @return the text as a result
      */
-    public static String HTMLtoText(String s) {
+    private static String HTMLtoText(String s) {
         s = s.replaceAll("&lt;", "<");
         s = s.replaceAll("&gt;", ">");
         return s;

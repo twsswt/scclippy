@@ -3,46 +3,61 @@ package uk.ac.glasgow.scclippy.plugin.search;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import uk.ac.glasgow.scclippy.plugin.lucene.File;
-import uk.ac.glasgow.scclippy.plugin.settings.Settings;
+
+import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
 import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
+import static java.lang.String.format;
+
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Class for searching with a web service
+ * Class for searching the plugin's associated web service managed index and database.
  */
-public class WebServiceSearch extends Search {
+public class WebServiceSearch extends StackoverflowSearch {
 
-    /**
-     * Performs search by querying app server using RESTful services
-     * @See Search#search
-     */
-    public void search(@NotNull String query, int posts) throws Exception {
-        if (!inputValidator(query, posts)) {
-            files = null;
-            return;
-        }
-        query = query.trim();
+	private String webServiceURI;
+	
+	public WebServiceSearch (String webServiceURI){
+		this.webServiceURI = webServiceURI;
+	}
+	
+	public void setWebServiceURI (String webServiceURI){
+		this.webServiceURI = webServiceURI;
+	}
+	
+    public List<StackoverflowEntry> searchIndex(@NotNull String query, int posts) throws Exception {
 
         query = URLEncoder.encode(query, "UTF-8");
-        JSONObject json = URLProcessing.readJsonFromUrl(Settings.webServiceURI[0] + query + "?posts=" + posts);
+        
+        String queryURITemplate = "%s%s?posts%d";
+        String queryURI = format(queryURITemplate, webServiceURI, query, posts);
+        
+        JSONObject webserviceQueryResult = URLProcessing.readJsonFromUrl(queryURI);
 
-        if (json == null) {
+        if (webserviceQueryResult == null) {
             throw new Exception("Query failed. Check connection to server.");
         }
 
-        JSONArray items = json.getJSONArray("results");
-        if (items.length() == 0) {
-            files = null;
-            return;
-        }
-
-        files = new File[items.length()];
+        List<StackoverflowEntry> result = new ArrayList<StackoverflowEntry>();
+        
+        JSONArray items = webserviceQueryResult.getJSONArray("result");
+        
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = (JSONObject) items.get(i);
-            files[i] = new File("" + item.getString("id"), item.getString("body"), (int) item.get("score"));
+            
+            String postId = item.getString("id");
+            String parentId = item.getString("parentId");
+            String body = item.getString("body");
+            int score = item.getInt("score");
+            
+            StackoverflowEntry stackoverflowEntry = 
+            	new StackoverflowEntry(postId, parentId, score, body);
+			result.add(stackoverflowEntry);
+            
         }
-        Search.currentSearchType = SearchType.WEB_SERVICE;
+        return result;        	
     }
 }

@@ -1,130 +1,143 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
-import com.intellij.openapi.ui.ComboBox;
-import uk.ac.glasgow.scclippy.plugin.search.*;
-import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
-import uk.ac.glasgow.scclippy.uicomponents.settings.IntegerSavingJTextField;
+import java.awt.FlowLayout;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Properties;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import com.intellij.openapi.ui.ComboBox;
+
+import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
+import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
+import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
 
 /**
  * Represents a class that contains components in the search panel/tab
  */
 public class SearchTab {
-
-    Search localSearch = new LocalIndexedSearch();
-    Search webServiceSearch = new WebServiceSearch();
-    Search stackExchangeSearch = new StackExchangeSearch();
-
+		
     private JComponent searchPanel;
     private JScrollPane scroll;
+    
+    private ComboBox searchMechanismComboBox;
+	private ComboBox resultSortOptionsComboBox;
+    private JLabel stackExchangeSearchRequestsLabel;
 
-    public static InputPane inputPane;
-    public Posts posts = new Posts();
+    private QueryInputPane queryInputPane;
+    private PostsPane postsPane;
 
-    JLabel stackExchangeSearchRequestsLabel = new JLabel("Unknown requests left.");
+	private SearchController searchController;
 
-    public SearchTab(SearchHistoryTab searchHistoryTab) {
-        initSearchPanel(searchHistoryTab);
+    public SearchTab(Properties properties, SearchHistoryTab searchHistoryTab) {
+    	
+        initSearchPanel(properties, searchHistoryTab);
+        
+    	Path indexPath = Paths.get(properties.getProperty("indexPath")).toAbsolutePath();
+        String webServiceURI = properties.getProperty("webServiceURI");
+        
+        searchController = new SearchController (indexPath, webServiceURI);
     }
 
-    void initSearchPanel(SearchHistoryTab searchHistoryTab) {
+    private void initSearchPanel(Properties properties, SearchHistoryTab searchHistoryTab) {
+    	
         searchPanel = new JPanel();
         searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.PAGE_AXIS));
 
-        scroll = new SearchPanelScroll(searchPanel, posts, localSearch, webServiceSearch, stackExchangeSearch);
-        inputPane = new InputPane(posts, searchHistoryTab, this);
+        scroll = new SearchPanelScroll(searchPanel, this);
 
-        String[] searchOption = {"Local Index", "Web Service", "StackExchange API"};
-        JComboBox searchOptions = new ComboBox(searchOption);
+        queryInputPane = new QueryInputPane(searchHistoryTab, this);
+        postsPane = new PostsPane();
+        
+    	stackExchangeSearchRequestsLabel = new JLabel("Unknown requests left.");
+        stackExchangeSearchRequestsLabel.setVisible(false);
+
+        String[] searchOptionKeys = searchController.getSearchOptionKeys();
+        searchMechanismComboBox = new ComboBox(searchOptionKeys);
         JLabel searchOptionsLabel = new JLabel("Search with");
-        searchOptionsLabel.setLabelFor(searchOptions);
-        searchOptions.setSelectedIndex(1);
-        searchOptions.addActionListener(e -> {
-            JComboBox cb = (JComboBox) e.getSource();
-            String selectedSearchOption = (String) cb.getSelectedItem();
+        searchOptionsLabel.setLabelFor(searchMechanismComboBox);
+        searchMechanismComboBox.setSelectedIndex(1);
+        
+        searchMechanismComboBox.addActionListener(e -> {
+            String selectedSearchOption = (String) searchMechanismComboBox.getSelectedItem();
 
-            for (int i = 0; i < searchOption.length; i++) {
-                if (searchOption[i].equals(selectedSearchOption)) {
-                    Search.currentSearchType = Search.SearchType.values()[i];
-                    break;
-                }
-            }
-            if (searchOption[2].equals(selectedSearchOption)) {
+            if (selectedSearchOption.equals("StackExchange API")) {
                 stackExchangeSearchRequestsLabel.setVisible(true);
             } else {
                 stackExchangeSearchRequestsLabel.setVisible(false);
             }
         });
 
-        stackExchangeSearchRequestsLabel.setVisible(false);
-
-        String[] sortOption = {"Relevance", "Score"};
-        JComboBox sortOptions = new ComboBox(sortOption);
+        String[] sortOptionKeys = searchController.getSortOptionKeys();
+        resultSortOptionsComboBox = new ComboBox(sortOptionKeys);
         JLabel sortOptionsLabel = new JLabel("Sort results by");
-        sortOptionsLabel.setLabelFor(sortOptions);
-        sortOptions.setSelectedIndex(0);
-        sortOptions.addActionListener(e -> {
-            JComboBox cb = (JComboBox) e.getSource();
-            String selectedSortOption = (String) cb.getSelectedItem();
+        sortOptionsLabel.setLabelFor(resultSortOptionsComboBox);
+        resultSortOptionsComboBox.setSelectedIndex(0);
 
-            for (int i = 0; i < sortOption.length; i++) {
-                if (sortOption[i].equals(selectedSortOption)) {
-                    ResultsSorter.currentSortOption = ResultsSorter.SortType.values()[i];
-                    break;
-                }
-            }
-        });
+        JButton searchWithGoogleButton = new GoogleSearchButton(queryInputPane);
 
-
-        JTextField minimumUpvotes = new IntegerSavingJTextField(ResultsSorter.minimumScore);
-        int minimumUpvotesFieldSize = 3;
-        minimumUpvotes.setColumns(minimumUpvotesFieldSize);
-        minimumUpvotes.setToolTipText("Minimum upvotes filter of results");
-
-        // google button
-        JButton searchWithGoogleButton = new GoogleSearchButton("Google Search");
-        searchWithGoogleButton.setToolTipText("Open browser to search for Stackoverflow posts");
-
-        // write a question button
-        JButton writeQuestionButton = new AskAQuestionButton("Ask a question");
+        JButton writeQuestionButton = new AskAQuestionButton();
 
         // top panel
         JComponent topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         topPanel.add(searchOptionsLabel);
-        topPanel.add(searchOptions);
+        topPanel.add(searchMechanismComboBox);
         topPanel.add(stackExchangeSearchRequestsLabel);
         topPanel.add(sortOptionsLabel);
-        topPanel.add(sortOptions);
-        topPanel.add(minimumUpvotes);
+        topPanel.add(resultSortOptionsComboBox);
         topPanel.add(searchWithGoogleButton);
         topPanel.add(writeQuestionButton);
 
         // add components to search panel
         searchPanel.add(topPanel);
-        searchPanel.add(inputPane.getComponent());
-        posts.addTo(searchPanel);
+        searchPanel.add(queryInputPane.getComponent());
+        searchPanel.add(postsPane);
     }
 
-    public Posts getPosts() {
-        return posts;
+    public PostsPane getPostsPane() {
+        return postsPane;
     }
 
     public JScrollPane getScroll() {
         return scroll;
     }
+    
+	public void updateSearch ()  {
+        
+		String query = queryInputPane.getQueryText();
+        try {
+        	
+        	String currentSearchKey = (String)searchMechanismComboBox.getSelectedItem();
 
-    public Search getLocalSearch() {
-        return localSearch;
-    }
+    		String currentSortKey = (String)resultSortOptionsComboBox.getSelectedItem();
+    	    		
+			List<StackoverflowEntry> searchAndSortResult =
+    			searchController.updateSearchAndSort(query, currentSearchKey, currentSortKey);
+	
+            int requests = searchController.getRemainingStackoverflowJSONAPICalls();
+            stackExchangeSearchRequestsLabel.setText(requests + " requests left.");
 
-    public Search getWebServiceSearch() {
-        return webServiceSearch;
-    }
+            postsPane.update(searchAndSortResult);
 
-    public Search getStackExchangeSearch() {
-        return stackExchangeSearch;
-    }
+        } catch (Exception e) {
+        	IntelijFacade.createErrorNotification(e.getMessage());
+        }
+
+	}
+	
+	public QueryInputPane getQueryInputPane() {
+		return queryInputPane;
+	}
+
+	public SearchController getSearchController() {
+		return searchController;
+	}
 }

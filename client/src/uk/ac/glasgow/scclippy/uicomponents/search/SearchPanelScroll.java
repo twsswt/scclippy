@@ -1,12 +1,11 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
-import uk.ac.glasgow.scclippy.plugin.editor.Notification;
-import uk.ac.glasgow.scclippy.plugin.search.ResultsSorter;
-import uk.ac.glasgow.scclippy.plugin.search.Search;
-
-import javax.swing.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * Scroll for search panel/tab
@@ -15,30 +14,23 @@ public class SearchPanelScroll extends JScrollPane {
 
     private final static int SCROLL_STEP = 10;
 
-    private Posts posts;
-
-    public SearchPanelScroll(JComponent panel, Posts posts, Search localSearch, Search webServiceSearch, Search stackExchangeSearch) {
+    public SearchPanelScroll(JComponent panel, SearchTab searchTab) {
         super(panel);
-        this.posts = posts;
 
         getVerticalScrollBar().setUnitIncrement(SCROLL_STEP);
         setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        getVerticalScrollBar().addAdjustmentListener(new PostsScrollListener(localSearch, webServiceSearch, stackExchangeSearch));
+        getVerticalScrollBar().addAdjustmentListener(new PostsScrollListener(searchTab));
     }
 
     class PostsScrollListener implements AdjustmentListener {
-
-        private int lastValue = 0;
+    	
         final static int SCROLL_JUMP_BOUND = 100;
 
-        Search localSearch;
-        Search webServiceSearch;
-        Search stackExchangeSearch;
+        private int lastValue = 0;
+        private SearchTab searchTab;
 
-        public PostsScrollListener(Search localSearch, Search webServiceSearch, Search stackExchangeSearch) {
-            this.localSearch = localSearch;
-            this.webServiceSearch = webServiceSearch;
-            this.stackExchangeSearch = stackExchangeSearch;
+        public PostsScrollListener(SearchTab searchTab) {
+            this.searchTab = searchTab;
         }
 
         public void adjustmentValueChanged(AdjustmentEvent evt) {
@@ -59,25 +51,7 @@ public class SearchPanelScroll extends JScrollPane {
             }
 
             if (value + extent == maximum) {
-                String query = SearchTab.inputPane.inputArea.getText();
-
-                try {
-                    if (Search.currentSearchType.equals(Search.SearchType.LOCAL_INDEX)) {
-                        localSearch.search(query, Posts.maxPostCount[0]);
-                    } else if (Search.currentSearchType.equals(Search.SearchType.WEB_SERVICE)) {
-                        webServiceSearch.search(query, Posts.maxPostCount[0]);
-                    } else if (Search.currentSearchType.equals(Search.SearchType.STACKEXCHANGE_API)) {
-                        stackExchangeSearch.search(query, Posts.maxPostCount[0]);
-                    }
-
-                    if (ResultsSorter.currentSortOption == ResultsSorter.SortType.BY_SCORE) {
-                        ResultsSorter.sortFilesByScore();
-                    }
-
-                    posts.update();
-                } catch (Exception e) {
-                    Notification.createErrorNotification(e.getMessage());
-                }
+            	searchTab.updateSearch();            	
             }
         }
     }

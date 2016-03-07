@@ -1,6 +1,6 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
-import uk.ac.glasgow.scclippy.plugin.editor.Notification;
+import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,13 @@ import java.net.URLEncoder;
  */
 public class GoogleSearchButton extends JButton {
 
-    public GoogleSearchButton(String s) {
-        super(s);
+	private QueryInputPane queryInputPane;
+	
+    public GoogleSearchButton(QueryInputPane queryInputPane) {
+        super("Google Search");
+        this.queryInputPane = queryInputPane;
+        setToolTipText("Open browser to search for Stackoverflow posts");
+
         addActionListener(new GoogleSearchActionListener());
     }
 
@@ -27,11 +32,12 @@ public class GoogleSearchButton extends JButton {
         public void actionPerformed(ActionEvent e) {
             if (Desktop.isDesktopSupported()) {
                 try {
-                    String query = URLEncoder.encode(SearchTab.inputPane.inputArea.getText().trim() + " ", "UTF-8");
+                	String queryTerm = queryInputPane.getQueryText();
+                    String query = URLEncoder.encode(queryTerm.trim() + " ", "UTF-8");
                     URI uri = new URI("https://www.google.com/search?q=" + query + "site:stackoverflow.com");
                     Desktop.getDesktop().browse(uri);
                 } catch (IOException | URISyntaxException e1) {
-                    Notification.createErrorNotification(e1.getMessage());
+                	IntelijFacade.createErrorNotification(e1.getMessage());
                 }
             }
         }

@@ -1,7 +1,8 @@
 package uk.ac.glasgow.scclippy.uicomponents.feedbacktab;
 
 import com.intellij.ui.components.JBScrollPane;
-import uk.ac.glasgow.scclippy.plugin.editor.Notification;
+
+import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
 
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
@@ -45,7 +46,7 @@ public class FeedbackTab {
                         URI uri = new URI(FEEDBACK_URL);
                         Desktop.getDesktop().browse(uri);
                     } catch (IOException | URISyntaxException e1) {
-                        Notification.createErrorNotification(e1.getMessage());
+                    	IntelijFacade.createErrorNotification(e1.getMessage());
                     }
                 }
             }

@@ -1,45 +1,66 @@
 package uk.ac.glasgow.scclippy.uicomponents.history;
 
-import com.intellij.ui.components.JBScrollPane;
+import com.intellij.ui.JBColor;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  * Represents a class that contains components in the query history panel/tab
  */
-public class SearchHistoryTab {
+public class SearchHistoryTab extends JScrollPane{
 
-    private final static int SCROLL_STEP = 10;
+    private final static int SCROLL_STEP_SIZE = 10;
+    private final static int MAX_HISTORY_SIZE = 100;
 
-    private JComponent historyPanel = new JPanel();
-    private JScrollPane scroll = new JBScrollPane(historyPanel);
+    private JComponent contentPanel;
 
-    Queue<JTextArea> inputHistoryQueue = new LinkedList<>();
+    Queue<JTextArea> inputHistoryQueue;
 
     public SearchHistoryTab() {
-        initHistoryPanel();
+    	inputHistoryQueue = new LinkedList<>();
+    	initialiseBorder();
+        initialiseHistoryPanel();
     }
 
-    public void initHistoryPanel() {
-        historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.PAGE_AXIS));
-        scroll.getVerticalScrollBar().setUnitIncrement(SCROLL_STEP);
+    private void initialiseHistoryPanel() {
+    	contentPanel = new JPanel();
+        setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
+    	add(contentPanel);
+        getVerticalScrollBar().setUnitIncrement(SCROLL_STEP_SIZE);
+        
     }
 
     public void update(String query) {
-        JTextArea historyPane = new HistoryPane(query);
-
+        JTextArea historyPane = createQueryHistoryPane(query);
         inputHistoryQueue.add(historyPane);
-        if (inputHistoryQueue.size() > 100) {
+        
+        while (inputHistoryQueue.size() > MAX_HISTORY_SIZE) {
             JTextArea area = inputHistoryQueue.poll();
-            historyPanel.remove(area);
+            contentPanel.remove(area);
         }
 
-        historyPanel.add(historyPane, 0);
+        contentPanel.add(historyPane, 0);
+    }
+    
+    private Border border;
+
+    private void initialiseBorder () {
+        Border matteBorder = BorderFactory.createMatteBorder(1, 5, 1, 1, JBColor.DARK_GRAY);
+        Border marginBorder = BorderFactory.createEmptyBorder(0, 8, 0, 0);
+        border = BorderFactory.createCompoundBorder(matteBorder, marginBorder);
     }
 
-    public JScrollPane getScroll() {
-        return scroll;
+    private JTextArea createQueryHistoryPane(String query) {
+        JTextArea queryHistoryTextArea = new JTextArea(query);
+        queryHistoryTextArea.setLineWrap(true);
+        queryHistoryTextArea.setWrapStyleWord(true);
+        queryHistoryTextArea.setBorder(border);
+        queryHistoryTextArea.setEditable(false);
+        return queryHistoryTextArea;
     }
+
 }

@@ -1,43 +1,60 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.jetbrains.annotations.NotNull;
-import uk.ac.glasgow.scclippy.plugin.lucene.SearchFiles;
-import uk.ac.glasgow.scclippy.plugin.settings.Settings;
+import static java.lang.String.format;
 
-import java.io.IOException;
+import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
+import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
+import uk.ac.glasgow.scclippy.lucene.StackoverflowLuceneSearcher;
 
 /**
- * Class for searching with a local index
+ * Class for searching with a local index and database.
  */
-public class LocalIndexedSearch extends Search {
+public class LocalIndexedSearch	extends StackoverflowSearch {
+	
+	private Path indexPath;
+	
+	public LocalIndexedSearch(Path indexPath){
+		this.indexPath = indexPath;
+	}
+	
+	public void setIndexPath(Path indexPath){
+		this.indexPath = indexPath;
+	}
+	
 
-    private final static String DEFAULT_FIELD = "contents";
+	@Override
+	protected List<StackoverflowEntry> searchIndex(@NotNull String queryString, int desiredHits) throws Exception {
+		
+		Connection connection = createDatabaseConnection();
+		
+		StackoverflowLuceneSearcher stackoverflowLuceneSearcher = 
+			new StackoverflowLuceneSearcher (connection, indexPath);
+		
+		return stackoverflowLuceneSearcher.searchDocuments(queryString, desiredHits);		
+	}
+	
+	private Connection createDatabaseConnection() throws SQLException {
+		String databaseDriverClassName = "org.postgresql.Driver";
+		try {
+			Class.forName(databaseDriverClassName);
+		} catch (ClassNotFoundException e1) {
+			throw new SQLException(
+				format("Couldn't find database driver for SQL connection [%s].",databaseDriverClassName));
+		}
+		
+		String dbURL =  "localhost:5432/stackoverflow";
+		String dbUsername = "stackoverflow";
+		String dbPassword = "deepdarkw00d";
+		
+		return 
+				DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+	}
 
-    /**
-     * Updates the files with the search from a local index
-     * @See Search#search
-     */
-    public void search(@NotNull String query, int posts) throws Exception {
-        if (!inputValidator(query, posts)) {
-            files = null;
-            return;
-        }
-        query = query.trim();
-
-        try {
-            files = SearchFiles.search(
-                    Settings.indexPath,
-                    DEFAULT_FIELD,
-                    query,
-                    posts
-            );
-        } catch (IOException e) {
-            throw new Exception("Searching failed due to I/O problems. Try again.");
-        } catch (ParseException e) {
-            throw new Exception("Searching failed. Try again.");
-        }
-
-        Search.currentSearchType = SearchType.LOCAL_INDEX;
-    }
 }

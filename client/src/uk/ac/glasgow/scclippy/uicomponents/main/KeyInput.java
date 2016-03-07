@@ -5,17 +5,24 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
+
+import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
 
 /**
  * Handles user key input
  */
 public class KeyInput extends TypedHandlerDelegate {
-
+	
     // Special characters that trigger search
     private static char[] triggerSearchChars = new char[] {
       ' ', '.', ';'
     };
+	
+	private QueryInputPane queryInputPane;
+	
+	public KeyInput (QueryInputPane queryInputPane){
+		this.queryInputPane = queryInputPane;
+	}
 
     @Override
     public Result charTyped(char c, Project project, @NotNull Editor editor, @NotNull PsiFile file) {
@@ -37,7 +44,11 @@ public class KeyInput extends TypedHandlerDelegate {
                         break;
                     }
                     // update query input
-                    SearchTab.inputPane.inputArea.setText(file.getText().substring(last + 1, offset).trim());
+                    
+                    String queryText =
+                    	file.getText().substring(last + 1, offset).trim();
+                    
+                    queryInputPane.setQueryText(queryText);
                 }
                 break;
             }
