@@ -24,7 +24,7 @@ public class Settings {
     public static String indexPath = "";
 
     public static boolean resizableInputArea = true;
-    public static String[] webServiceURI = new String[]{"http://localhost:8080/scc/rest/search/"};
+    public static String[] webServiceURI = new String[]{"http://rote.dcs.gla.ac.uk:9999/rest/search/"};
 
     /**
      * Saves the current settings

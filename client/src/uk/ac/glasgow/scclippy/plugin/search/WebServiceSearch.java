@@ -41,7 +41,7 @@ public class WebServiceSearch extends Search {
         files = new File[items.length()];
         for (int i = 0; i < items.length(); i++) {
             JSONObject item = (JSONObject) items.get(i);
-            files[i] = new File("" + item.getString("id"), item.getString("content"), (int) item.get("score"));
+            files[i] = new File("" + item.getString("id"), item.getString("body"), (int) item.get("score"));
         }
         Search.currentSearchType = SearchType.WEB_SERVICE;
     }
