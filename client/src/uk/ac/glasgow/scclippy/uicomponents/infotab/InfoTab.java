@@ -41,8 +41,8 @@ public class InfoTab {
                 "\n(+) Can be changed to index files according to your preferences. " +
                 "\n(-) Main downside is that it is usually restricted to only a few files." +
                 "\n" +
-                "> Using a web service which has already indexed posts from Stack Overflow " +
-                "(requires ssh to dcs.gla.ac.uk (port 8080) and tunneling to rote.dcs.gla.ac.uk:9999). " +
+                "> Using a web service which has already indexed posts from Stack Overflow" +
+                "\n(requires ssh and tunneling (ssh -L 9999:rote.dcs.gla.ac.uk:9999 <USERNAME>@sibu.dcs.gla.ac.uk)). " +
                 "\n(+) Good due to unlimited requests" +
                 "\n(-) Requires user credentials in order to have access (will probably be changed in the future)." +
                 "\n" +
