@@ -37,7 +37,6 @@ public class SearchService {
 	@Context
 	public ServletContext servletContext;
 		
-	@SuppressWarnings("unchecked")
 	@GET
 	@Path("/{query}")
 	@Produces(MediaType.APPLICATION_JSON)
