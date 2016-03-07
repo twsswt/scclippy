@@ -42,7 +42,7 @@ public class InfoTab {
                 "\n(-) Main downside is that it is usually restricted to only a few files." +
                 "\n" +
                 "> Using a web service which has already indexed posts from Stack Overflow" +
-                "\n(requires ssh and tunneling (ssh -L 9999:rote.dcs.gla.ac.uk:9999 <USERNAME>@sibu.dcs.gla.ac.uk)). " +
+                "\n(requires ssh and tunneling - Windows users can use Git Bash for the following command (ssh -L 9999:rote.dcs.gla.ac.uk:9999 <USERNAME>@sibu.dcs.gla.ac.uk) or PuTTY or something else). " +
                 "\n(+) Good due to unlimited requests" +
                 "\n(-) Requires user credentials in order to have access (will probably be changed in the future)." +
                 "\n" +
