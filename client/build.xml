@@ -72,7 +72,7 @@
 
 	<target name="plugin" depends="jar">
 		<zip file="scclippy-0.0.1-PREALPHA.zip">
-			<zipfileset prefix="scclippy/lib" dir="lib" includes="lucene-*.jar" />
+			<zipfileset prefix="scclippy/lib" dir="lib" includes="lucene-*.jar,json-*.jar" />
 			<zipfileset prefix="scclippy/lib" dir="." includes="scclippy-${version}.jar" />
 		</zip>
 	</target>
