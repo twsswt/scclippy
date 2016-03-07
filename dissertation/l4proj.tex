@@ -16,9 +16,9 @@
 
 \begin{abstract}
 The Source Code Clippy plugin enables searching for code snippets from different sources and provides them to the developer. 
-SHOULD DIFFERENT WAYS OF SEARCHING BE EXPLAINED?
+SHOULD DIFFERENT WAYS OF SEARCHING BE EXPLAINED? @@@@@@@@@@@@@@@@
 The main objective of the project is to build a plugin for an IDE that will support the user with searching and helpful related features, as well as giving them the ability to configure the system. There is a research interest in how beneficial excerpts of code are to the developers. Thus, the application's purpose is to provide tools with which the user can easily and intuitively interact. 
-The system has been evaluated ... . The findings of the study show that ... . Feedback from users ... . Besides personal purposes, the plugin can be used ... ???
+The system has been evaluated ... . The findings of the study show that ... . Feedback from users ... . Besides personal purposes, the plugin can be used ... ??? @@@@@@@@@@@@@@@@
 \end{abstract}
 
 \educationalconsent
@@ -50,17 +50,35 @@ The goal of this project is to re-develop the prototype as a production quality 
 
 \section{Achievements}
 
-The required plugin Source Code Clippy was implemented as an IntelliJ IDE plugin for the Java programming language. It allows the user to search for code snippets in four different ways - by making requests to Stack Exchange excerpts API; by indexing files on disk; using a Web Service that has already indexed a collection of Stack Overflow documents; by performing Google search on the query. Searching for code is done automatically when the user is typing as well as when the user selects part of their code.
+The required plugin Source Code Clippy was successfully implemented as an IntelliJ IDE plugin for the Java programming language. It allows the user to search for code snippets in four different ways - by making requests to Stack Exchange excerpts API; by indexing files on disk; using a Web Service that has already indexed a collection of Stack Overflow documents; by performing Google search on the query. The plugin also offers useful to the user features - searching for code is done automatically when the user is typing as well as when the user selects part of their code; automatic insertion of code into the editor by double clicking on post and others.  
 In terms of qualities, the plugin could be described as highly usable, efficient, customizable, and extensible.
 
 \section{Dissertation structure}
 The dissertation is structured in a chronological order. It starts with the background and requirements, follows the design and implementation process, and ends with the results of the evaluation and a discussion on the outcome of the project. The table below describes the report's structure.
 
-TABLE
+\begin{table}[h]
+\caption{Dissertation Structure}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{3cm}p{12cm}}
+\hline
+Chapter & Content \\
+\hline
+2. Background  & A short description of the previous work related to the project. \\
+3. Requirements   & Discusses the gathering of the requirements, followed by a list of all requirements. \\
+4. Design and Implementation  & Describes the architecture of the plugin. Details the design decisions taken. Also contains a list of final design features.\\
+5. Evaluation  & Describes the test process and the user evaluation carried out, their results and a discussion of the results. \\
+6. Conclusion: & Discusses the outcome of the project, future work possibilities and learning outcomes.  \\
+\hline
+\end{tabular}
+\label{table:reportStructure}
+\end{table}
+
 
 \section{Terminology}
 SCC refers to the Source Code Clippy (SCClippy) plugin.
-
+\\
+\\
 RSSE is an abbreviation for Recommendation Systems for Software Engineering.
 
 \chapter{Background and Requirements}
@@ -71,7 +89,7 @@ In the previous years, a number of recommendation systems for Software Engineeri
 
 \subsection{Similar technologies}
 
-INCLUDE REFERENCES
+INCLUDE REFERENCES @@@@@@@@@@@@@@@@
 
 There are many RSSE systems that use different input, as well as processing and visualisation techniques. Similar plugins have been outlined below:
 
@@ -90,7 +108,7 @@ Expertise Browser recommends people for a particular piece of code by considerin
 ParseWeb is useful in situations when the developer needs an object to perform methods on, but cannot recall how to get the object. The tool crawls the web based on the user's input (object types) to search for recommendations.
 
 \subsection{Evaluation of similar ideas}
-Most systems and tools described above have something in common - they do recommendation by going through several stages - input handling, intermediate analyzing of some sort, and visualisation technique. However, they also have a unique approach that focuses on certain aspects. Source Code Clippy is special because it features different ways of searching for excerpts and it offers additional helpful features as well.
+Most systems and tools described above have something in common - they do recommendation by going through several stages - input handling, intermediate analyzing of some sort, and visualisation technique. However, they also have a unique approach that focuses on certain aspects. Source Code Clippy is special because it features different ways of searching for excerpts by focusing on getting data from Stack Overflow - one of the biggest sources of code snippets. In addition, the plugin offers helpful features to assist the developer.
 
 
 \section{Description of Tomasz's prototype}
@@ -104,33 +122,98 @@ The prototype was not evaluated.
 Requirements were gathered and discussed during informal weekly customer meetings.
 The requirements and tasks were prioritised based on the MoSCoW approach (link). Github's issue tracker was used to list all of them and track their progress. (https://github.com/thrios/SourceCodeClippy/issues)
 
-Below is a summary of the functional features: (SHOULD ALL REQUIREMENTS BE LISTED?)
+\subsection{Must Have}
+Must have requirements are fundamental and crucial to the success of the project. Table ~\ref{table:mustTable} shows the details of the must-have requirements.
 
-- Searching with local index
+\begin{table}[h]
+\caption{Must Have Requirements}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{2cm}p{4cm}p{9cm}}
+\hline
 
-- Searching with Stack Exchange API
+FR & Requirement & Description \\
+\hline
+1 & Searching with local index & Based on some input, the user must be able to search using an index on the local file system, as well as create a new index/update existing one.\\
+2 & Searching with Stack Exchange API & The user must be allowed to make requests to the Stack Exchange API based on a query and see the results returned\\
+3 & Searching using a Web Service & The user must have the option to choose to search using a web service - a preindexed collection of Stack Overflow question and answer posts\\
+4 & Searching with Google for the Stack Overflow domain & The user must be given the option to choose to search the text in the query pane with google\\
+5 & Configuration panel & The user must be provided with the functionality to change the settings of the plugin in order to configure and customize it to their needs - changing the local index used, the web service URI, etc\\
+6 & Handling selection input & The user's mouse selection should be automatically\\
+7 & Last statement typed query input & The user's key input should be captured and update the query input pane\\
+\hline
+\end{tabular}
+\label{table:mustTable}
+\end{table}
 
-- Searching using a Web Service
+\subsection{Should Have}
+The should have requirements are considered as important. Table ~\ref{table:shouldTable} represents all the 'should have' requirements along with their description.
 
-- Searching with Google for the Stack Overflow domain
+\begin{table}[h]
+\caption{Should Have Requirements}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{2cm}p{4cm}p{9cm}}
+\hline
+FR & Requirement & Description \\
+\hline
+8 & Insertion of code by double clicking a post & A user should be able to login with their Facebook account \\
+9 & Filters of results & A user should be able to review the content before uploading, to delete any content that they do not wish to upload \\
+10 & Feedback tab & The goal is to improve the system and therefore the user should be able to submit feedback \\
+11 & Post useful meta data and customization & Posts should contain their type (question or answer), their score (if applicable) and a hyperlink leading to their source. There should be options to customize the post - let the user choose the text colour used, etc.\\
+12 & Custom input pane listener & The user should be able to make search request on 'Enter' and new lines with the 'Shift' key when the focus is on the query pane\\
+13 & Additional search request & The plugin should offer an additional search request to be made on the same query to allow more posts to be fetched and displayed\\
+14 & Sorting results & The user should be able to sort results by relevance or by score\\
+\end{tabular}
+\label{table:shouldTable}
+\end{table}
 
-- Configuration panel
+\subsection{Could Have}
+Could have requirements are optional features the system could benefit from. Due to time constraints, FR21 was not implemented, but is considered for possible future work. Table ~\ref{table:couldTable}  lists the 'could have' requirements, as well as their descriptions.
 
-- Handling selection input and last statement key input
+\begin{table}[h]
+\caption{Could Have Requirements}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{2cm}p{4cm}p{9cm}}
+\hline
+FR & Requirement & Description \\
+\hline
+15 & Number of calls to Stack Exchange API & The plugin could display the remaining calls that can be made to the API\\
+16 & Highlighting code & Highlighting the text in HTML code tags to distinguish between code and text of a post\\
+17 & Write a question & Functionality to enable the user to write a question on Stack Overflow\\
+18 & Information tab & A tab for showing information to the user that they might need to know\\
+19 & Default number of posts and max number of posts & Feature which gives the user the ability to change how many post they see after a search (on 'Enter'), and a secondary search (using the scroll)\\
+20 & Saved settings & The options the user selects and changes could be saved automatically and loaded when the plugin starts\\
+21 & Code Intelligent Search & The variable names and other terms in the query that are less relevant could have less weight attributed to them so that the results are more refined. The use of tags that allow the user to filter could be also a potential improvement.\\
+\hline
+\end{tabular}
+\label{table:couldTable}
+\end{table}
 
 - A lot of other helpful features such as insertion of code + formatting on double click (instead of standard copy-paste), additional search request on scrolling down; search history; output filters; query input listener; additional data included in posts; notifications; write a question button; provide feedback tab;
 
 In terms of non-functional requirements, the system should have:
 
-- Intuitive interface - users should not get confused and feel the plugin as something they are familiar with
-
-- High responsiveness/performance in general - the user should not have to wait more than a few seconds 
-
-- High usability - good user interface, good responsiveness, but also provide helpful features e.g. automating the process if possible and reasonable to do so
-
-- Good documentation - well-documented code allows for easy extension of the plugin
-
-- Extensibility - the system should allow for easy future extensions
+\section{Non-Functional Requirements}
+Non-functional requirements represent the qualities the system is required to meet. Table ~\ref{table:nonFuncTable}  lists and describes the non-functional requirements for the plugin.
+\begin{table}[h]
+\caption{Non-Functional Requirements}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{2cm}p{4cm}p{9cm}}
+\hline
+NFR & Requirement & Description \\
+\hline
+1 & Intuitive interface & Users should not get confused and feel the plugin as something they are familiar with \\
+2 & High responsiveness/performance in general & The user should not have to wait more than a few seconds \\
+3 & High usability & Good user interface, good responsiveness, but also provide helpful features e.g. automating the process if possible and reasonable to do so \\
+4 & Good documentation & Well-documented code allows for easy extension of the plugin \\
+5 & Extensible & The system should allow for easy future extensions\\
+\hline
+\end{tabular}
+\label{table:nonFuncTable}
+\end{table}
 
 \chapter{Design and Implementation}
 
@@ -140,10 +223,11 @@ In terms of non-functional requirements, the system should have:
 \centering
 \label{fig:architecture}
 \end{figure}
-As you can see in the figure \ref{fig:architecture}, the 
-user can use the IntelliJ SCClippy plugin to retrieve excerpts data from a number of data sources:
+As you can see in the figure \ref{fig:architecture}, the logical parts of the system are coloured in red. The data sources can be identified by their green colour. The boxes in blue represent outgoing links.
 
-- by using a local index on the user's file system (created beforehand).
+The user can use the IntelliJ SCClippy plugin to retrieve excerpts data from a number of data sources:
+
+- by using a local index on the user's file system. The user is allowed also to create a new index or update the contents of existing one. 
 
 - by sending requests to the Web Service which in return will return a JSON response
 
@@ -151,9 +235,10 @@ user can use the IntelliJ SCClippy plugin to retrieve excerpts data from a numbe
 
 - by clicking on a button that will open a browser window and search the query using Google for the domain of Stack Overflow. 
 
-The system also has a hyperlink to an online survey that the user can follow, fill and submit online.
+The system also has a hyperlink to an online survey that the user can follow, fill and submit online. The client automatically saves its settings to a file relative to the plugin's installation in order to load them when a new IntelliJ client is started and the plugin was launched. Each instance of IntelliJ contains a separate instance of the SCClippy plugin.
 
 \section{Iterations}
+\subsection{Overview}
 Consecutive iterations of developing the plugin consisted of several stages:
 
 - Familiarisation with developing a plugin, indexing, and extracting data from the given PostgreSQL database
@@ -165,41 +250,105 @@ The process of extracting files from the initially provided database consists of
 
 - Building an initial version of the plugin that uses a local index, as well as Stack Exchange API search
 
-- Improving the plugin by automation (automatically captured input from IntelliJ's Editor, as well as implementing mouse selection listener). Other improvements include adding configuration settings, search history, additional search options, feedback and information tabs
+- Improving the plugin by developing the web service mentioned, automating existing features (input on selection and typing, copying code into editor, etc) and implementing new features such as adding configuration settings, search history, additional search options, feedback and information tabs.
 
 - User Evaluation
 
-\section{Design decisions}
-choice of language and IDE
-Java Swing vs Java FX\\
-The plugin's user interface was chosen to be implemented with the toolkit Java Swing rather than Java FX mainly because of familiarity reasons.
+\subsection{User Interface}
+The user interface was changed frequently in order to keep up with the dynamic requirements and new features each iteration, but also due to ideas about improvements to make the look and feel of the plugin better.
 
-Searching for excerpts\\
+Initial sketches
+
+Basic user interface design
+
+Intermediate design
+
+Final design
+\begin{figure}[h]
+\caption{Search tab, Darcula IntelliJ theme}
+\includegraphics[scale=0.2]{tab-search}
+\centering
+\label{fig:search-tab}
+\end{figure}
+
+\begin{figure}[h]
+\caption{Search history tab, Darcula IntelliJ theme}
+\includegraphics[scale=0.2]{tab-history}
+\centering
+\label{fig:history-tab}
+\end{figure}
+
+\begin{figure}[h]
+\caption{Settings tab, Darcula IntelliJ theme}
+\includegraphics[scale=0.2]{tab-settings}
+\centering
+\label{fig:settings-tab}
+\end{figure}
+
+\begin{figure}[h]
+\caption{Information tab, Darcula IntelliJ theme}
+\includegraphics[scale=0.2]{tab-info}
+\centering
+\label{fig:info-tab}
+\end{figure}
+
+\begin{figure}[h]
+\caption{Feedback tab, Darcula IntelliJ theme}
+\includegraphics[scale=0.2]{tab-feedback}
+\centering
+\label{fig:feedback-tab}
+\end{figure}
+
+\section{Design decisions}
+
+\textbf{Programming language and IDE choices}\\
+Java was the programming language chosen and IntelliJ was picked due to their popularity - Java is frequently used among developers, while IntelliJ is also widely used and in addition offers very useful features to programmers - which were used even when developing the plugin.
+\\
+\\
+\textbf{Java Swing vs Java FX}\\
+The plugin's user interface was chosen to be implemented with the Java Swing toolkit rather than Java FX mainly because of familiarity reasons.
+\\
+\\
+\textbf{Searching for excerpts}\\
 Searching for code snippets with one method e.g. Stack Exchange API was not enough as it had its limitations and other ways that can provide complementing results existed. Therefore, the system offers a number of techniques for searching excerpts that have been outlined below:
 
-Local index - offers the user to freely create/update an index on a chosen data set. The major benefit of this approach is that the user can use it while being offline. The downside is that it requires documents, which the user might need, but does not have on their machine - if the user requires more information, about a topic, they may likely not have it.  
+- \textbf{Local index} - offers the user to freely create/update an index on a chosen data set. The major benefit of this approach is that the user can use it while being offline. The downside is that it requires documents, which the user might need, but does not have on their machine - if the user requires more information, about a topic, they may likely not have it.  
 
-Web Service - has an already indexed collection of Stack Overflow posts for the Java programming language.  The benefit of the web service is that it covers a large dataset - about 2 million documents. In addition, it offers unlimited requests. The negative side is that it is not kept up to date like the Stack Exchange API. \\
-This method required creating a custom server that provides a RESTful Web Service that will perform search using Apache Lucene and return only the number of documents specified (default is 5) that contain the id, body and score for each post. 
+- \textbf{Web Service} - has an already indexed collection of Stack Overflow posts for the Java programming language.  The benefit of the web service is that it covers a large dataset - about 2 million documents. In addition, it offers unlimited requests. The negative side is that it is not kept up to date like the Stack Exchange API. 
+\\
+\\
+This method required creating a custom server that provides a RESTful Web Service that on requests performs search using Apache Lucene and returns only the number of documents specified (default is 5) that contain the id, body and score for each post. 
+Initially, the server used Lucene to index the extracted files, however a decision was made to make the server use an index on the given PostgreSQL. This approach minimizes the steps needed to index the required posts.
+\\
+\\
+The web service was deployed to an application server (rote.dcs.gla.ac.uk). The major downside is that the it is only available to certain users which need to tunnel to the University's network and login with their credentials in order to have access. The server could have been deployed in the cloud to overcome this problem. However, different providers provide different solutions. For example, some of them do not offer PostgreSQL database support. Deploying the system itself has its own challenges - ideally, it should be done with minimal change of code. The plugin does not feature integration with cloud services. 
 
-Stack Exchange excerpts API (link) - provides up to date Stack Overflow snippets, but each user has a limited number of requests, equal to 300 daily (by default). Other downside is that it is dependant on variable names e.g. if the user chooses to search \textbf{for String hsaudhqwudhyqgwd = "";}, then most likely they will not get any results back.
+- \textbf{Stack Exchange excerpts API} (link) - provides up to date Stack Overflow snippets, but each user has a limited number of requests, equal to 300 daily (by default). Another downside is that it is dependant on variable names e.g. if the user chooses to search for a random string
 
-Google Search - opens a browser tab that searches using the index created by Google on the Stack Overflow's domain. This is a generally good option since it is not so variable independent as the previous type of search.
+\textbf{String hsaudhqwudhyqgwd = "";}
 
+then most likely they will not get any results back.
+
+- \textbf{Google Search} - opens a browser tab that searches using the index created by Google on the Stack Overflow's domain. This is a generally good option since it is not so variable independent as the previous type of search.
+\\
+\\
 All of the above methods use an index to process requests quickly and make the plugin more usable. Since they use a different ranking mechanism, the result they return when queried will be different from the others.
+\\
+\\
+\textbf{Automation of features}\\
+- \textbf{Querying} - options include:
 
-Automation - what is automated and what is not and why\\
+- Standard way - using a simple button
 
-Querying is performed only when the user presses 'Enter' to avoid too many requests as there is a limit on the requests that can be made to Stack Overflow, and to avoid sending too many requests to the web service as they will not be handled at a sufficient pace.
+- Automatic search listener which listens for any activity (typing, deleting or pasting text) which saves time – one less click per query - and is more intuitive.
 
-When typing the input field is set to contain the text being typed. The text
-that is captured is the text of the last command (semi colon for Java, unless 
-there is a brace – the main reason being that the import statements are not
-taken into account and the text searched is not too irrelevant e.g. declaring a
-class should be explicitly selected).
-
-Code insertion in query pane on selection\\
-Can be done in multiple ways:
+- Search on 'Enter' key pressed (faster than a button, slower than automatic search). Performed only when the user presses 'Enter'. It is faster than using a button, but slower than automatic search. Although automatic search seems the best, in practice, this option was implemented so as to avoid too many requests as there is a limit on the requests that can be made to Stack Overflow, and to avoid sending too many requests to the web service as they will not be handled at a sufficient pace.
+\\
+\\
+- \textbf{Typing} - when typing the input field is set to contain the text being typed. The text that is captured is triggered on special characters and the text of the last command range is restricted to the last seen semi colon or brace. This way only the relevant text being typed is considered and the approach also prevents ranges of text starting from import statements. The method does not restrict the user to use selection if they wish to capture a bigger piece of code.  
+\\
+\\
+- \textbf{Code Insertion to query pane} - can be done in multiple ways:
 
 - Standard copy paste
 
@@ -208,34 +357,42 @@ Can be done in multiple ways:
 - Instant copy paste on highlight
 The final options was chosen due to better usability and efficiency.
 
-Post size\\
+\textbf{Post size}\\
 Currently, posts of all sizes are displayed. The size of posts could have a fixed number of rows and an added scroll. However, the latter idea was not regarded as a particularly good option. If the row number is low, the user would have to scroll. The problem with that is if the result is a single line long, then there would be empty space - a check for query size may be added to avoid that, but there is not much benefit in doing that. It is also more complex. The initial idea does not have drawbacks, therefore, it was implemented.
 
-Query input handling options include:
+\textbf{Post content}\\
+Since the input from the data sources is often in HTML, each post enables the rendering of HTML (v3.2). The implementation is done through JEditorPane. Originally JTextPane was used, however as it did not offer a lot of customization, it was  turned down. The usage of external libraries are another choice but in this case they were unnecessary.
 
-- Standard way - using a button
+Posts feature additional statistics - the score of the post, its type (question or answer) and the URI link.
 
-- Automatic search listener which listens for any activity (typing, deleting or pasting text) which saves time – one less click per query - and is more intuitive.
-
-- Search on 'Enter' key pressed (faster than a button, slower than automatic search)
-Although automatic search seems the best, the last option was chosen due to the fact that the requests should not be made frequently because of the limited number of requests to Stack Exchange and avoiding sending too many requests to the web service.
-
-Indexing vs Full-Text Search\\
+\textbf{Indexing vs Full-Text Search}\\
 Indexing was regarded as more suitable than Full-Text search to do the task of retrieving code snippets. The main reason is that indexing platforms are more efficient and flexible - they offer more customization and retrieval is done much faster.
 
-Terrier vs Lucene\\
-The choice of an open source indexing platform came down mainly from easiness of implementation. Terrier did not have a proper straightforward tutorial showing a programmatic way of calling the API. Thus, Apache Lucene Core (https://lucene.apache.org/core/) was used for indexing and retrieval of files.
+\textbf{Lucene vs Terrier}\\
+The choice of an open source indexing platform came down mainly from easiness of implementation. Terrier did not have a proper straightforward tutorial showing a programmatic way of calling the API. Thus, Apache Lucene Core (https://lucene.apache.org/core/) was used for indexing and retrieval of files. Both retrieval platforms have different underlying principles by default (links), however, it should be pointed out that the decision made does mean a less capable system was used.
 
-Lucene ranking\\
-Default settings for ranking were used (https://link). COMMENT WHY
+\textbf{Lucene settings}\\
+Stopwords were removed as most code is filtered out due to insufficient length
 
-Displaying more results for a query\\
+No stemming is applied since retrieval is fast and there is no need to make the underlying dictionary small and sacrifice details. In terms of precision, the effectiveness of stemming were not compared to those without stemming. 
+
+Special characters are escaped when querying to enable braces and other useful symbols 
+
+Default settings for ranking were used (link):
+
+- Frequent terms in a document increase the documents score
+- Popular terms have lower score
+- More terms that match the query means higher score
+- Short documents over long documents
+
+
+\textbf{Displaying more results for a query}\\
 Additional search request is made (if necessary) when the scroll reaches the bottom of the plugin's tool window. Other options to be considered are: having a button instead (has to be clicked every time, less interactive); making search infinite (not very practical since only the top results are mostly being looked at).
 
-IntelliJ notifications are used to inform the user with feedback. Examples include "Check connection to server. ..." which is displayed when the user is not connected to the Internet or other connection problems have occurred.
+\textbf{IntelliJ notifications} are used to inform the user with feedback. Examples include "Check connection to server. ..." which is displayed when the user is not connected to the Internet or other connection problems have occurred.
 
-IntelliJ themes
-The plugin provides the user with the option to change the colour of text. This is done so that the plugin is not strictly dependent on the theme used by the user. In addition, it enables the them to choose to configure the look of the plugin to match their subjective preferences.
+\textbf{IntelliJ themes}
+The plugin provides the user with the option to change the colour of the text in posts. This is done so that the plugin is not strictly dependent on the theme used by the user. In addition, it enables the them to choose to configure the look of the plugin to match their subjective preferences.
 
 \section{Final design features}
 The plugin has its own closable window (ToolWindow) in IntelliJ that features five tabs.
@@ -290,7 +447,7 @@ Fourth tab is for plugin information which explains some details of the plugin.
 Fifth tab contains the participant consent form and is used to submit feedback by completing an online survey.
 
 \section{Challenges}
-- Using Terrier for indexing was initially planned for indexing and querying (http://terrier.org/), however, due to the lack of examples and information on how to use its API programmatically, the use of Lucene was considered and used instead.
+- Using Terrier was initially planned for indexing and querying (http://terrier.org/), however, due to the lack of examples and information on how to use its API programmatically, the use of Lucene was considered and used instead.
 
 \chapter{Evaluation}
 As already seen, the users can participate in the evaluation of the plugin by going through the following steps:
@@ -322,7 +479,7 @@ Source Code Clippy is a configurable plugin that enables the search of excerpts 
 
 The plugin was successfully implemented, tested, deployed and evaluated. All requirements were fulfilled, except one 'would-have' responsible for making search more sophisticated - adding tags and/or assigning less weight to variable names as they typically tend to be more irrelevant for a given query.
 
-The evaluation showed that SOMETHING FROM EVALUATION.
+The evaluation showed that SOMETHING FROM EVALUATION @@@@@@@@@@@@@@@@.
 
 \section{Future work}
 It is reasonable to say that the plugin could benefit from having a more intelligent search which can be done using various techniques:
@@ -345,7 +502,7 @@ The plugin can be extended to have:
 
 \section{Learning outcomes}
 
-At the beginning of this project, there was a lack of experience of how to build an IntelliJ plugin and insufficient knowledge about information retrieval along with its according available platforms. However, by going through the process of creating the plugin, the required skills were learned. In addition, the existing skills of developing software were enhanced by making decisions about ideas and their implementation in practice.
+At the beginning of this project, there was a lack of experience on how to build an IntelliJ plugin and insufficient knowledge about information retrieval along with its according available platforms. However, by going through the process of creating the plugin, the required skills were learned. In addition, the existing skills of developing software were enhanced by making decisions about ideas and their implementation in practice.
 
 \chapter{Bibliography}
 
@@ -367,8 +524,7 @@ The quick brown fox jumped over the lazy dog.
 %%%%%%%%%%%%%%%%
 \begin{appendices}
 
-\chapter{Running the Programs}
-An example of running from the command line is as follows:
+\chapter{Chapter name}
 \begin{verbatim}
 \end{verbatim}
 
