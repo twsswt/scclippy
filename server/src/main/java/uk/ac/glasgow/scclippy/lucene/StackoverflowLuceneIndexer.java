@@ -100,7 +100,7 @@ public class StackoverflowLuceneIndexer {
 				System.out.print(".");
 				indexWriter.commit();
 			}
-			documentsIndexed += 100;
+			documentsIndexed ++;
 			
 		}
 		resultSet.close();
