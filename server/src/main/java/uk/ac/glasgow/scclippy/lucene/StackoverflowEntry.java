@@ -20,6 +20,7 @@ public class StackoverflowEntry {
 	public JSONObject toJSONObject () {
 		JSONObject record = new JSONObject ();
 		record.put("id", id);
+		record.put("parentid", parentId);
 		record.put("body", body);
 		record.put("score",score);
 		return record;
