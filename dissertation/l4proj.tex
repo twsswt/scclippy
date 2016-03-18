@@ -242,6 +242,41 @@ NFR & Requirement & Description \\
 
 \chapter{Design and Implementation}
 
+\section{Use cases}
+A list summarizing the different use cases follows.
+
+\begin{itemize}
+\item The user can update the query pane in various ways - directly, by mouse selection, or key input.
+\item The user can choose to search from a number of sources.
+\item The user can sort and filter results.
+
+\item The user can execute a query
+\begin{itemize}
+\item The user can make another request that will provide more results.
+\item The user can import code by double clicking on code from posts
+\item The user can see meta data about each result/post
+\end{itemize}
+
+\item The user is allowed to view the past search history. 
+\item The user can change the settings and any changes made are saved so they can be loaded on startup.
+\item The user can see information about the plugin that will serve as a guide
+\item The user can provide feedback and contact the developer if they need to
+\end{itemize}
+
+
+
+\subsection{Developer workflow}
+Based on the use cases outlined, the typical developer workflow consists of typing a query by using the easiest way (might be mouse selection or automatically captured key input); searching for the result by changing the query in an iterative manner and the search method used appropriately until they find the result needed. Using the useful options provided (e.g. extended search, double click to import, etc) can speed up the process of completing the task being worked on.
+
+In the UML Activity diagram \ref{fig:activity-diagram} an example workflow that uses a combination of use cases (which are coloured in orange) is demonstrated - the user opens the plugin, types something in the query pane, executes that query - if results are returned then the user can do an extra search for that query or double click on a code snippet; otherwise an error notification is shown. Finally, the user clicks on the 'Ask a question' because they have made sure they have not found an appropriate code snippet to the question or any explanation about the task. The process of interaction with the plugin ends intentionally when the user closes IntelliJ.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{activity-diagram}
+\centering
+\caption{UML Activity diagram}\label{activity-diagram}
+\label{fig:activity-diagram}
+\end{figure}
+
 \section{Iterations Overview}
 Consecutive iterations of developing the plugin consisted of several stages:
 
@@ -293,6 +328,8 @@ The project was initially required to use a local index on the PostgreSQL databa
 
 The plugin was also needed to retrieve code snippets by using Stack Exchange's API. 
 
+The code written was organized into two parts - business and presentation layer.
+
 \subsection{Final design}
 
 \begin{figure}[H]
@@ -304,7 +341,9 @@ The plugin was also needed to retrieve code snippets by using Stack Exchange's A
 
 During the different iterations, it was clear that a local index was not a good enough option as it required every plugin user to have the files stored on disk. Therefore, a web service was created to replace the local index and replace the need for storage on each machine/client. However, it was seen that a local index could still be beneficial if the user wished to index a collection of their own documents. Thus, it was decided that the local index remained as a feature that provides a different and unique type of search.
 
-Finally, searching with Google was added as an option to test how useful that would be to the user when related code snippets are involved.
+The extraction of data from the database and extracting files from the CSV exported files required steps, which did not need to be made. Instead, it was discovered that indexing on the database could be done directly - this is a more straightforward way of indexing and minimizes the time taken to do the steps described which take a lot of time.
+
+Searching with Google was added as an option to test how useful that would be to the user when related code snippets are involved.
 
 To sum up, the user can use the IntelliJ Scclippy plugin to retrieve excerpts data from a number of data sources:
 
@@ -331,7 +370,7 @@ The user interface was also changed frequently in order to keep up with the dyna
 \label{fig:sketches}
 \end{figure}
 
-In the beginning of this project, two sketches of how the plugin would look like were proposed. Both of them share some of the design choices made - the query pane to be located at the top with a button for searching (using Stack Overflow) immediately after. The designs differ mainly in how posts are displayed - the first keeps the whole posts one after another, while the latter splits the code from the text and the link to the post. The first design was chosen to be implemented as it is more simple and it might be disturbing for the user to look left and right for the information needed, especially if multiple code snippets, small or long in size, are involved. The latter design also could be problematic if the user has opened another tool window beside the one used for Scclippy - then the user is required to use a horizontal scroll to see the details of the post which is inconvenient.
+In the beginning of this project, two sketches of how the plugin would look like were proposed. Both of them share some of the design choices made - the query pane to be located at the top with a button for searching (using Stack Overflow) immediately after. The designs differ mainly in how posts are displayed - the first keeps the whole posts one after another, while the latter splits the code from the text and the link to the post. The first design was chosen to be implemented as it is more simple and it might be disturbing for the user to look left and right for the information needed, especially if multiple code snippets, small or long in size, are involved. The latter design also could be problematic if the user has opened another tool window beside the one used for Scclippy - then the user is required to use a horizontal scroll to see the details of the post which is inconvenient. This is why whenever a new feature was added to the plugin, the position of that element was considered to be better if it were placed on the left side of the panel so that the user should not need to scroll to the right.
 
 \subsection{Initial design}
 \begin{figure}[H]
@@ -378,7 +417,7 @@ The default sorting used is by relevance for all search methods, however, the us
 
 A filter for results can be done by typing a number into a text box that will show only the posts with the minimum number of votes specified.
 
-The plugin offers a feature to go to Stack Overflow to ask a question in case the answer was not found.
+The plugin offers a feature to go to Stack Overflow by opening a new browser tab to ask a question in case the answer was not found.
 
 \begin{figure}[H]
 \includegraphics[scale=0.4]{tab-search}
@@ -442,7 +481,13 @@ The fourth tab is for plugin information which explains some details of the plug
 \end{figure}
 
 \subsection{Feedback tab}
-The fifth tab contains a participant consent form and a button to open a browser tab that leads to an online survey which the participant can use to submit feedback by completing the required fields and even answering the optional questions.
+The fifth tab contains a participant consent form and a button to open a browser tab that leads to an online survey which the participant can use to submit feedback by completing the required fields and even answering the optional questions. 
+
+The survey was created by using an already built web application -  smartsurvey.co.uk. There are benefits to this approach:
+\begin{itemize}
+\item Flexibility - the interface enables changes to the survey instead of creating a new one
+\item Usability - it is easy to create a survey without having to code a new system
+\end{itemize}
 
 \begin{figure}[H]
 \includegraphics[scale=0.4]{tab-feedback}
@@ -523,11 +568,11 @@ Posts feature additional statistics:
 \item the URI link
 \end{itemize}
 
-\subsection{Indexing vs Full-Text Search}
+\subsection{Indexing and Full-Text Search}
 Indexing was regarded as more suitable than Full-Text search to do the task of retrieving code snippets. The main reason is that indexing platforms are more efficient and flexible - they offer more customization and retrieval is done much faster.
 
-\subsection{Lucene vs Terrier}
-The choice of an open source indexing platform came down mainly from easiness of implementation. Terrier did not have a proper straightforward tutorial showing a programmatic way of calling the API. Thus, Apache Lucene Core (https://lucene.apache.org/core/) was used for indexing and retrieval of files. Both retrieval platforms have different underlying principles by default (links), however, it should be pointed out that the decision made does mean a less capable system was used.
+\subsection{Lucene and Other retrieval platforms}
+The choice of an open source indexing platform came down mainly from easiness of implementation. Terrier did not have a proper straightforward tutorial showing a programmatic way of calling the API. Apache Lucene Core (https://lucene.apache.org/core/) was used for indexing and retrieval of files. Since there were no problems, and the platform was sufficiently good for the plugin, other options were not considered. Each retrieval platform has its own implementation and principles, however, it should be pointed out that the decision made does not mean a less capable system was used. Apache Solr which uses Lucene could be considered as an alternative and an improvement in the future as it offers more features.
 
 \subsection{Lucene settings}
 \begin{itemize}
@@ -572,7 +617,22 @@ The plugin provides the user with the option to change the colour of the text in
 \end{itemize}
 
 \chapter{Evaluation}
-As already seen, the users can participate in the evaluation of the plugin by going through the following steps:
+
+\section{Unit Testing}
+The main functionality of the code was tested using JUnit. A major part of the code written is for the graphical user interface of the plugin. Testing that part of code is not currently supported by IntelliJ/JetBrains and therefore it was skipped. 
+
+\section{Acceptance testing}
+
+\subsection{Technique}
+The evaluation with participants was decided to be carried out by giving the plugin to users who could make their own choice about whether to fill in a survey or not. No time constraints were posed since it is considered best to evaluate the results of free interaction - just like developers would naturally use the plugin in practice. 
+
+This approach works best if longer period of time is given to users. However, ethics approval for conducting experiments was received more than a month after applying for it. Despite that the process of evaluation remained unchanged because there is no negative effect in the way the evaluation is done, but is rather worse in terms of the time spend to test it. Although it is generally expected that the more testing is done, the better results the results are, it is good to keep in mind that it is not known whether the old participant would test again the new functionality/improvements being added.
+
+\subsection{Participants' background}
+The evaluation was aimed people who know Java or have started using it. The focus of finding participants was put on those who have access to the University network so that they can test searching with the Web service, which is one of the key features of the plugin. 
+
+\subsection{User's view}
+Users can participate in the evaluation of the plugin by going through the following steps:
 
 1. Installing the plugin in IntelliJ (plugin was deployed to the JetBrains plugin repository)
 
@@ -588,10 +648,48 @@ As already seen, the users can participate in the evaluation of the plugin by go
 
 7. Submitting the survey
 
-\section{Unit Testing}
-The main functionality of the code was tested using JUnit.
+\subsection{Survey questions}
+In order to evaluate the plugin, a number of fields were asked to be filled by the participants (excluding the fields that the participant is required to agree so that he can participate). To summarize, the fields are aimed to cover the skills of the participant, the time of involvement with the plugin, the tasks performed, the satisfaction and dissatisfaction with the features and the reasons behind those two categories.
 
-\section{User evaluation (Acceptance testing) and ethics checklist}
+The fields and their possible answers (if applicable) are taken directly from the survey and are listed below. The '*' symbol denotes mandatory fields which must be completed.
+
+\begin{itemize}
+\item *State your Object oriented programming skills
+\begin{itemize}
+\item Beginner
+\item Advanced/Expert
+\end{itemize}
+
+\item *How long did you use the plugin for (e.g. 5 days total)?
+
+\item How often did you use the plugin (e.g. 5 minutes for 3 hours every day, 10 minutes for 1 hour 3 days a week)?
+
+\item What tasks did you perform?
+\begin{itemize}
+\item Bug fixing
+\item Working on a new feature
+\item Prototype experiment
+\item Artificial task (trying out the tool)
+\end{itemize}
+
+\item Will you continue using the plugin?
+\begin{itemize}
+\item Yes
+\item No
+\end{itemize}
+
+\item Give an example of a task that was easier when done with the plugin (If none state ‘none’).
+
+\item *What do you think about the plugin in general? What do you think about the user interface and the different ways of searching for snippets?
+
+\item What do you not like about the existing functionality of the plugin and why?
+
+\item Do you think there are any additional features that need to be implemented?
+
+\item Name and Email of the participant (optional, provide if you wish to receive feedback)
+\end{itemize}
+
+\subsection{Discussion of results}
 
 \chapter{Conclusion}
 
