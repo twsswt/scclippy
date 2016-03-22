@@ -117,26 +117,76 @@ There are many RSSE systems that use different input, as well as processing and 
 \subsection{eRose}
 The Eclipse IDE plugin eRose mines data from repositories such as Concurrent Versions System (CVS). It tracks consecutive changes in code and makes suggestions based on that information. The data is displayed in a separate view, after each save operation.
 
+\begin{figure}[H]
+\includegraphics[scale=0.4]{rose}
+\centering
+\caption{eRose plugin}\label{rose}
+\label{fig:rose}
+\end{figure}
+
 \subsection{Strathcona}
 Another example is the Strathcona system which extracts data about the structure of a code fragment in order to search a PostgreSQL database and use heuristics to rank the results. It shows a structural overview, as well as highlights based on the difference from the user's code. This system is particularly useful for frameworks that have been poorly documented.
 
+\begin{figure}[H]
+\includegraphics[scale=0.4]{strathcona}
+\centering
+\caption{Strathcona plugin}\label{strathcona}
+\label{fig:strathcona}
+\end{figure}
+
+\newpage
 \subsection{Suade}
 Suade is also an Eclipse plugin which is specialised in automatically presenting suggestions by retrieving related elements (fields, methods). By design, it contains a dependency graph of the elements that can be interactively and iteratively updated by the developer.
+
+\begin{figure}[H]
+\includegraphics[scale=0.9]{suade}
+\centering
+\caption{Suade plugin}\label{suade}
+\label{fig:suade}
+\end{figure}
 
 \subsection{CodeBroker}
 CodeBroker uses as input the comments written by developers to assist them. A recommendation is produced every time a comment is written by analyzing the text and doing type-signature matching. The system also manages user-specific lists.
 
+\begin{figure}[H]
+\includegraphics[scale=0.4]{code-broker}
+\centering
+\caption{Code broker plugin}\label{code-broker}
+\label{fig:code-broker}
+\end{figure}
+
 \subsection{Dhruv}
 Dhruv is a system that recommends people and artifacts based on bug reports. It extracts data from the open source community (different types of users and content and their interactions) to create a Semantic Web, which later is used to match that to the bug report's information.
+
+\begin{figure}[H]
+\includegraphics[scale=0.45]{dhruv}
+\centering
+\caption{Dhruv plugin}\label{dhruv}
+\label{fig:dhruv}
+\end{figure}
 
 \subsection{Expertise Browser}
 Expertise Browser recommends people for a particular piece of code by considering the people who have modified the content in the past. However, an assumption is made that whoever made changes beforehand is an expert.
 
+\begin{figure}[H]
+\includegraphics[scale=0.4]{expertise}
+\centering
+\caption{Expertise Browser recommender}\label{expertise}
+\label{fig:expertise}
+\end{figure}
+
 \subsection{ParseWeb}
 ParseWeb is useful in situations when the developer needs an object to perform methods on, but cannot recall how to get the object. The tool crawls the web based on the user's input (object types) to search for recommendations.
 
+\begin{figure}[H]
+\includegraphics[scale=0.5]{parseweb}
+\centering
+\caption{ParseWeb recommender}\label{parseweb}
+\label{fig:parseweb}
+\end{figure}
+
 \section{Evaluation of similar ideas}
-Most systems and tools described above have something in common - they do recommendation by going through several stages - input handling, intermediate analyzing of some sort, and visualisation technique. However, they also have a unique approach that focuses on certain aspects. Source Code Clippy is special because it offers helpful features to assist the developer and mainly because it features different ways of searching for excerpts by focusing on getting data from Stack Overflow - one of the biggest sources of code snippets and a part of the Stack Exchange network of websites. Stack Overflow has more than 5 million users, which write 2.8 questions and 4.56 answers each minute (based on average statistics). So far the website has more than 11 million questions and 18 million answers in total.
+Most systems and tools described above have something in common - they do recommendation by going through several stages - input handling, intermediate analyzing of some sort, and visualisation technique. However, they also have a unique approach that focuses on certain aspects. Existing code recommendation by the IDE's do not give example code, but rather offer small suggestions to the code. Source Code Clippy is special because it offers helpful features to assist the developer and mainly because it features different ways of searching for excerpts by focusing on getting data from Stack Overflow - one of the biggest sources of code snippets and a part of the Stack Exchange network of websites. Stack Overflow has more than 5 million users, which write 2.8 questions and 4.56 answers each minute (based on average statistics). So far the website has more than 11 million questions and 18 million answers in total.
 
 \section{Description of Tomasz's prototype}
 The Source Code Clippy plugin is a continuation of an already build prototype for Sublime which Tomasz Sadowski developed. The prototype was not evaluated. It comprises of a single feature that enables the user use the developer's editor and search Stack Overflow for similar snippets of code using an information retrieval engine (Terrier was used in the prototype). 
@@ -281,7 +331,31 @@ In the UML Activity diagram \ref{fig:activity-diagram} an example workflow that 
 Consecutive iterations of developing the plugin consisted of several stages:
 
 \subsection{Familiarisation and preparation}
-The first iterations consisted of familiarizing with how to develop a plugin for IntelliJ, how to do indexing and searching programmatically, and extracting data from the given PostgreSQL database.
+The first iterations consisted of familiarizing with how to develop a plugin for IntelliJ, how to do indexing and searching programmatically, and extracting data from the given PostgreSQL database. The database consists of a single table with the identifiers of posts and their data - such as parent id (for an answer that will be question id), score and others.
+
+\subsection{Implementation of the plugin}
+This stage consisted of building an initial version of the plugin that uses a local index, as well as Stack Exchange API search. Basic functionality such as code highlighting were also implemented.
+
+\subsection{Expanding and improving the plugin}
+The next iterations until the end of the project required developing a web service, automating existing features (input on selection and typing, copying code into editor, etc) and implementing new features such as adding configuration settings, search history, additional search options, feedback and information tabs.
+
+\subsection{Evaluation}
+Tests were implemented to test the functionality of the system. Various code metrics were used to determine the implementation quality of the plugin. User evaluation was carried out to better understand how useful the implemented features of the plugin are to developers in practice. 
+
+\newpage
+\section{Architecture}
+Consecutive iterations of implementation caused the plugin's architecture to change. The figures \ref{fig:architecture-initial} and \ref{fig:architecture} use special colouring to differentiate different components - the logical parts of the system are coloured in red. The data sources can be identified by their green colour. The boxes in blue represent outgoing links.
+
+\subsection{Initial architecture}
+
+\begin{figure}[H]
+\includegraphics[scale=0.4]{scc-architecture-initial}
+\centering
+\caption{Architecture diagram}\label{scc-architecture-initial}
+\label{fig:architecture-initial}
+\end{figure}
+
+The project was initially required to use a local index on the PostgreSQL database given by Tomasz. A decision was made to export only the relevant data - Java questions and answers - and perform indexing on those posts. 
 
 The process of extracting files from the initially provided database consists of the following steps:\\
 1. Writing a query for retrieving questions and another one for answers, both of which add extra empty column for record separation.\\
@@ -303,34 +377,9 @@ WHERE P1.tags LIKE '%<java>%'
 2. Exporting the results to a CSV file with a unique separator\\
 3. Using a custom written CSV splitter to create the files used for indexing purposes
 
-\subsection{Implementation of the plugin}
-This stage consisted of building an initial version of the plugin that uses a local index, as well as Stack Exchange API search. Basic functionality such as code highlighting were also implemented.
+The plugin was also needed to retrieve code snippets by using Stack Exchange's API. Since the project is about retrieving code snippets, it was decided from the documentation that the plugin would use the 'excerpts' method provided. The response from all API methods is in the form of JSON objects.
 
-\subsection{Following iterations}
-The next iterations until the end of the project required developing a web service, automating existing features (input on selection and typing, copying code into editor, etc) and implementing new features such as adding configuration settings, search history, additional search options, feedback and information tabs.
-
-\subsection{Evaluation}
-Tests were implemented to test the functionality of the system. User evaluation was carried out to better understand how useful the implemented features of the plugin are to developers in practice. 
-
-\section{Architecture}
-Consecutive iterations of implementation caused the plugin's architecture to change. The figures \ref{fig:architecture-initial} and \ref{fig:architecture} use special colouring to differentiate different components - the logical parts of the system are coloured in red. The data sources can be identified by their green colour. The boxes in blue represent outgoing links.
-
-\subsection{Initial design}
-
-\begin{figure}[H]
-\includegraphics[scale=0.4]{scc-architecture-initial}
-\centering
-\caption{Architecture diagram}\label{scc-architecture-initial}
-\label{fig:architecture-initial}
-\end{figure}
-
-The project was initially required to use a local index on the PostgreSQL database given by Tomasz. A decision was made to export only the relevant data - Java questions and answers - and perform indexing on those posts. 
-
-The plugin was also needed to retrieve code snippets by using Stack Exchange's API. 
-
-The code written was organized into two parts - business and presentation layer.
-
-\subsection{Final design}
+\subsection{Final architecture}
 
 \begin{figure}[H]
 \includegraphics[scale=0.5]{scc-architecture}
@@ -357,6 +406,17 @@ To sum up, the user can use the IntelliJ Scclippy plugin to retrieve excerpts da
 The system also has a hyperlink to each post returned, as well as to an online survey that the user can follow, fill and submit online. 
 
 The client automatically saves its settings to a file relative to the plugin's installation in order to load them when a new IntelliJ client is started and the plugin was launched. Each instance of IntelliJ contains a separate instance of the Scclippy plugin.
+
+\section{Design}
+
+The code written was organized into two layers - business and presentation. The UML package diagram \ref{fig:scc-package-diagram} shows the design of the plugin by illustrating the different packages responsible for those layers as well as their composing packages. The business logic is handled in the package named 'plugin' and the presentation logic in the one named 'uicomponents'. All unnamed dependencies are of type "uses" - for example, the 'uicomponents.search' package uses the 'plugin.lucene' package because it needs the File class that was defined there - an import is needed so that the posts returned by searching are meaningful and can be displayed. The 'uicomponents.main' creates all tabs when the plugin is started. It also uses the 'uicomponents.search' package to update the input pane with the editor mouse selection string.
+
+\begin{figure}[H]
+\includegraphics[scale=0.5]{scc-package-diagram}
+\centering
+\caption{UML Package diagram}
+\label{fig:scc-package-diagram}
+\end{figure}
 
 \section{User Interface}
 The user interface was also changed frequently in order to keep up with the dynamic requirements and new features each iteration, but also due to ideas about improvements to make the look and feel of the plugin better. The differences of the basic and final design are shown below in terms of architecture and user interface.
@@ -602,9 +662,8 @@ Additional search request is made (if necessary) when the scroll reaches the bot
 \subsection{IntelliJ notifications} 
 IntelliJ notifications are used to inform the user with the outcome of their actions. Examples include "Check connection to server. ..." which is displayed when the user is not connected to the Internet or other connection problems have occurred.
 
-\subsection{IntelliJ themes}
-The plugin provides the user with the option to change the colour of the text in posts. This is done so that the plugin is not strictly dependent on the theme used by the user. In addition, it enables the them to choose to configure the look of the plugin to match their subjective preferences.
-
+\subsection{Colour and IntelliJ themes}
+The plugin provides the user with the option to change the colour of the text in posts. This is done so that the plugin is not strictly dependent on the theme used by the user. In addition, it enables the them to choose to configure the look of the plugin to match their subjective preferences. Users who have colour blindness are predicted to benefit from using this option.
 
 \section{Challenges}
 \begin{itemize}
@@ -619,7 +678,121 @@ The plugin provides the user with the option to change the colour of the text in
 \chapter{Evaluation}
 
 \section{Unit Testing}
-The main functionality of the code was tested using JUnit. A major part of the code written is for the graphical user interface of the plugin. Testing that part of code is not currently supported by IntelliJ/JetBrains and therefore it was skipped. 
+The main searching functionality of the code was tested using JUnit. The classes which have a test case are those classes responsible for searching inside the editor:
+
+\begin{itemize}
+\item StackExchangeSearch
+\item WebServiceSearch
+\item LocalIndexedSearch
+\end{itemize}
+
+A major part of the code written is for the graphical user interface of the plugin. Testing that part of code is not currently supported by IntelliJ/JetBrains and therefore it was skipped. 
+
+\section{Code metrics}
+
+The MetricsReloaded plugin was used to extract code metrics for the project. https://plugins.jetbrains.com/plugin/93
+
+\subsection{MOOD}
+
+All code metrics from the MOOD collection have been used to determine the overall quality of an object-oriented project. Below are the results for each of the criteria used. Based on those metrics, it can be seen that the results in general can be described as good.
+
+\begin{table}[H]
+\small
+\caption{MOOD code metrics}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{4cm}p{5cm}p{2.5cm}}
+\hline
+Metric & Short description & Result\\
+\hline
+Average hiding factor & ratio of the number of other classes a field is visible from & 0.75\\ 
+Attribute Inheritance factor & ratio of what percentage of the fields for a class are due to inheritance and are not directly defined & 0.95\\
+Coupling factor & the proportion of the classes coupled to other classes & 0.18\\
+Method Hiding factor & the ratio of the number of classes a method is visible from & 0.35\\
+Method Inheritance factor & the ratio of what percentage of the methods for a class are due to inheritance and are not directly defined & 0.04\\
+Polymorphism factor & the probability that a given method will be overridden in a subclass & 3.11\\
+\hline
+\end{tabular}
+\label{table:mood-codemetrics}
+\end{table}
+
+\subsection{Chidamber-Kemerer metrics}
+
+Another set of metrics for judging the quality of the code is the Chidamber-Kemerer metrics. The results below show good results - response for class should not be above 50; number of children should be in the range of 0 to 10; WMC 1 to 50; DIT 2 to 5; CBO should be low; LCOM - generally good to be high, but may also mean a certain class may be doing too much.
+http://www.virtualmachinery.com/sidebar3.htm
+http://staff.unak.is/andy/StaticAnalysis0809/metrics/overview.html
+
+\begin{table}[H]
+\small
+\caption{Chidamber-Kemerer code metrics}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{4cm}p{5cm}p{2.5cm}}
+\hline
+Metric & Short description & Result\\
+\hline
+Coupling between objects & number of classes and interface a class is coupled with & 5.28\\ 
+Depth of inheritance tree & number of inheritance steps between the class and java.lang.Object & 2.64\\
+Lack of Cohesion of methods & measures the cohesiveness of a class - higher values mean higher cohesion & 0.98\\
+Number of children & number of direct subclasses & 0.06\\
+Response for class & the number of methods in a class plus the number of methods that the class can access & 45.80\\
+Weighted model complexity & cyclomatic complexity of each of the methods (in each class) & 3.11\\
+\hline
+\end{tabular}
+\label{table:ck-codemetrics}
+\end{table}
+
+\subsection{Lines of code}
+The lines of code were counted to have statistics about the code distribution. The counting includes comments as well, but excludes white spaces.
+
+\begin{table}[H]
+\small
+\caption{Package code metrics}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{3cm}p{3cm}}
+\hline
+Client layer & Lines of code\\
+\hline
+Business & 795\\
+Presentation & 1368\\
+\hline
+Total (from above) & 2162\\
+\hline
+\end{tabular}
+\label{table:package-codemetrics}
+\end{table}
+
+Here is an overview from a pie chart that contains the different packages and their share of code:
+
+\begin{figure}[H]
+\includegraphics[scale=0.6]{code-distribution}
+\centering
+\caption{Code distribution for different packages}
+\label{fig:code-distribution}
+\end{figure}
+
+\subsection{Language metrics}
+A table is presented to give an idea of code distribution in terms of lines and files written for each language.
+
+\begin{table}[H]
+\small
+\caption{Language code metrics}
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{p{2.5cm}p{2.5cm}p{2.5cm}}
+\hline
+Language & Lines of code & Files\\
+\hline
+Java & 2210 & 34\\
+XML & 996 & 10\\
+\hline
+\end{tabular}
+\label{table:language-codemetrics}
+\end{table}
+
+\subsection{Javadoc coverage}
+It was shown that 82.35 percent of the classes have been covered by Javadoc. The classes that have not been covered yet are straightforward implementations of features - like the info tab, the feedback tab, etc. 
 
 \section{Acceptance testing}
 
@@ -648,7 +821,7 @@ Users can participate in the evaluation of the plugin by going through the follo
 
 7. Submitting the survey
 
-\subsection{Survey questions}
+\subsection{Survey questions and feedback}
 In order to evaluate the plugin, a number of fields were asked to be filled by the participants (excluding the fields that the participant is required to agree so that he can participate). To summarize, the fields are aimed to cover the skills of the participant, the time of involvement with the plugin, the tasks performed, the satisfaction and dissatisfaction with the features and the reasons behind those two categories.
 
 The fields and their possible answers (if applicable) are taken directly from the survey and are listed below. The '*' symbol denotes mandatory fields which must be completed.
@@ -660,9 +833,15 @@ The fields and their possible answers (if applicable) are taken directly from th
 \item Advanced/Expert
 \end{itemize}
 
+Most of the participants (21/22) stated that they are advanced or experts when using an Object Oriented programming language. This is not surprising considering that the participants contacted were colleagues.
+
 \item *How long did you use the plugin for (e.g. 5 days total)?
 
+Almost all participants used the plugin for a total time of 10 to 30 minutes (more in the next question). 
+
 \item How often did you use the plugin (e.g. 5 minutes for 3 hours every day, 10 minutes for 1 hour 3 days a week)?
+
+Most participants used the plugin for day. Only one of them used it for a 2-day period. As it was mentioned, the evaluation was limited in time due to approval being received so late.
 
 \item What tasks did you perform?
 \begin{itemize}
@@ -672,24 +851,67 @@ The fields and their possible answers (if applicable) are taken directly from th
 \item Artificial task (trying out the tool)
 \end{itemize}
 
+In terms of tasks, the majority of participants (19 to be exact) aimed to try out the tool without using it for their project. Bug fixing was checked twice, another two ticks were for working on a prototype experiment, and the rest three on a new feature. From the above statistics, it is clear that some of the participants ticked more than one category. 
+
 \item Will you continue using the plugin?
 \begin{itemize}
 \item Yes
 \item No
 \end{itemize}
 
+It can be said that participants liked the plugin - 21 of 22 are willing to continue using it.
+
 \item Give an example of a task that was easier when done with the plugin (If none state ‘none’).
+
+The example tasks done were related to MapReduce, doing file I/O, object serialization, and other small ones like finding similar code that serves as an example for certain methods calls. Not all participants were willing to complete this field.
 
 \item *What do you think about the plugin in general? What do you think about the user interface and the different ways of searching for snippets?
 
+This is the most interesting question since it is an open question that gives the user the freedom to express themselves and share what they think about the plugin. 
+
+To summarize, participants liked the plugin and its features. They were happy that they could do tasks in the IDE and that it saved them time. It seems most of them used the web service search and the Stack Exchange API. There is positive feedback on that there is a button for Google search that opens the browser and searches with the query. The user interface was considered as good, a few people recommended that it should be improved (see below).
+
 \item What do you not like about the existing functionality of the plugin and why?
+
+This question is very similar to the next one (which is about thoughts about new features) by having in mind that everything disliked can be improved. Therefore, this question is focused more on what can be changed, and the next question is about what can be added.
+
+One of the participants mentioned that the default colour of the font is not appropriate for all IntelliJ themes. This issue needs investigation to see whether IntelliJ provides options to detect the colour theme used, and in case it does not, a setup window can appear the first time the plugin is loaded to allow the user to customize the colour. 
+
+There was a complaint about the interface - it was suggested that there should be a button beside the query pane to make the search request since it is not obvious to everyone that pressing 'Enter' is faster and provides the same functionality. This can easily be implemented.
+
+The arrow at the bottom of each snipper gives the impression it is clickable. The participant thought that details would appear for the particular post. There is a simple solution to this problem - the arrow can be replaced by something else.
+
+A participant also mentioned that the search bar should always be at the top so that they can easily modify the search query without the need to scroll up so that the plugin is more usable. Implementation wise, this can be done without much effort - by having the scroll applied for the panel responsible for the posts instead of having that scroll the whole tab as it currently is.
+
+Consecutive searches with the same query appear in history. This can be fixed making a check that will compare the last entry and the new one. Furthermore, a counter can be added to serve as an indication how many times a query is searched - perhaps the user switched the method of searching and
+
+The 'Info tab' can contain more information about the plugin's features such as what can be double clicked and perhaps a more detailed description on how to search with an example.
 
 \item Do you think there are any additional features that need to be implemented?
 
-\item Name and Email of the participant (optional, provide if you wish to receive feedback)
+A participant recommended that there should be an option that allows automated removal of variable names since they are less meaningful than other code and are and the StackExchange API returns only results that match all terms in the query.
+
+The history tab can have filters or text search in order to make the process of finding the desired query faster.
+Include more information in the 'info tab' - for example, double clicking inserts a code snippet in the editor.
+
+One of the proposals is to have support for languages other than Java. It is not something new - the improvement has been intended to be included in the plugin in the future.
+
+Have a shortcut for searching with the query and maybe have other shortcuts as well
+
+A nice feature suggested was allowing the user to mark all the results that the user has read as 'Read' or maybe even the plugin can automatically track the posts seen that the user has spend time on.
+
+Some users are interested in the comments for a particular post so that they do not have to open the browser. This can be implemented by using the Stack Exchange API.
+
+A participant has the idea to have automatic update on the query when a text in the post is selected - the plugin only does this for text in the editor. On the one hand, this is good because the user does not need to copy-paste the piece of code, however, on the other, this can delete the current search query. Nevertheless, it is possible to have this feature - by either providing a check box to enable/disable this functionality; by having a button that will allow the user to go back to the previous queries; or by making the automatic copy-paste to require a right click after selection where the option to paste the query will appear - the user would not need to move his mouse and paste the text.
+
+One of the comments included how good code snippet insertion with web search is. The user wishes to be able to do the same for other types of search such as Stack Exchange API. Currently, the plugin uses special tags for the web service that indicate that a piece of code is there. In order to implement the new feature, the user should indicate where the snippet starts and ends. The best way to do that is to track mouse selection. However, a further action is needed by the user (maybe right clicking and then click on 'import into editor') so that text is not automatically included each time the user decides to use their mouse to select a given piece of text. 
+
+Finally, a participants would like a new setting that will allow them to change to the size of the text for every post. It is possible to include this feature by modifying the CSS of each post just like highlighting is done currently.
+
 \end{itemize}
 
-\subsection{Discussion of results}
+
+
 
 \chapter{Conclusion}
 
@@ -719,6 +941,7 @@ It is reasonable to say that the plugin could benefit from having a more intelli
 The plugin can be extended to have:
 
 \begin{itemize}
+\item All the improvements gathered through evaluation that were mentioned
 \item Support for multiple languages
 \item Caching of results (not much beneficial since retrieval is fast)
 \item Storing functionality to save search history permanently
