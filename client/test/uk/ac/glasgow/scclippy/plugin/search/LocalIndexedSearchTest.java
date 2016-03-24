@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.intellij.openapi.ui.InputException;
+
 import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
@@ -26,34 +28,29 @@ public class LocalIndexedSearchTest {
         assertNotNull(searcher.getLastSearchResult());
     }
 
-    @Test
+    @Test(expected=InputException.class)
     public void testNullSearch() throws Exception {
         searcher.updateSearch(null, 10, 0);
-        assertNull(searcher.getLastSearchResult());
     }
 
-    @Test
+    @Test(expected=InputException.class)
     public void testEmptySearch() throws Exception {
         searcher.updateSearch("", 10, 0);
-        assertNull(searcher.getLastSearchResult());
     }
 
-    @Test
+    @Test(expected=InputException.class)
     public void testZeroResultsSearch() throws Exception {
         searcher.updateSearch("String", 0, 0);
-        assertNull(searcher.getLastSearchResult());
     }
 
-    @Test
+    @Test(expected=InputException.class)
     public void testMaxResultsSearch() throws Exception {
         searcher.updateSearch("String", Integer.MAX_VALUE, 0);
-        assertNotNull(searcher.getLastSearchResult());
     }
 
-    @Test
+    @Test(expected=InputException.class)
     public void testMinResultsSearch() throws Exception {
         searcher.updateSearch("String", Integer.MIN_VALUE, 0);
-        assertNull(searcher.getLastSearchResult());
     }
 
     @After

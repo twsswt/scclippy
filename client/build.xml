@@ -7,6 +7,7 @@
 	default="build">
 	
 	<path id="project.classpath">
+		<pathelement location="../server/target/classes/"/>
 		<pathelement location="bin" />
 		<fileset dir="lib" />
 	</path>

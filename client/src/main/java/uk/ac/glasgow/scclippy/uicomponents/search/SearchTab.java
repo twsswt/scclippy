@@ -37,16 +37,18 @@ public class SearchTab {
 	private SearchController searchController;
 
     public SearchTab(Properties properties, SearchHistoryTab searchHistoryTab) {
-    	
+    	                
         initSearchPanel(properties, searchHistoryTab);
-        
+
+    }
+
+    private void initSearchPanel(Properties properties, SearchHistoryTab searchHistoryTab) {
+    	
     	Path indexPath = Paths.get(properties.getProperty("indexPath")).toAbsolutePath();
         String webServiceURI = properties.getProperty("webServiceURI");
         
         searchController = new SearchController (indexPath, webServiceURI);
-    }
 
-    private void initSearchPanel(Properties properties, SearchHistoryTab searchHistoryTab) {
     	
         searchPanel = new JPanel();
         searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.PAGE_AXIS));

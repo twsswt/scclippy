@@ -28,8 +28,8 @@ public class SearchHistoryTab extends JScrollPane{
 
     private void initialiseHistoryPanel() {
     	contentPanel = new JPanel();
-        setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
-    	add(contentPanel);
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
+    	this.getViewport().setView(contentPanel);
         getVerticalScrollBar().setUnitIncrement(SCROLL_STEP_SIZE);
         
     }

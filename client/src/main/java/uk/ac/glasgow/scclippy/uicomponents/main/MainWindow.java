@@ -70,19 +70,11 @@ public class MainWindow implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
     	
-    	initialiseProperties();
-    	
-        // init panels
-        searchHistoryTab = new SearchHistoryTab();
-        searchTab = new SearchTab(properties, searchHistoryTab);
-        settingsTab = new SettingsTab(properties, searchTab);
-        infoTab = new InfoTab();
-        feedbackTab = new FeedbackTab();
-
-        // init tabs
+    	initialiseProperties();    
         initTabsPanel();
-        Component component = toolWindow.getComponent();
-        component.getParent().add(tabsPanel);
+        
+        Component toolWindowComponent = toolWindow.getComponent();
+        toolWindowComponent.getParent().add(tabsPanel);
         
         // init mouse selection listener
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
@@ -96,14 +88,19 @@ public class MainWindow implements ToolWindowFactory {
     
 	private void initialiseProperties() {
     	
-		IdeaPluginDescriptor ipd = PluginManager.getPlugin(PluginId.getId("uk.ac.glasgow.scclippy"));
-        String pluginPath = (ipd == null) ? "" : ipd.getPath().getAbsolutePath();
-        String settingsPath = pluginPath + "src/main/resource/config.properties";
+		//IdeaPluginDescriptor ipd = PluginManager.getPlugin(PluginId.getId("uk.ac.glasgow.scclippy"));
+        //String pluginPath = (ipd == null) ? "" : ipd.getPath().getAbsolutePath();
+        String settingsPath = "src/main/resource/config.properties";
         
 		properties = new PersistentProperties(settingsPath);
 		
     	File f = new java.io.File(settingsPath);
         try {
+        	if (!f.exists()){
+        		f.getParentFile().mkdirs();
+        		f.createNewFile();
+        	}
+        	
 			properties.load(new FileInputStream(f));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -117,7 +114,14 @@ public class MainWindow implements ToolWindowFactory {
      * (and sets a mnemonic for each)
      */
     private void initTabsPanel() {
-        tabsPanel = new JBTabbedPane();
+        
+        searchHistoryTab = new SearchHistoryTab();
+        searchTab = new SearchTab(properties, searchHistoryTab);
+        settingsTab = new SettingsTab(properties, searchTab);
+        infoTab = new InfoTab();
+        feedbackTab = new FeedbackTab();
+    	
+    	tabsPanel = new JBTabbedPane();
 
         tabsPanel.addTab("Search", null, searchTab.getScroll(), "Searching by index or using Stackoverflow API");
         tabsPanel.addTab("History", null, searchHistoryTab, "View input history");

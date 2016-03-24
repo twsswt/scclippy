@@ -124,7 +124,7 @@ public class SettingsTab extends JBScrollPane {
         
         // minimum up votes for filtering results.        
         JTextField minimumUpVotesJTextField = new JTextField();
-        webAppURLJTextField.setText(properties.getProperty("minimumScore"));
+        minimumUpVotesJTextField.setText(properties.getProperty("minimumScore"));
         minimumUpVotesJTextField.getDocument().addDocumentListener(
         	new PropertyPersistingDocumentListener(properties, "minimumScore"){
             	@Override
