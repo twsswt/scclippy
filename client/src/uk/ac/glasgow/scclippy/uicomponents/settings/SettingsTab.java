@@ -71,7 +71,8 @@ public class SettingsTab {
 
         JPanel mergePanel;
         // Default post count
-        JTextField defaultPostCountTextField = new IntegerSavingJTextField(Posts.defaultPostCount);
+        int defaultPostsCountValue = 5;
+        JTextField defaultPostCountTextField = new IntegerSavingJTextField(Posts.defaultPostCount, defaultPostsCountValue);
         JLabel defaultPostCountLabel = new JLabel("Total number of posts after search (influences efficiency)");
         defaultPostCountLabel.setLabelFor(defaultPostCountTextField);
         mergePanel = new JPanel();
@@ -82,7 +83,8 @@ public class SettingsTab {
         generalSettings.add(mergePanel, gbc);
 
         // Max post count
-        JTextField maxPostCountTextField = new IntegerSavingJTextField(Posts.maxPostCount);
+        int maxPostsCountValue = 20;
+        JTextField maxPostCountTextField = new IntegerSavingJTextField(Posts.maxPostCount, maxPostsCountValue);
         JLabel maxPostCountLabel = new JLabel("Total number of posts after scrolling down search (influences efficiency)");
         maxPostCountLabel.setLabelFor(maxPostCountTextField);
         mergePanel = new JPanel();

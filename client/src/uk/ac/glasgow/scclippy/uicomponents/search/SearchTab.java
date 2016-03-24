@@ -78,7 +78,8 @@ public class SearchTab {
         });
 
 
-        JTextField minimumUpvotes = new IntegerSavingJTextField(ResultsSorter.minimumScore);
+        int minimumUpvotesDefaultValue = 0;
+        JTextField minimumUpvotes = new IntegerSavingJTextField(ResultsSorter.minimumScore, minimumUpvotesDefaultValue);
         int minimumUpvotesFieldSize = 3;
         minimumUpvotes.setColumns(minimumUpvotesFieldSize);
         minimumUpvotes.setToolTipText("Minimum upvotes filter of results");

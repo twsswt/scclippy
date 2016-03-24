@@ -112,8 +112,8 @@ public class Posts {
     public void update() {
         File[] files = Search.getFiles();
 
+        update("");
         if (files == null) {
-            update("");
             return;
         }
 

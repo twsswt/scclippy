@@ -16,7 +16,7 @@ public class IntegerSavingJTextField extends JTextField {
 
     int[] savedNumber;
 
-    public IntegerSavingJTextField(int[] number) {
+    public IntegerSavingJTextField(int[] number, int defaultValue) {
         super(5);
         setText(String.valueOf(number[0]));
 
@@ -41,6 +41,7 @@ public class IntegerSavingJTextField extends JTextField {
                     savedNumber[0] = Integer.parseInt(e.getDocument().getText(0, e.getDocument().getLength()));
                     Settings.saveSettings();
                 } catch (BadLocationException | FileNotFoundException | NumberFormatException e1) {
+                    savedNumber[0] = defaultValue;
                     Notification.createErrorNotification(e1.getMessage());
                 }
             }
