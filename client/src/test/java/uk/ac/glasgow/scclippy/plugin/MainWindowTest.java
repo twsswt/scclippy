@@ -12,10 +12,8 @@ import uk.ac.glasgow.scclippy.uicomponents.main.MainWindow;
 
 public class MainWindowTest {
 
-	@Mock
 	private Project project;
 	
-	@Mock
 	private ToolWindow toolWindow;
 
 	@Before
