@@ -1,6 +1,5 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.glasgow.scclippy.plugin.lucene.SearchFiles;
 import uk.ac.glasgow.scclippy.plugin.settings.Settings;
@@ -33,7 +32,7 @@ public class LocalIndexedSearch extends Search {
                     posts
             );
         } catch (IOException e) {
-            throw new Exception("Searching failed due to I/O problems. Try again.");
+            throw new Exception(e.getMessage());
         }
 
         Search.currentSearchType = SearchType.LOCAL_INDEX;

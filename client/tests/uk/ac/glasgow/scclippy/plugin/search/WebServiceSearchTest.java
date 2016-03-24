@@ -1,7 +1,16 @@
 package uk.ac.glasgow.scclippy.plugin.search;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.FileNotFoundException;
+
+import static junit.framework.Assert.assertTrue;
+
+
 public class WebServiceSearchTest {
-/*
+
     Search searcher;
 
     @Before
@@ -50,7 +59,5 @@ public class WebServiceSearchTest {
     public void tearDown() throws FileNotFoundException {
         Search.files = null;
     }
-
-    */
 
 }
