@@ -1,6 +1,6 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
-import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
+import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +23,7 @@ public class AskAQuestionButton extends JButton {
                     URI uri = new URI(STACKOVERFLOW_WRITE_QUESTION_URL);
                     Desktop.getDesktop().browse(uri);
                 } catch (IOException | URISyntaxException e1) {
-                	IntelijFacade.createErrorNotification(e1.getMessage());
+                	IntellijFacade.createErrorNotification(e1.getMessage());
                 }
             }
         });

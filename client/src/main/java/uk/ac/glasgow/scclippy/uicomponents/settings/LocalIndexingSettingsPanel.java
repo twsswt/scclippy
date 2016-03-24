@@ -21,25 +21,19 @@ import javax.swing.border.Border;
 import com.intellij.ui.JBColor;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowLuceneIndexer;
-import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
-import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
+import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchController;
 
 public class LocalIndexingSettingsPanel extends JPanel {
 
 	private Properties properties;
-	private final SearchTab searchTab;
 	
 	private JLabel indexingStatusLabel;
 	private JLabel folderForNewIndexLabel;
 	
-	public LocalIndexingSettingsPanel (Properties properties, SearchTab searchTab){
+	public LocalIndexingSettingsPanel (Properties properties, SearchController searchController){
 		this.properties = properties;
-		this.searchTab = searchTab;
-		initialisePanel ();
-	}
 	
-	private void initialisePanel (){
-
 		Border lineBorder = BorderFactory.createLineBorder(JBColor.cyan);
 		setBorder(BorderFactory.createTitledBorder(lineBorder, "Local index options"));
 		setLayout(new GridBagLayout());
@@ -59,7 +53,7 @@ public class LocalIndexingSettingsPanel extends JPanel {
 		JLabel indexChosenLabel = new JLabel(text);
 		
 		JButton indexChooserButton = 
-			createIndexChooserButton();
+			createIndexChooserButton(searchController);
 		
 		JPanel indexForSearchingPanel = new JPanel();
 		indexForSearchingPanel.add(indexChosenLabel);
@@ -133,7 +127,7 @@ public class LocalIndexingSettingsPanel extends JPanel {
 		return indexButton;
 	}
 
-	private JButton createIndexChooserButton() {
+	private JButton createIndexChooserButton(SearchController searchController) {
 		JButton indexChooserButton = new JButton("Choose index");
 		indexChooserButton.addActionListener(e -> {
 			JFileChooser chooser = new JFileChooser();
@@ -145,7 +139,7 @@ public class LocalIndexingSettingsPanel extends JPanel {
 				properties.put("indexPath", indexPathString);
 				Path indexPath = Paths.get(indexPathString).toAbsolutePath();
 
-				searchTab.getSearchController().setIndexPath(indexPath);
+				searchController.setIndexPath(indexPath);
 				folderForNewIndexLabel.setText(chooser.getSelectedFile().getName());
 				folderForNewIndexLabel.setToolTipText(chooser.getSelectedFile().getPath());
 			}
@@ -173,7 +167,7 @@ public class LocalIndexingSettingsPanel extends JPanel {
 		return button;
 	}
 	
-	class StackoverflowLuceneIndexTask extends SwingWorker<Void, Void> {
+	private class StackoverflowLuceneIndexTask extends SwingWorker<Void, Void> {
 
 		private StackoverflowLuceneIndexer stackoverflowLuceneIndexer;
 		private JLabel statusLabel;
@@ -189,7 +183,7 @@ public class LocalIndexingSettingsPanel extends JPanel {
 			try {
 				stackoverflowLuceneIndexer.indexDocuments();
 			} catch (IOException | SQLException e) {
-				IntelijFacade.createErrorNotification(e.getMessage());
+				IntellijFacade.createErrorNotification(e.getMessage());
 			}
 			return null;
 		}
@@ -200,7 +194,7 @@ public class LocalIndexingSettingsPanel extends JPanel {
 		@Override
 		public void done() {
 			statusLabel.setText("Finished indexing files.");
-			IntelijFacade.createInfoNotification("Finished Indexing stackoverflow posts.");
+			IntellijFacade.createInfoNotification("Finished Indexing stackoverflow posts.");
 		}
 	}
 	

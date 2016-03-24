@@ -2,12 +2,14 @@ package uk.ac.glasgow.scclippy.plugin.search;
 
 import static java.lang.String.format;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.jetbrains.annotations.NotNull;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
@@ -16,7 +18,7 @@ import uk.ac.glasgow.scclippy.lucene.StackoverflowLuceneSearcher;
 /**
  * Class for searching with a local index and database.
  */
-public class LocalIndexedSearch	extends StackoverflowSearch {
+public class LocalIndexedSearch	implements StackoverflowSearch {
 	
 	private Path indexPath;
 	
@@ -30,14 +32,19 @@ public class LocalIndexedSearch	extends StackoverflowSearch {
 	
 
 	@Override
-	protected List<StackoverflowEntry> searchIndex(@NotNull String queryString, int desiredHits) throws Exception {
+	public List<StackoverflowEntry> searchIndex(@NotNull String queryString, int desiredHits) throws SearchException {
 		
-		Connection connection = createDatabaseConnection();
 		
-		StackoverflowLuceneSearcher stackoverflowLuceneSearcher = 
-			new StackoverflowLuceneSearcher (connection, indexPath);
 		
-		return stackoverflowLuceneSearcher.searchDocuments(queryString, desiredHits);		
+		try {
+			Connection connection = createDatabaseConnection();
+			
+			StackoverflowLuceneSearcher stackoverflowLuceneSearcher = 
+				new StackoverflowLuceneSearcher (connection, indexPath);
+			return stackoverflowLuceneSearcher.searchDocuments(queryString, desiredHits);
+		} catch (IOException | ParseException | SQLException e) {
+			throw new SearchException(e);
+		}		
 	}
 	
 	private Connection createDatabaseConnection() throws SQLException {

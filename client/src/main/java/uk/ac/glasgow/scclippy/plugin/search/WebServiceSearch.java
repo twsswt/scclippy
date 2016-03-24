@@ -9,6 +9,7 @@ import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
 import static java.lang.String.format;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Class for searching the plugin's associated web service managed index and database.
  */
-public class WebServiceSearch extends StackoverflowSearch {
+public class WebServiceSearch implements StackoverflowSearch {
 
 	private String webServiceURI;
 	
@@ -28,9 +29,13 @@ public class WebServiceSearch extends StackoverflowSearch {
 		this.webServiceURI = webServiceURI;
 	}
 	
-    public List<StackoverflowEntry> searchIndex(@NotNull String query, int posts) throws Exception {
+    public List<StackoverflowEntry> searchIndex(@NotNull String query, int posts) throws SearchException {
 
-        query = URLEncoder.encode(query, "UTF-8");
+        try {
+			query = URLEncoder.encode(query, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new SearchException(e);
+		}
         
         String queryURITemplate = "%s%s?posts%d";
         String queryURI = format(queryURITemplate, webServiceURI, query, posts);
@@ -38,7 +43,7 @@ public class WebServiceSearch extends StackoverflowSearch {
         JSONObject webserviceQueryResult = URLProcessing.readJsonFromUrl(queryURI);
 
         if (webserviceQueryResult == null) {
-            throw new Exception("Query failed. Check connection to server.");
+            throw new SearchException("Query failed. Check connection to server.");
         }
 
         List<StackoverflowEntry> result = new ArrayList<StackoverflowEntry>();

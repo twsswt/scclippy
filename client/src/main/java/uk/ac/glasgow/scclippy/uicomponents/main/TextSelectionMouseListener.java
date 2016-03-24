@@ -4,7 +4,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.event.EditorMouseAdapter;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
 
-import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
+import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
 import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
 
 /**
@@ -22,7 +22,7 @@ public class TextSelectionMouseListener extends EditorMouseAdapter {
     public void mouseReleased(EditorMouseEvent e) {
         super.mouseReleased(e);
 
-        Editor editor = IntelijFacade.getEditor();
+        Editor editor = IntellijFacade.getEditor();
         if (editor == null) return;
 
         // update query input with the selection

@@ -1,5 +1,7 @@
 package uk.ac.glasgow.scclippy.plugin.editor;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.ide.DataManager;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationDisplayType;
@@ -16,7 +18,7 @@ import com.intellij.openapi.project.Project;
 /**
  * Provides simplified access to Intellij features needed by the plugin.
  */
-public class IntelijFacade {
+public class IntellijFacade {
 
     public static Editor getEditor() {
         DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
@@ -37,7 +39,7 @@ public class IntelijFacade {
     private static final NotificationGroup notificationGroup =
         new NotificationGroup("My notification group", NotificationDisplayType.BALLOON, true);
 
-    public static void createErrorNotification(String message) {
+    public static void createErrorNotification(@NotNull String message) {
     	createNotification(message, NotificationType.ERROR);
     }
 
@@ -46,11 +48,15 @@ public class IntelijFacade {
     }
 
     private static void createNotification(String message, NotificationType type) {
+    	
+    	if (message == null)
+    		throw new RuntimeException();
+    	
     	ApplicationManager.getApplication().invokeLater(() -> {
     		Notification notification
                 = notificationGroup.createNotification(message, type);
 
-        Editor editor = IntelijFacade.getEditor();
+        Editor editor = IntellijFacade.getEditor();
         if (editor != null) {
             Notifications.Bus.notify(notification, editor.getProject());
         }

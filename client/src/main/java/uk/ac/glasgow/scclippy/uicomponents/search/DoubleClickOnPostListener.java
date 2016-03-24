@@ -20,7 +20,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 
-import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
+import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
 
 
 /**
@@ -51,6 +51,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
 
         String text = jEditorPane.getText();
         List<String> codeSnippets = getCodeSnippetsFromText(text);
+
         if (codeSnippets.size() < 1) return;
 
         String chosenSnippet = null;
@@ -85,7 +86,7 @@ public class DoubleClickOnPostListener extends MouseAdapter {
 
     private void insertTextIntoEditor(String text) {
     	
-        Editor editor = IntelijFacade.getEditor();
+        Editor editor = IntellijFacade.getEditor();
         if (editor == null) return;
 
         Project project = editor.getProject();

@@ -6,7 +6,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
@@ -15,28 +14,25 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.intellij.ui.JBColor;
-import com.intellij.ui.components.JBScrollPane;
 
-import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
+import uk.ac.glasgow.scclippy.plugin.search.SearchException;
 
-public class QueryInputPane {
+public class QueryInputPane extends JScrollPane {
 
     private static final String TEXT_SUBMIT = "text-submit";
     private static final String INSERT_BREAK = "insert-break";
     public static final int INPUT_TEXT_AREA_ROWS = 5;
 
-    private final JScrollPane inputScrollPane;
     private final JTextArea queryTextArea;
 
     private Border border;
 	private boolean resizableInputArea;
 
-    public QueryInputPane(SearchHistoryTab searchHistoryTab, SearchTab searchTab) {
+    public QueryInputPane(SearchController searchController) {
 
-        
         initialiseBorder ();
         queryTextArea = new JTextArea();
-        inputScrollPane = new JBScrollPane(queryTextArea);
+        getViewport().setView(queryTextArea);
 
         queryTextArea.setLineWrap(true);
         queryTextArea.setWrapStyleWord(true);
@@ -61,8 +57,13 @@ public class QueryInputPane {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String query = queryTextArea.getText();
-            	searchHistoryTab.update(query);
-                searchTab.updateSearch();
+            	searchController.setQuery(query);
+                try {
+					searchController.updateSearchAndSort();
+				} catch (SearchException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         };
         
@@ -99,9 +100,6 @@ public class QueryInputPane {
         }
     }    
 
-	public JComponent getComponent() {
-        return inputScrollPane;
-    }
 
 	public void setInputAreaIsResizable(boolean b) {
 		this.resizableInputArea = b;
@@ -111,6 +109,7 @@ public class QueryInputPane {
 		
 	}
 
+	
 	public void setQueryText(String codeFragment) {
 		queryTextArea.setText(codeFragment);
 	}

@@ -11,9 +11,14 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBTabbedPane;
 import org.jetbrains.annotations.NotNull;
+
+import uk.ac.glasgow.scclippy.plugin.search.LocalIndexedSearch;
+import uk.ac.glasgow.scclippy.plugin.search.StackoverflowJSONAPISearch;
+import uk.ac.glasgow.scclippy.plugin.search.WebServiceSearch;
 import uk.ac.glasgow.scclippy.uicomponents.feedbacktab.FeedbackTab;
 import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
 import uk.ac.glasgow.scclippy.uicomponents.infotab.InfoTab;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchController;
 import uk.ac.glasgow.scclippy.uicomponents.search.SearchTab;
 import uk.ac.glasgow.scclippy.uicomponents.settings.SettingsTab;
 
@@ -22,8 +27,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -31,32 +38,7 @@ import java.util.Properties;
  */
 public class MainWindow implements ToolWindowFactory {
 
-	public class PersistentProperties extends Properties {
-		
-		private String path;
-		
-		public PersistentProperties(String path){
-			super();
-			this.path = path;
-			
-		}
-		
-		@Override
-		public Object setProperty(String key, String value){
-			Object result = super.setProperty(key, value);
-			try {
-				this.store(new FileOutputStream(path), "Source code clippy configuration.");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return result;
-		}
-	}
-
-	private Properties properties;
-	
-    JTabbedPane tabsPanel = new JBTabbedPane();
+	JTabbedPane tabsPanel;
 
     private SearchTab searchTab;
     private SearchHistoryTab searchHistoryTab;
@@ -70,8 +52,10 @@ public class MainWindow implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
     	
-    	initialiseProperties();    
-        initTabsPanel();
+    	Properties properties = initialiseProperties();
+    	
+    	SearchController searchController = initialiseSearchController(properties);
+        initTabsPanel(searchController, properties);
         
         Component toolWindowComponent = toolWindow.getComponent();
         toolWindowComponent.getParent().add(tabsPanel);
@@ -85,27 +69,57 @@ public class MainWindow implements ToolWindowFactory {
         	new TextSelectionMouseListener(searchTab.getQueryInputPane()));
 
     }
-    
-	private void initialiseProperties() {
-    	
-		//IdeaPluginDescriptor ipd = PluginManager.getPlugin(PluginId.getId("uk.ac.glasgow.scclippy"));
-        //String pluginPath = (ipd == null) ? "" : ipd.getPath().getAbsolutePath();
-        String settingsPath = "src/main/resource/config.properties";
-        
-		properties = new PersistentProperties(settingsPath);
+
+	private SearchController initialiseSearchController(Properties properties) {
 		
-    	File f = new java.io.File(settingsPath);
-        try {
-        	if (!f.exists()){
-        		f.getParentFile().mkdirs();
-        		f.createNewFile();
-        	}
-        	
-			properties.load(new FileInputStream(f));
+        SearchController searchController = new SearchController ();
+        
+        String indexPathString = properties.getProperty("indexPath");
+    	Path indexPath = Paths.get(indexPathString).toAbsolutePath();
+    	LocalIndexedSearch localIndexedSearch = new LocalIndexedSearch(indexPath);
+		searchController.addSearchMechanism("Local Index", localIndexedSearch);
+
+        String webServiceURI = properties.getProperty("webServiceURI");
+        WebServiceSearch webServiceSearch = new WebServiceSearch(webServiceURI);
+        searchController.addSearchMechanism("Web Service", webServiceSearch);
+        
+        StackoverflowJSONAPISearch stackoverflowJSONAPISearch = new StackoverflowJSONAPISearch();
+		searchController.addSearchMechanism("StackExchange API", stackoverflowJSONAPISearch);
+		
+		Integer defaultMaximumPostsToRetrieve = Integer.parseInt(properties.getProperty("defaultMaximumPostsToRetrieve"));
+		searchController.setDefaultMaximumPostsToRetrieve(defaultMaximumPostsToRetrieve);
+		
+		Integer extraPostsToRetrieveOnScroll = Integer.parseInt(properties.getProperty("extraPostsToRetrieveOnScroll"));
+		searchController.setExtraPostsToRetrieveOnScroll(extraPostsToRetrieveOnScroll);
+		
+		searchController.resetMaximumPostsToRetrieve ();
+		
+		Integer minimumUpVotes = Integer.parseInt(properties.getProperty("minimumUpVotes"));
+		searchController.setMinimumUpVotes(minimumUpVotes);
+
+		searchController.setSearchType("StackExchange API");
+		searchController.setSortType("Score");
+		searchController.setQuery("");
+		
+		return searchController;
+	}
+    
+	private Properties initialiseProperties() {
+    	
+		IdeaPluginDescriptor ipd = PluginManager.getPlugin(PluginId.getId("uk.ac.glasgow.scclippy"));
+        String pluginPath = (ipd == null) ? "src/main/resource" : ipd.getPath().getAbsolutePath();
+        String settingsPath = pluginPath+"/config.properties";
+
+		File propertiesFile = new java.io.File(settingsPath);
+		Properties properties = new PersistentProperties(settingsPath);
+
+    	try {
+        	InputStream propertiesStream = new FileInputStream(propertiesFile);
+    		properties.load(propertiesStream);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("During initialisation of Scclippy plugin properties.", e);
 		}
+    	return properties;
 	}
 
     /**
@@ -113,17 +127,19 @@ public class MainWindow implements ToolWindowFactory {
      * for search, history and settings
      * (and sets a mnemonic for each)
      */
-    private void initTabsPanel() {
-        
+    private void initTabsPanel(SearchController searchController, Properties properties) {
+    	
+    	tabsPanel = new JBTabbedPane();
+
         searchHistoryTab = new SearchHistoryTab();
-        searchTab = new SearchTab(properties, searchHistoryTab);
-        settingsTab = new SettingsTab(properties, searchTab);
+        searchTab = new SearchTab(searchController, searchHistoryTab);
+        settingsTab = new SettingsTab(properties, searchController, searchTab.getQueryInputPane(), searchTab.getPostsPane());
         infoTab = new InfoTab();
         feedbackTab = new FeedbackTab();
     	
     	tabsPanel = new JBTabbedPane();
 
-        tabsPanel.addTab("Search", null, searchTab.getScroll(), "Searching by index or using Stackoverflow API");
+        tabsPanel.addTab("Search", null, searchTab, "Searching by index or using Stackoverflow API");
         tabsPanel.addTab("History", null, searchHistoryTab, "View input history");
         tabsPanel.addTab("Settings", null, settingsTab, "Change settings");
         tabsPanel.addTab("Info", null, infoTab.getScroll(), "Description of the plugin");

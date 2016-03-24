@@ -3,9 +3,11 @@ package uk.ac.glasgow.scclippy.uicomponents.search;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -16,16 +18,13 @@ import javax.swing.text.html.HTMLEditorKit;
 import com.intellij.ui.JBColor;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
-import uk.ac.glasgow.scclippy.plugin.editor.IntelijFacade;
+import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
 
 
 /**
  * Represents the Posts (JEditorPane(s) that hold the results from a query)
  */
 public class PostsPane extends JPanel {
-
-    public static final int defaultPostCount = 5;
-    public static final int maxPostCount = 20;
     
     private String textColour = "";
 
@@ -36,7 +35,10 @@ public class PostsPane extends JPanel {
     private List<JEditorPane> entryEditorPanes;
 
 
-    PostsPane() {
+    public PostsPane() {
+    	entryEditorPanes = new ArrayList<JEditorPane>();
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        
     	initialiseHTMLEditorKit();
         initialiseBorder();
     }
@@ -164,7 +166,7 @@ public class PostsPane extends JPanel {
                     try {
                         Desktop.getDesktop().browse(e.getURL().toURI());
                     } catch (IOException | URISyntaxException e1) {
-                    	IntelijFacade.createErrorNotification(e1.getMessage());
+                    	IntellijFacade.createErrorNotification(e1.getMessage());
                     }
                 }
             }

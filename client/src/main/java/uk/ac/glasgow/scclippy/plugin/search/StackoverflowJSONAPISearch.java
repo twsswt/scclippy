@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
 import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Class for searching with a Stackoverflow API v2.2
  */
-public class StackoverflowJSONAPISearch extends StackoverflowSearch {
+public class StackoverflowJSONAPISearch implements StackoverflowSearch {
 
     private final static String EXCERPTS_URL = "http://api.stackexchange.com/2.2/search/excerpts?";
     private final static String EXCERPTS_PARAMS = "&sort=relevance&tagged=java&site=stackoverflow";
@@ -22,17 +23,22 @@ public class StackoverflowJSONAPISearch extends StackoverflowSearch {
     private int remainingCalls;
 
     @Override
-    public List<StackoverflowEntry> searchIndex(@NotNull String query, int posts) throws Exception {
+    public List<StackoverflowEntry> searchIndex(@NotNull String query, int posts) throws SearchException  {
 
-        String body = URLEncoder.encode(query, "UTF-8");
+        String body;
+		try {
+			body = URLEncoder.encode(query, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new SearchException(e);
+		}
         JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(EXCERPTS_URL + "body=" + body + EXCERPTS_PARAMS);
 
         if (json == null)
-            throw new Exception("Query failed. Check connection to server.");
+            throw new SearchException("Query failed. Check connection to server.");
         
 
         if (json.getInt("quota_remaining") == 0) {
-            throw new Exception("Cannot make more requests today");
+            throw new SearchException("Cannot make more requests today");
         }
 
         remainingCalls = json.getInt("quota_remaining");
@@ -41,7 +47,7 @@ public class StackoverflowJSONAPISearch extends StackoverflowSearch {
 
         List<StackoverflowEntry> result = new ArrayList<StackoverflowEntry>();
 
-        for (int i = 0; i < items.length(); i++) {
+        for (int i = 0; i < items.length() && i < posts; i++) {
             JSONObject item = (JSONObject) items.get(i);
             
             String id = "" + item.getInt(item.getString("item_type") + "_id");
