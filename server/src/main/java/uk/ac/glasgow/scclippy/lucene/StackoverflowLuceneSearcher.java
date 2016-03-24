@@ -22,7 +22,7 @@
     <meta name="viewport" content="width=1020">
     
     
-    <title>SourceCodeClippy/server.iml at lucene-db-indexing · thrios/SourceCodeClippy</title>
+    <title>SourceCodeClippy/StackoverflowLuceneSearcher.java at lucene-db-indexing · thrios/SourceCodeClippy</title>
     <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub">
     <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -42,7 +42,7 @@
       <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
     <meta name="browser-errors-url" content="https://api.github.com/_private/browser/errors">
     <link rel="assets" href="https://assets-cdn.github.com/">
-    <link rel="web-socket" href="wss://live.github.com/_sockets/Nzg4Njk2MTpmODkyZWZiYzg0MTY5MmQ0YjUwYWI1Y2Y2ZjNmMDNiOTo5MzRjOWJlNWFlMjA3MzRjZmY0MGVhM2RhZTU4NWJhNDg2MDhlMmIxNGM0MWQ0MTRmZWQ3NjlkYWMwOWU3MTMw--cde2406dc721e44ae1da61dca12946cde81ab5ae">
+    <link rel="web-socket" href="wss://live.github.com/_sockets/Nzg4Njk2MTpmODkyZWZiYzg0MTY5MmQ0YjUwYWI1Y2Y2ZjNmMDNiOToyN2Q1ZTZlNGU3YTJhODlhMzlhZWJlODAwMzY4MWRlOTk5NWVjMTdmYWQyZjg2ZjNiMTBlYmJkNDkxNjQ5Y2Mz--cdc1ac0dd9b059b1cb80ec9dd7d15475c7f58ca9">
     <meta name="pjax-timeout" content="1000">
     <link rel="sudo-modal" href="/sessions/sudo_modal">
 
@@ -54,7 +54,7 @@
 <meta name="google-site-verification" content="ZzhVyEFwb7w3e0-uOTltm8Jsck2F5StVihD0exw2fsA">
     <meta name="google-analytics" content="UA-3769691-2">
 
-<meta content="collector.githubapp.com" name="octolytics-host" /><meta content="github" name="octolytics-app-id" /><meta content="059700DD:38FA:10BDF70A:56F41E66" name="octolytics-dimension-request_id" /><meta content="7886961" name="octolytics-actor-id" /><meta content="thrios" name="octolytics-actor-login" /><meta content="ebdb61ed8432c6fd4c78f3c4b8a24d60be636f25f1848390e2464dd7267e4c8a" name="octolytics-actor-hash" />
+<meta content="collector.githubapp.com" name="octolytics-host" /><meta content="github" name="octolytics-app-id" /><meta content="059700DD:38F9:E9AB91D:56F41E82" name="octolytics-dimension-request_id" /><meta content="7886961" name="octolytics-actor-id" /><meta content="thrios" name="octolytics-actor-login" /><meta content="ebdb61ed8432c6fd4c78f3c4b8a24d60be636f25f1848390e2464dd7267e4c8a" name="octolytics-actor-hash" />
 <meta content="/&lt;user-name&gt;/&lt;repo-name&gt;/blob/show" data-pjax-transient="true" name="analytics-location" />
 
 
@@ -67,7 +67,7 @@
     <meta name="user-login" content="thrios">
 
         <meta name="expected-hostname" content="github.com">
-      <meta name="js-proxy-site-detection-payload" content="YTg2MDYwOTMzNzlmNzUyZGIyNTU0ZjA3NWYxZDVjZTM5YmVhMjM0YzlmYzY4YzVlYjc5MzdjZjZjMzcwMDU4OHx7InJlbW90ZV9hZGRyZXNzIjoiNS4xNTEuMC4yMjEiLCJyZXF1ZXN0X2lkIjoiMDU5NzAwREQ6MzhGQToxMEJERjcwQTo1NkY0MUU2NiIsInRpbWVzdGFtcCI6MTQ1ODgzOTE0Mn0=">
+      <meta name="js-proxy-site-detection-payload" content="ODIzNDFjYzM0OWM1YTdmZDM5NDk5OTU4NmNmMDA0OTg4MDlmNGE5MWI1NjBhYmNiMzhiYmM1N2MyOWI0NzA0ZXx7InJlbW90ZV9hZGRyZXNzIjoiNS4xNTEuMC4yMjEiLCJyZXF1ZXN0X2lkIjoiMDU5NzAwREQ6MzhGOTpFOUFCOTFEOjU2RjQxRTgyIiwidGltZXN0YW1wIjoxNDU4ODM5MTc0fQ==">
 
       <link rel="mask-icon" href="https://assets-cdn.github.com/pinned-octocat.svg" color="#4078c0">
       <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
@@ -85,7 +85,7 @@
   <link href="https://github.com/thrios/SourceCodeClippy/commits/lucene-db-indexing.atom" rel="alternate" title="Recent Commits to SourceCodeClippy:lucene-db-indexing" type="application/atom+xml">
 
 
-      <link rel="canonical" href="https://github.com/thrios/SourceCodeClippy/blob/lucene-db-indexing/server/server.iml" data-pjax-transient>
+      <link rel="canonical" href="https://github.com/thrios/SourceCodeClippy/blob/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java" data-pjax-transient>
   </head>
 
 
@@ -227,7 +227,7 @@
             Settings
           </a>
 
-          <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/logout" class="logout-form" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="6Vv6RSy1Zy9AR1cM0xz8szpsvfUhVpdRLKxUkusfFNFO++/z3aAX0WC+fL/6rrLLWgk1pv7kjbyEdisWUvlGpQ==" /></div>
+          <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/logout" class="logout-form" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="ipUdl1S5IYIydDcE9yFCK3/utSbcx0O/USN1C32DvpBww6lZA/g/8NDUv9CWhuaHcvg0tdZ45GyXncJEKR3O0g==" /></div>
             <button class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout">
               Sign out
             </button>
@@ -264,7 +264,7 @@
 <ul class="pagehead-actions">
 
   <li>
-        <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/notifications/subscribe" class="js-social-container" data-autosubmit="true" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="OPjll9vLUcqiS6rKaeR4mMdEKQMbhtJCoZfhZq30OBFismmbxtzbor8NCRrSB0Vezxypk7o5lVBFAOYc98KT+Q==" /></div>      <input class="form-control" id="repository_id" name="repository_id" type="hidden" value="43914613" />
+        <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/notifications/subscribe" class="js-social-container" data-autosubmit="true" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="SpF4pDbIriCcAQlGQvE22kkzaP5fOU90cQ2UdjbASsq3dauWtheD7EN6pAd/MpBQwv/ZLMezJC5t/eDhWYlXVw==" /></div>      <input class="form-control" id="repository_id" name="repository_id" type="hidden" value="43914613" />
 
         <div class="select-menu js-menu-container js-select-menu">
           <a href="/thrios/SourceCodeClippy/subscription"
@@ -339,7 +339,7 @@
     
   <div class="js-toggler-container js-social-container starring-container ">
 
-    <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/unstar" class="js-toggler-form starred" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="6KHwyPwKrr0s4i5Ebj1Dgr1W+L7KaWH2RrLctoD7B4nkks5tmQ5ia2/7EHOasYIk3wtK0+c1qN93izkZZ8X7KQ==" /></div>
+    <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/unstar" class="js-toggler-form starred" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="OLfdSuB4PasRMu9Nz8yxTF6xn8jlMcq3Mn+58cDlrEYNdxeqB4eT/7fuJwRQ9lRmuFrV4lsFg0yyG6BoC39KIQ==" /></div>
       <button
         class="btn btn-sm btn-with-count js-toggler-target"
         aria-label="Unstar this repository" title="Unstar thrios/SourceCodeClippy"
@@ -351,7 +351,7 @@
           1
         </a>
 </form>
-    <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/star" class="js-toggler-form unstarred" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="uV7VBNIcVFp6sud9+NMXz7uHruIcLVLMb9Oum+f8qc3hEaz74QiCnYYzZCZxqmKJp1insRLYimEQ37t8F64y7A==" /></div>
+    <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/star" class="js-toggler-form unstarred" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="Ce+29ccYeHgJsR5p48a1E6V6KuiPJsFw6FQbTbMy455+4Y/+Jc8WTYm9AtIQBfwx8m7TCvth5DoAV/CGT2l2sA==" /></div>
       <button
         class="btn btn-sm btn-with-count js-toggler-target"
         aria-label="Star this repository" title="Star thrios/SourceCodeClippy"
@@ -457,9 +457,9 @@
 
     
 
-<a href="/thrios/SourceCodeClippy/blob/197eef0b6cf77e03306a69636a7724c614c79cfc/server/server.iml" class="hidden js-permalink-shortcut" data-hotkey="y">Permalink</a>
+<a href="/thrios/SourceCodeClippy/blob/197eef0b6cf77e03306a69636a7724c614c79cfc/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java" class="hidden js-permalink-shortcut" data-hotkey="y">Permalink</a>
 
-<!-- blob contrib key: blob_contributors:v21:de0d7e24e6fd576da7e7130680d43a4e -->
+<!-- blob contrib key: blob_contributors:v21:9abb2caf959f29f7e4fba620fd25292b -->
 
 <div class="file-navigation js-zeroclipboard-container">
   
@@ -501,7 +501,7 @@
 
 
             <a class="select-menu-item js-navigation-item js-navigation-open selected"
-               href="/thrios/SourceCodeClippy/blob/lucene-db-indexing/server/server.iml"
+               href="/thrios/SourceCodeClippy/blob/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java"
                data-name="lucene-db-indexing"
                data-skip-pjax="true"
                rel="nofollow">
@@ -511,7 +511,7 @@
               </span>
             </a>
             <a class="select-menu-item js-navigation-item js-navigation-open "
-               href="/thrios/SourceCodeClippy/blob/master/server/server.iml"
+               href="/thrios/SourceCodeClippy/blob/master/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java"
                data-name="master"
                data-skip-pjax="true"
                rel="nofollow">
@@ -522,7 +522,7 @@
             </a>
         </div>
 
-          <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/branches" class="js-create-branch select-menu-item select-menu-new-item-form js-navigation-item js-new-item-form" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="YrmIT1SDBCAgUfTJ9DDI1sTFnOEZSeA33aOUlxrIkMB0H18G6VhDCxPbRxC7Wy/6KV2m/qhswFRpVcN8OPSxMg==" /></div>
+          <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/branches" class="js-create-branch select-menu-item select-menu-new-item-form js-navigation-item js-new-item-form" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="o3oEeSSJZJORoSCQjMu6Ee2+SRJkbBA1nri86fKkzjuyZ3tmMfQTuHsel/IsDKq7UZbPzucNKSs/USb9pWuimQ==" /></div>
           <svg aria-hidden="true" class="octicon octicon-git-branch select-menu-item-icon" height="16" role="img" version="1.1" viewBox="0 0 10 16" width="10"><path d="M10 5c0-1.11-0.89-2-2-2s-2 0.89-2 2c0 0.73 0.41 1.38 1 1.72v0.3c-0.02 0.52-0.23 0.98-0.63 1.38s-0.86 0.61-1.38 0.63c-0.83 0.02-1.48 0.16-2 0.45V4.72c0.59-0.34 1-0.98 1-1.72 0-1.11-0.89-2-2-2S0 1.89 0 3c0 0.73 0.41 1.38 1 1.72v6.56C0.41 11.63 0 12.27 0 13c0 1.11 0.89 2 2 2s2-0.89 2-2c0-0.53-0.2-1-0.53-1.36 0.09-0.06 0.48-0.41 0.59-0.47 0.25-0.11 0.56-0.17 0.94-0.17 1.05-0.05 1.95-0.45 2.75-1.25s1.2-1.98 1.25-3.02h-0.02c0.61-0.36 1.02-1 1.02-1.73zM2 1.8c0.66 0 1.2 0.55 1.2 1.2s-0.55 1.2-1.2 1.2-1.2-0.55-1.2-1.2 0.55-1.2 1.2-1.2z m0 12.41c-0.66 0-1.2-0.55-1.2-1.2s0.55-1.2 1.2-1.2 1.2 0.55 1.2 1.2-0.55 1.2-1.2 1.2z m6-8c-0.66 0-1.2-0.55-1.2-1.2s0.55-1.2 1.2-1.2 1.2 0.55 1.2 1.2-0.55 1.2-1.2 1.2z"></path></svg>
             <div class="select-menu-item-text">
               <span class="select-menu-item-heading">Create branch: <span class="js-new-item-name"></span></span>
@@ -530,7 +530,7 @@
             </div>
             <input type="hidden" name="name" id="name" class="js-new-item-value">
             <input type="hidden" name="branch" id="branch" value="lucene-db-indexing">
-            <input type="hidden" name="path" id="path" value="server/server.iml">
+            <input type="hidden" name="path" id="path" value="server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java">
 </form>
       </div>
 
@@ -557,11 +557,11 @@
     <button aria-label="Copy file path to clipboard" class="js-zeroclipboard btn btn-sm zeroclipboard-button tooltipped tooltipped-s" data-copied-hint="Copied!" type="button">Copy path</button>
   </div>
   <div class="breadcrumb js-zeroclipboard-target">
-    <span class="repo-root js-repo-root"><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing"><span>SourceCodeClippy</span></a></span></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server"><span>server</span></a></span><span class="separator">/</span><strong class="final-path">server.iml</strong>
+    <span class="repo-root js-repo-root"><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing"><span>SourceCodeClippy</span></a></span></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server"><span>server</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src"><span>src</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src/main"><span>main</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src/main/java"><span>java</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src/main/java/uk"><span>uk</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src/main/java/uk/ac"><span>ac</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src/main/java/uk/ac/glasgow"><span>glasgow</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy"><span>scclippy</span></a></span><span class="separator">/</span><span class="js-path-segment"><a href="/thrios/SourceCodeClippy/tree/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene"><span>lucene</span></a></span><span class="separator">/</span><strong class="final-path">StackoverflowLuceneSearcher.java</strong>
   </div>
 </div>
 
-<include-fragment class="commit-tease" src="/thrios/SourceCodeClippy/contributors/lucene-db-indexing/server/server.iml">
+<include-fragment class="commit-tease" src="/thrios/SourceCodeClippy/contributors/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java">
   <div>
     Fetching contributors&hellip;
   </div>
@@ -576,24 +576,24 @@
   <div class="file-actions">
 
     <div class="btn-group">
-      <a href="/thrios/SourceCodeClippy/raw/lucene-db-indexing/server/server.iml" class="btn btn-sm " id="raw-url">Raw</a>
-        <a href="/thrios/SourceCodeClippy/blame/lucene-db-indexing/server/server.iml" class="btn btn-sm js-update-url-with-hash">Blame</a>
-      <a href="/thrios/SourceCodeClippy/commits/lucene-db-indexing/server/server.iml" class="btn btn-sm " rel="nofollow">History</a>
+      <a href="/thrios/SourceCodeClippy/raw/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java" class="btn btn-sm " id="raw-url">Raw</a>
+        <a href="/thrios/SourceCodeClippy/blame/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java" class="btn btn-sm js-update-url-with-hash">Blame</a>
+      <a href="/thrios/SourceCodeClippy/commits/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java" class="btn btn-sm " rel="nofollow">History</a>
     </div>
 
         <a class="btn-octicon tooltipped tooltipped-nw"
-           href="github-windows://openRepo/https://github.com/thrios/SourceCodeClippy?branch=lucene-db-indexing&amp;filepath=server%2Fserver.iml"
+           href="github-windows://openRepo/https://github.com/thrios/SourceCodeClippy?branch=lucene-db-indexing&amp;filepath=server%2Fsrc%2Fmain%2Fjava%2Fuk%2Fac%2Fglasgow%2Fscclippy%2Flucene%2FStackoverflowLuceneSearcher.java"
            aria-label="Open this file in GitHub Desktop"
            data-ga-click="Repository, open with desktop, type:windows">
             <svg aria-hidden="true" class="octicon octicon-device-desktop" height="16" role="img" version="1.1" viewBox="0 0 16 16" width="16"><path d="M15 2H1c-0.55 0-1 0.45-1 1v9c0 0.55 0.45 1 1 1h5.34c-0.25 0.61-0.86 1.39-2.34 2h8c-1.48-0.61-2.09-1.39-2.34-2h5.34c0.55 0 1-0.45 1-1V3c0-0.55-0.45-1-1-1z m0 9H1V3h14v8z"></path></svg>
         </a>
 
-        <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/edit/lucene-db-indexing/server/server.iml" class="inline-form js-update-url-with-hash" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="TnpCGVedsM1iDPgNqO2uzS2ZcXB2OMvtpthDlc3KVF9fqlRmTWbXZL0F4tpQN3l8wQ8UqqYr8rQyFsQ1CIj15w==" /></div>
+        <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/edit/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java" class="inline-form js-update-url-with-hash" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="FI/xs8jbnpVYmYXIEUka645ZHE7OqM5eMiTtM1HaQXOgGwvy4LCTXj9RQvOEx+HD7KYKKi+9BBHqvNIsSg7Xfw==" /></div>
           <button class="btn-octicon tooltipped tooltipped-nw" type="submit"
             aria-label="Edit this file" data-hotkey="e" data-disable-with>
             <svg aria-hidden="true" class="octicon octicon-pencil" height="16" role="img" version="1.1" viewBox="0 0 14 16" width="14"><path d="M0 12v3h3l8-8-3-3L0 12z m3 2H1V12h1v1h1v1z m10.3-9.3l-1.3 1.3-3-3 1.3-1.3c0.39-0.39 1.02-0.39 1.41 0l1.59 1.59c0.39 0.39 0.39 1.02 0 1.41z"></path></svg>
           </button>
-</form>        <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/delete/lucene-db-indexing/server/server.iml" class="inline-form" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="HLI6YniKIp1ja7sQaaiWKo0V0kIs7nNC4ouOb1ttQbjqymK1amKbEZOVYUhTVfcGcwRm8jvifKE913ITNku+JQ==" /></div>
+</form>        <!-- </textarea> --><!-- '"` --><form accept-charset="UTF-8" action="/thrios/SourceCodeClippy/delete/lucene-db-indexing/server/src/main/java/uk/ac/glasgow/scclippy/lucene/StackoverflowLuceneSearcher.java" class="inline-form" data-form-nonce="e782a8861b96d3c1ca3f3233614752fe2cf0da3a" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="a+OZpO2NfEe+K8CHO26jbxdhY3hTHRXaSGx4KMhnGrrVDTpSMwybxDok6Lqjobj87RDGsob4/IWBt6AhPwoZYw==" /></div>
           <button class="btn-octicon btn-octicon-danger tooltipped tooltipped-nw" type="submit"
             aria-label="Delete this file" data-disable-with>
             <svg aria-hidden="true" class="octicon octicon-trashcan" height="16" role="img" version="1.1" viewBox="0 0 12 16" width="12"><path d="M10 2H8c0-0.55-0.45-1-1-1H4c-0.55 0-1 0.45-1 1H1c-0.55 0-1 0.45-1 1v1c0 0.55 0.45 1 1 1v9c0 0.55 0.45 1 1 1h7c0.55 0 1-0.45 1-1V5c0.55 0 1-0.45 1-1v-1c0-0.55-0.45-1-1-1z m-1 12H2V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9z m1-10H1v-1h9v1z"></path></svg>
@@ -601,59 +601,544 @@
 </form>  </div>
 
   <div class="file-info">
-      11 lines (11 sloc)
+      131 lines (105 sloc)
       <span class="file-info-divider"></span>
-    423 Bytes
+    4.19 KB
   </div>
 </div>
 
   
 
-  <div itemprop="text" class="blob-wrapper data type-xml">
+  <div itemprop="text" class="blob-wrapper data type-java">
       <table class="highlight tab-size js-file-line-container" data-tab-size="8">
       <tr>
         <td id="L1" class="blob-num js-line-number" data-line-number="1"></td>
-        <td id="LC1" class="blob-code blob-code-inner js-file-line">&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>1.0<span class="pl-pds">&quot;</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>UTF-8<span class="pl-pds">&quot;</span></span>?&gt;</td>
+        <td id="LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">package</span> <span class="pl-smi">uk.ac.glasgow.scclippy.lucene</span>;</td>
       </tr>
       <tr>
         <td id="L2" class="blob-num js-line-number" data-line-number="2"></td>
-        <td id="LC2" class="blob-code blob-code-inner js-file-line">&lt;<span class="pl-ent">module</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>JAVA_MODULE<span class="pl-pds">&quot;</span></span> <span class="pl-e">version</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>4<span class="pl-pds">&quot;</span></span>&gt;</td>
+        <td id="LC2" class="blob-code blob-code-inner js-file-line"><span class="pl-c">/*</span></td>
       </tr>
       <tr>
         <td id="L3" class="blob-num js-line-number" data-line-number="3"></td>
-        <td id="LC3" class="blob-code blob-code-inner js-file-line">  &lt;<span class="pl-ent">component</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>NewModuleRootManager<span class="pl-pds">&quot;</span></span> <span class="pl-e">inherit-compiler-output</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>true<span class="pl-pds">&quot;</span></span>&gt;</td>
+        <td id="LC3" class="blob-code blob-code-inner js-file-line"><span class="pl-c"></span></td>
       </tr>
       <tr>
         <td id="L4" class="blob-num js-line-number" data-line-number="4"></td>
-        <td id="LC4" class="blob-code blob-code-inner js-file-line">    &lt;<span class="pl-ent">exclude-output</span> /&gt;</td>
+        <td id="LC4" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * Licensed to the Apache Software Foundation (ASF) under one or more</span></td>
       </tr>
       <tr>
         <td id="L5" class="blob-num js-line-number" data-line-number="5"></td>
-        <td id="LC5" class="blob-code blob-code-inner js-file-line">    &lt;<span class="pl-ent">content</span> <span class="pl-e">url</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>file://$MODULE_DIR$<span class="pl-pds">&quot;</span></span>&gt;</td>
+        <td id="LC5" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * contributor license agreements.  See the NOTICE file distributed with</span></td>
       </tr>
       <tr>
         <td id="L6" class="blob-num js-line-number" data-line-number="6"></td>
-        <td id="LC6" class="blob-code blob-code-inner js-file-line">      &lt;<span class="pl-ent">sourceFolder</span> <span class="pl-e">url</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>file://$MODULE_DIR$/src<span class="pl-pds">&quot;</span></span> <span class="pl-e">isTestSource</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>false<span class="pl-pds">&quot;</span></span> /&gt;</td>
+        <td id="LC6" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * this work for additional information regarding copyright ownership.</span></td>
       </tr>
       <tr>
         <td id="L7" class="blob-num js-line-number" data-line-number="7"></td>
-        <td id="LC7" class="blob-code blob-code-inner js-file-line">    &lt;/<span class="pl-ent">content</span>&gt;</td>
+        <td id="LC7" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * The ASF licenses this file to You under the Apache License, Version 2.0</span></td>
       </tr>
       <tr>
         <td id="L8" class="blob-num js-line-number" data-line-number="8"></td>
-        <td id="LC8" class="blob-code blob-code-inner js-file-line">    &lt;<span class="pl-ent">orderEntry</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>inheritedJdk<span class="pl-pds">&quot;</span></span> /&gt;</td>
+        <td id="LC8" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * (the &quot;License&quot;); you may not use this file except in compliance with</span></td>
       </tr>
       <tr>
         <td id="L9" class="blob-num js-line-number" data-line-number="9"></td>
-        <td id="LC9" class="blob-code blob-code-inner js-file-line">    &lt;<span class="pl-ent">orderEntry</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>sourceFolder<span class="pl-pds">&quot;</span></span> <span class="pl-e">forTests</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>false<span class="pl-pds">&quot;</span></span> /&gt;</td>
+        <td id="LC9" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * the License.  You may obtain a copy of the License at</span></td>
       </tr>
       <tr>
         <td id="L10" class="blob-num js-line-number" data-line-number="10"></td>
-        <td id="LC10" class="blob-code blob-code-inner js-file-line">  &lt;/<span class="pl-ent">component</span>&gt;</td>
+        <td id="LC10" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> *</span></td>
       </tr>
       <tr>
         <td id="L11" class="blob-num js-line-number" data-line-number="11"></td>
-        <td id="LC11" class="blob-code blob-code-inner js-file-line">&lt;/<span class="pl-ent">module</span>&gt;</td>
+        <td id="LC11" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> *	 http://www.apache.org/licenses/LICENSE-2.0</span></td>
+      </tr>
+      <tr>
+        <td id="L12" class="blob-num js-line-number" data-line-number="12"></td>
+        <td id="LC12" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> *</span></td>
+      </tr>
+      <tr>
+        <td id="L13" class="blob-num js-line-number" data-line-number="13"></td>
+        <td id="LC13" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * Unless required by applicable law or agreed to in writing, software</span></td>
+      </tr>
+      <tr>
+        <td id="L14" class="blob-num js-line-number" data-line-number="14"></td>
+        <td id="LC14" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></td>
+      </tr>
+      <tr>
+        <td id="L15" class="blob-num js-line-number" data-line-number="15"></td>
+        <td id="LC15" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></td>
+      </tr>
+      <tr>
+        <td id="L16" class="blob-num js-line-number" data-line-number="16"></td>
+        <td id="LC16" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * See the License for the specific language governing permissions and</span></td>
+      </tr>
+      <tr>
+        <td id="L17" class="blob-num js-line-number" data-line-number="17"></td>
+        <td id="LC17" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * limitations under the License.</span></td>
+      </tr>
+      <tr>
+        <td id="L18" class="blob-num js-line-number" data-line-number="18"></td>
+        <td id="LC18" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> */</span></td>
+      </tr>
+      <tr>
+        <td id="L19" class="blob-num js-line-number" data-line-number="19"></td>
+        <td id="LC19" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L20" class="blob-num js-line-number" data-line-number="20"></td>
+        <td id="LC20" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import static</span> <span class="pl-smi">java.lang.String.format</span>;</td>
+      </tr>
+      <tr>
+        <td id="L21" class="blob-num js-line-number" data-line-number="21"></td>
+        <td id="LC21" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L22" class="blob-num js-line-number" data-line-number="22"></td>
+        <td id="LC22" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.io.IOException</span>;</td>
+      </tr>
+      <tr>
+        <td id="L23" class="blob-num js-line-number" data-line-number="23"></td>
+        <td id="LC23" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.nio.file.Path</span>;</td>
+      </tr>
+      <tr>
+        <td id="L24" class="blob-num js-line-number" data-line-number="24"></td>
+        <td id="LC24" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.sql.Connection</span>;</td>
+      </tr>
+      <tr>
+        <td id="L25" class="blob-num js-line-number" data-line-number="25"></td>
+        <td id="LC25" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.sql.ResultSet</span>;</td>
+      </tr>
+      <tr>
+        <td id="L26" class="blob-num js-line-number" data-line-number="26"></td>
+        <td id="LC26" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.sql.SQLException</span>;</td>
+      </tr>
+      <tr>
+        <td id="L27" class="blob-num js-line-number" data-line-number="27"></td>
+        <td id="LC27" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.sql.Statement</span>;</td>
+      </tr>
+      <tr>
+        <td id="L28" class="blob-num js-line-number" data-line-number="28"></td>
+        <td id="LC28" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.util.ArrayList</span>;</td>
+      </tr>
+      <tr>
+        <td id="L29" class="blob-num js-line-number" data-line-number="29"></td>
+        <td id="LC29" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">java.util.List</span>;</td>
+      </tr>
+      <tr>
+        <td id="L30" class="blob-num js-line-number" data-line-number="30"></td>
+        <td id="LC30" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L31" class="blob-num js-line-number" data-line-number="31"></td>
+        <td id="LC31" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.analysis.Analyzer</span>;</td>
+      </tr>
+      <tr>
+        <td id="L32" class="blob-num js-line-number" data-line-number="32"></td>
+        <td id="LC32" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.analysis.standard.StandardAnalyzer</span>;</td>
+      </tr>
+      <tr>
+        <td id="L33" class="blob-num js-line-number" data-line-number="33"></td>
+        <td id="LC33" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.analysis.util.CharArraySet</span>;</td>
+      </tr>
+      <tr>
+        <td id="L34" class="blob-num js-line-number" data-line-number="34"></td>
+        <td id="LC34" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.document.Document</span>;</td>
+      </tr>
+      <tr>
+        <td id="L35" class="blob-num js-line-number" data-line-number="35"></td>
+        <td id="LC35" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.index.DirectoryReader</span>;</td>
+      </tr>
+      <tr>
+        <td id="L36" class="blob-num js-line-number" data-line-number="36"></td>
+        <td id="LC36" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.index.IndexReader</span>;</td>
+      </tr>
+      <tr>
+        <td id="L37" class="blob-num js-line-number" data-line-number="37"></td>
+        <td id="LC37" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.queryparser.classic.ParseException</span>;</td>
+      </tr>
+      <tr>
+        <td id="L38" class="blob-num js-line-number" data-line-number="38"></td>
+        <td id="LC38" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.queryparser.classic.QueryParser</span>;</td>
+      </tr>
+      <tr>
+        <td id="L39" class="blob-num js-line-number" data-line-number="39"></td>
+        <td id="LC39" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.search.IndexSearcher</span>;</td>
+      </tr>
+      <tr>
+        <td id="L40" class="blob-num js-line-number" data-line-number="40"></td>
+        <td id="LC40" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.search.Query</span>;</td>
+      </tr>
+      <tr>
+        <td id="L41" class="blob-num js-line-number" data-line-number="41"></td>
+        <td id="LC41" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.search.ScoreDoc</span>;</td>
+      </tr>
+      <tr>
+        <td id="L42" class="blob-num js-line-number" data-line-number="42"></td>
+        <td id="LC42" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.search.TopDocs</span>;</td>
+      </tr>
+      <tr>
+        <td id="L43" class="blob-num js-line-number" data-line-number="43"></td>
+        <td id="LC43" class="blob-code blob-code-inner js-file-line"><span class="pl-k">import</span> <span class="pl-smi">org.apache.lucene.store.FSDirectory</span>;</td>
+      </tr>
+      <tr>
+        <td id="L44" class="blob-num js-line-number" data-line-number="44"></td>
+        <td id="LC44" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L45" class="blob-num js-line-number" data-line-number="45"></td>
+        <td id="LC45" class="blob-code blob-code-inner js-file-line"><span class="pl-c">/**</span></td>
+      </tr>
+      <tr>
+        <td id="L46" class="blob-num js-line-number" data-line-number="46"></td>
+        <td id="LC46" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * Utility class for searching the Stackoverflow PostgreSQL Database via a Lucene index of documents.</span></td>
+      </tr>
+      <tr>
+        <td id="L47" class="blob-num js-line-number" data-line-number="47"></td>
+        <td id="LC47" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> * @author tws</span></td>
+      </tr>
+      <tr>
+        <td id="L48" class="blob-num js-line-number" data-line-number="48"></td>
+        <td id="LC48" class="blob-code blob-code-inner js-file-line"><span class="pl-c"> */</span></td>
+      </tr>
+      <tr>
+        <td id="L49" class="blob-num js-line-number" data-line-number="49"></td>
+        <td id="LC49" class="blob-code blob-code-inner js-file-line"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">StackoverflowLuceneSearcher</span> {</td>
+      </tr>
+      <tr>
+        <td id="L50" class="blob-num js-line-number" data-line-number="50"></td>
+        <td id="LC50" class="blob-code blob-code-inner js-file-line">	</td>
+      </tr>
+      <tr>
+        <td id="L51" class="blob-num js-line-number" data-line-number="51"></td>
+        <td id="LC51" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">Connection</span> connection;</td>
+      </tr>
+      <tr>
+        <td id="L52" class="blob-num js-line-number" data-line-number="52"></td>
+        <td id="LC52" class="blob-code blob-code-inner js-file-line">	</td>
+      </tr>
+      <tr>
+        <td id="L53" class="blob-num js-line-number" data-line-number="53"></td>
+        <td id="LC53" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">Path</span> indexDirectoryPath;</td>
+      </tr>
+      <tr>
+        <td id="L54" class="blob-num js-line-number" data-line-number="54"></td>
+        <td id="LC54" class="blob-code blob-code-inner js-file-line">	</td>
+      </tr>
+      <tr>
+        <td id="L55" class="blob-num js-line-number" data-line-number="55"></td>
+        <td id="LC55" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">public</span> <span class="pl-en">StackoverflowLuceneSearcher</span> (<span class="pl-smi">Connection</span> <span class="pl-v">connection</span>, <span class="pl-smi">Path</span> <span class="pl-v">indexDirectoryPath</span>) {</td>
+      </tr>
+      <tr>
+        <td id="L56" class="blob-num js-line-number" data-line-number="56"></td>
+        <td id="LC56" class="blob-code blob-code-inner js-file-line">		<span class="pl-v">this</span><span class="pl-k">.</span>connection <span class="pl-k">=</span> connection;		</td>
+      </tr>
+      <tr>
+        <td id="L57" class="blob-num js-line-number" data-line-number="57"></td>
+        <td id="LC57" class="blob-code blob-code-inner js-file-line">		<span class="pl-v">this</span><span class="pl-k">.</span>indexDirectoryPath <span class="pl-k">=</span> indexDirectoryPath;		</td>
+      </tr>
+      <tr>
+        <td id="L58" class="blob-num js-line-number" data-line-number="58"></td>
+        <td id="LC58" class="blob-code blob-code-inner js-file-line">	}	</td>
+      </tr>
+      <tr>
+        <td id="L59" class="blob-num js-line-number" data-line-number="59"></td>
+        <td id="LC59" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L60" class="blob-num js-line-number" data-line-number="60"></td>
+        <td id="LC60" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">public</span> <span class="pl-k">List&lt;<span class="pl-smi">StackoverflowEntry</span>&gt;</span> <span class="pl-en">searchDocuments</span> (<span class="pl-smi">String</span> <span class="pl-v">queryString</span>, <span class="pl-smi">Integer</span> <span class="pl-v">desiredHits</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span>, <span class="pl-smi">ParseException</span> {</td>
+      </tr>
+      <tr>
+        <td id="L61" class="blob-num js-line-number" data-line-number="61"></td>
+        <td id="LC61" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L62" class="blob-num js-line-number" data-line-number="62"></td>
+        <td id="LC62" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">IndexSearcher</span> searcher <span class="pl-k">=</span> getSearcher();</td>
+      </tr>
+      <tr>
+        <td id="L63" class="blob-num js-line-number" data-line-number="63"></td>
+        <td id="LC63" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">Query</span> query <span class="pl-k">=</span> createLuceneQuery(queryString);</td>
+      </tr>
+      <tr>
+        <td id="L64" class="blob-num js-line-number" data-line-number="64"></td>
+        <td id="LC64" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">TopDocs</span> topDocs <span class="pl-k">=</span> searcher<span class="pl-k">.</span>search(query, desiredHits);</td>
+      </tr>
+      <tr>
+        <td id="L65" class="blob-num js-line-number" data-line-number="65"></td>
+        <td id="LC65" class="blob-code blob-code-inner js-file-line">		</td>
+      </tr>
+      <tr>
+        <td id="L66" class="blob-num js-line-number" data-line-number="66"></td>
+        <td id="LC66" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">List&lt;<span class="pl-smi">StackoverflowEntry</span>&gt;</span> result <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">ArrayList&lt;<span class="pl-smi">StackoverflowEntry</span>&gt;</span>();</td>
+      </tr>
+      <tr>
+        <td id="L67" class="blob-num js-line-number" data-line-number="67"></td>
+        <td id="LC67" class="blob-code blob-code-inner js-file-line">		</td>
+      </tr>
+      <tr>
+        <td id="L68" class="blob-num js-line-number" data-line-number="68"></td>
+        <td id="LC68" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">Statement</span> statement <span class="pl-k">=</span> <span class="pl-c1">null</span>;</td>
+      </tr>
+      <tr>
+        <td id="L69" class="blob-num js-line-number" data-line-number="69"></td>
+        <td id="LC69" class="blob-code blob-code-inner js-file-line">		</td>
+      </tr>
+      <tr>
+        <td id="L70" class="blob-num js-line-number" data-line-number="70"></td>
+        <td id="LC70" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">try</span> {</td>
+      </tr>
+      <tr>
+        <td id="L71" class="blob-num js-line-number" data-line-number="71"></td>
+        <td id="LC71" class="blob-code blob-code-inner js-file-line">			statement <span class="pl-k">=</span> connection<span class="pl-k">.</span>createStatement();</td>
+      </tr>
+      <tr>
+        <td id="L72" class="blob-num js-line-number" data-line-number="72"></td>
+        <td id="LC72" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">for</span> (<span class="pl-smi">ScoreDoc</span> scoreDoc <span class="pl-k">:</span> topDocs<span class="pl-k">.</span>scoreDocs){</td>
+      </tr>
+      <tr>
+        <td id="L73" class="blob-num js-line-number" data-line-number="73"></td>
+        <td id="LC73" class="blob-code blob-code-inner js-file-line">				<span class="pl-smi">StackoverflowEntry</span> stackoverflowEntry <span class="pl-k">=</span> </td>
+      </tr>
+      <tr>
+        <td id="L74" class="blob-num js-line-number" data-line-number="74"></td>
+        <td id="LC74" class="blob-code blob-code-inner js-file-line">					creatStackoverflowEntry(searcher, statement, scoreDoc);</td>
+      </tr>
+      <tr>
+        <td id="L75" class="blob-num js-line-number" data-line-number="75"></td>
+        <td id="LC75" class="blob-code blob-code-inner js-file-line">				result<span class="pl-k">.</span>add(stackoverflowEntry);</td>
+      </tr>
+      <tr>
+        <td id="L76" class="blob-num js-line-number" data-line-number="76"></td>
+        <td id="LC76" class="blob-code blob-code-inner js-file-line">			}</td>
+      </tr>
+      <tr>
+        <td id="L77" class="blob-num js-line-number" data-line-number="77"></td>
+        <td id="LC77" class="blob-code blob-code-inner js-file-line">				</td>
+      </tr>
+      <tr>
+        <td id="L78" class="blob-num js-line-number" data-line-number="78"></td>
+        <td id="LC78" class="blob-code blob-code-inner js-file-line">		} <span class="pl-k">catch</span> (<span class="pl-smi">SQLException</span> e) {</td>
+      </tr>
+      <tr>
+        <td id="L79" class="blob-num js-line-number" data-line-number="79"></td>
+        <td id="LC79" class="blob-code blob-code-inner js-file-line">			e<span class="pl-k">.</span>printStackTrace();</td>
+      </tr>
+      <tr>
+        <td id="L80" class="blob-num js-line-number" data-line-number="80"></td>
+        <td id="LC80" class="blob-code blob-code-inner js-file-line">		} <span class="pl-k">finally</span> {</td>
+      </tr>
+      <tr>
+        <td id="L81" class="blob-num js-line-number" data-line-number="81"></td>
+        <td id="LC81" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">try</span> {</td>
+      </tr>
+      <tr>
+        <td id="L82" class="blob-num js-line-number" data-line-number="82"></td>
+        <td id="LC82" class="blob-code blob-code-inner js-file-line">				statement<span class="pl-k">.</span>close();</td>
+      </tr>
+      <tr>
+        <td id="L83" class="blob-num js-line-number" data-line-number="83"></td>
+        <td id="LC83" class="blob-code blob-code-inner js-file-line">			} <span class="pl-k">catch</span> (<span class="pl-smi">SQLException</span> e) {</td>
+      </tr>
+      <tr>
+        <td id="L84" class="blob-num js-line-number" data-line-number="84"></td>
+        <td id="LC84" class="blob-code blob-code-inner js-file-line">				e<span class="pl-k">.</span>printStackTrace();</td>
+      </tr>
+      <tr>
+        <td id="L85" class="blob-num js-line-number" data-line-number="85"></td>
+        <td id="LC85" class="blob-code blob-code-inner js-file-line">			}</td>
+      </tr>
+      <tr>
+        <td id="L86" class="blob-num js-line-number" data-line-number="86"></td>
+        <td id="LC86" class="blob-code blob-code-inner js-file-line">		}</td>
+      </tr>
+      <tr>
+        <td id="L87" class="blob-num js-line-number" data-line-number="87"></td>
+        <td id="LC87" class="blob-code blob-code-inner js-file-line">		</td>
+      </tr>
+      <tr>
+        <td id="L88" class="blob-num js-line-number" data-line-number="88"></td>
+        <td id="LC88" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">return</span> result;</td>
+      </tr>
+      <tr>
+        <td id="L89" class="blob-num js-line-number" data-line-number="89"></td>
+        <td id="LC89" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L90" class="blob-num js-line-number" data-line-number="90"></td>
+        <td id="LC90" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="L91" class="blob-num js-line-number" data-line-number="91"></td>
+        <td id="LC91" class="blob-code blob-code-inner js-file-line">	</td>
+      </tr>
+      <tr>
+        <td id="L92" class="blob-num js-line-number" data-line-number="92"></td>
+        <td id="LC92" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-smi">IndexSearcher</span> <span class="pl-en">getSearcher</span>() <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {</td>
+      </tr>
+      <tr>
+        <td id="L93" class="blob-num js-line-number" data-line-number="93"></td>
+        <td id="LC93" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">IndexReader</span> reader <span class="pl-k">=</span> <span class="pl-smi">DirectoryReader</span><span class="pl-k">.</span>open(<span class="pl-smi">FSDirectory</span><span class="pl-k">.</span>open(indexDirectoryPath));</td>
+      </tr>
+      <tr>
+        <td id="L94" class="blob-num js-line-number" data-line-number="94"></td>
+        <td id="LC94" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">IndexSearcher</span> searcher <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">IndexSearcher</span>(reader);</td>
+      </tr>
+      <tr>
+        <td id="L95" class="blob-num js-line-number" data-line-number="95"></td>
+        <td id="LC95" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">return</span> searcher;</td>
+      </tr>
+      <tr>
+        <td id="L96" class="blob-num js-line-number" data-line-number="96"></td>
+        <td id="LC96" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="L97" class="blob-num js-line-number" data-line-number="97"></td>
+        <td id="LC97" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L98" class="blob-num js-line-number" data-line-number="98"></td>
+        <td id="LC98" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-smi">Query</span> <span class="pl-en">createLuceneQuery</span>(<span class="pl-smi">String</span> <span class="pl-v">queryString</span>)</td>
+      </tr>
+      <tr>
+        <td id="L99" class="blob-num js-line-number" data-line-number="99"></td>
+        <td id="LC99" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">throws</span> <span class="pl-smi">ParseException</span> {</td>
+      </tr>
+      <tr>
+        <td id="L100" class="blob-num js-line-number" data-line-number="100"></td>
+        <td id="LC100" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">Analyzer</span> analyzer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">StandardAnalyzer</span>(<span class="pl-smi">CharArraySet</span><span class="pl-c1"><span class="pl-k">.</span>EMPTY_SET</span>);</td>
+      </tr>
+      <tr>
+        <td id="L101" class="blob-num js-line-number" data-line-number="101"></td>
+        <td id="LC101" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">QueryParser</span> parser <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">QueryParser</span>(<span class="pl-s"><span class="pl-pds">&quot;</span>Body<span class="pl-pds">&quot;</span></span>, analyzer);</td>
+      </tr>
+      <tr>
+        <td id="L102" class="blob-num js-line-number" data-line-number="102"></td>
+        <td id="LC102" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">String</span> line <span class="pl-k">=</span> queryString<span class="pl-k">.</span>trim();</td>
+      </tr>
+      <tr>
+        <td id="L103" class="blob-num js-line-number" data-line-number="103"></td>
+        <td id="LC103" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">Query</span> query <span class="pl-k">=</span> parser<span class="pl-k">.</span>parse(<span class="pl-smi">QueryParser</span><span class="pl-k">.</span>escape(line));</td>
+      </tr>
+      <tr>
+        <td id="L104" class="blob-num js-line-number" data-line-number="104"></td>
+        <td id="LC104" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">return</span> query;</td>
+      </tr>
+      <tr>
+        <td id="L105" class="blob-num js-line-number" data-line-number="105"></td>
+        <td id="LC105" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="L106" class="blob-num js-line-number" data-line-number="106"></td>
+        <td id="LC106" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="L107" class="blob-num js-line-number" data-line-number="107"></td>
+        <td id="LC107" class="blob-code blob-code-inner js-file-line">	<span class="pl-k">private</span> <span class="pl-k">synchronized</span> <span class="pl-smi">StackoverflowEntry</span> <span class="pl-en">creatStackoverflowEntry</span>(</td>
+      </tr>
+      <tr>
+        <td id="L108" class="blob-num js-line-number" data-line-number="108"></td>
+        <td id="LC108" class="blob-code blob-code-inner js-file-line">		<span class="pl-smi">IndexSearcher</span> <span class="pl-v">searcher</span>, <span class="pl-smi">Statement</span> <span class="pl-v">statement</span>, <span class="pl-smi">ScoreDoc</span> <span class="pl-v">scoreDoc</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {</td>
+      </tr>
+      <tr>
+        <td id="L109" class="blob-num js-line-number" data-line-number="109"></td>
+        <td id="LC109" class="blob-code blob-code-inner js-file-line">		</td>
+      </tr>
+      <tr>
+        <td id="L110" class="blob-num js-line-number" data-line-number="110"></td>
+        <td id="LC110" class="blob-code blob-code-inner js-file-line">		<span class="pl-k">try</span> {			</td>
+      </tr>
+      <tr>
+        <td id="L111" class="blob-num js-line-number" data-line-number="111"></td>
+        <td id="LC111" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">Document</span> document <span class="pl-k">=</span> searcher<span class="pl-k">.</span>doc(scoreDoc<span class="pl-k">.</span>doc);		</td>
+      </tr>
+      <tr>
+        <td id="L112" class="blob-num js-line-number" data-line-number="112"></td>
+        <td id="LC112" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">String</span> id <span class="pl-k">=</span> document<span class="pl-k">.</span>getField(<span class="pl-s"><span class="pl-pds">&quot;</span>Id<span class="pl-pds">&quot;</span></span>)<span class="pl-k">.</span>stringValue();</td>
+      </tr>
+      <tr>
+        <td id="L113" class="blob-num js-line-number" data-line-number="113"></td>
+        <td id="LC113" class="blob-code blob-code-inner js-file-line">			</td>
+      </tr>
+      <tr>
+        <td id="L114" class="blob-num js-line-number" data-line-number="114"></td>
+        <td id="LC114" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">ResultSet</span> resultSet <span class="pl-k">=</span> </td>
+      </tr>
+      <tr>
+        <td id="L115" class="blob-num js-line-number" data-line-number="115"></td>
+        <td id="LC115" class="blob-code blob-code-inner js-file-line">				statement<span class="pl-k">.</span>executeQuery(format(<span class="pl-s"><span class="pl-pds">&quot;</span>SELECT ParentId,Body,Score FROM posts WHERE Id=&#39;%s&#39;<span class="pl-pds">&quot;</span></span>, id));</td>
+      </tr>
+      <tr>
+        <td id="L116" class="blob-num js-line-number" data-line-number="116"></td>
+        <td id="LC116" class="blob-code blob-code-inner js-file-line">			</td>
+      </tr>
+      <tr>
+        <td id="L117" class="blob-num js-line-number" data-line-number="117"></td>
+        <td id="LC117" class="blob-code blob-code-inner js-file-line">			resultSet<span class="pl-k">.</span>next();</td>
+      </tr>
+      <tr>
+        <td id="L118" class="blob-num js-line-number" data-line-number="118"></td>
+        <td id="LC118" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">String</span> parentId <span class="pl-k">=</span> resultSet<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">&quot;</span>parentId<span class="pl-pds">&quot;</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="L119" class="blob-num js-line-number" data-line-number="119"></td>
+        <td id="LC119" class="blob-code blob-code-inner js-file-line">			<span class="pl-smi">String</span> body <span class="pl-k">=</span> resultSet<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">&quot;</span>Body<span class="pl-pds">&quot;</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="L120" class="blob-num js-line-number" data-line-number="120"></td>
+        <td id="LC120" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">int</span> score <span class="pl-k">=</span> resultSet<span class="pl-k">.</span>getInt(<span class="pl-s"><span class="pl-pds">&quot;</span>Score<span class="pl-pds">&quot;</span></span>);</td>
+      </tr>
+      <tr>
+        <td id="L121" class="blob-num js-line-number" data-line-number="121"></td>
+        <td id="LC121" class="blob-code blob-code-inner js-file-line">			</td>
+      </tr>
+      <tr>
+        <td id="L122" class="blob-num js-line-number" data-line-number="122"></td>
+        <td id="LC122" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">return</span></td>
+      </tr>
+      <tr>
+        <td id="L123" class="blob-num js-line-number" data-line-number="123"></td>
+        <td id="LC123" class="blob-code blob-code-inner js-file-line">				<span class="pl-k">new</span> <span class="pl-smi">StackoverflowEntry</span>(id, parentId, score, body);</td>
+      </tr>
+      <tr>
+        <td id="L124" class="blob-num js-line-number" data-line-number="124"></td>
+        <td id="LC124" class="blob-code blob-code-inner js-file-line">			</td>
+      </tr>
+      <tr>
+        <td id="L125" class="blob-num js-line-number" data-line-number="125"></td>
+        <td id="LC125" class="blob-code blob-code-inner js-file-line">		} <span class="pl-k">catch</span> (<span class="pl-smi">SQLException</span> <span class="pl-k">|</span> <span class="pl-smi">IOException</span> e) {</td>
+      </tr>
+      <tr>
+        <td id="L126" class="blob-num js-line-number" data-line-number="126"></td>
+        <td id="LC126" class="blob-code blob-code-inner js-file-line">			<span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-smi">IOException</span>(<span class="pl-s"><span class="pl-pds">&quot;</span>Couldn&#39;t retrieve information for entry.<span class="pl-pds">&quot;</span></span>, e);</td>
+      </tr>
+      <tr>
+        <td id="L127" class="blob-num js-line-number" data-line-number="127"></td>
+        <td id="LC127" class="blob-code blob-code-inner js-file-line">		}</td>
+      </tr>
+      <tr>
+        <td id="L128" class="blob-num js-line-number" data-line-number="128"></td>
+        <td id="LC128" class="blob-code blob-code-inner js-file-line">	}</td>
+      </tr>
+      <tr>
+        <td id="L129" class="blob-num js-line-number" data-line-number="129"></td>
+        <td id="LC129" class="blob-code blob-code-inner js-file-line">		</td>
+      </tr>
+      <tr>
+        <td id="L130" class="blob-num js-line-number" data-line-number="130"></td>
+        <td id="LC130" class="blob-code blob-code-inner js-file-line">}</td>
       </tr>
 </table>
 
@@ -694,7 +1179,7 @@
       <svg aria-hidden="true" class="octicon octicon-mark-github" height="24" role="img" title="GitHub " version="1.1" viewBox="0 0 16 16" width="24"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59 0.4 0.07 0.55-0.17 0.55-0.38 0-0.19-0.01-0.82-0.01-1.49-2.01 0.37-2.53-0.49-2.69-0.94-0.09-0.23-0.48-0.94-0.82-1.13-0.28-0.15-0.68-0.52-0.01-0.53 0.63-0.01 1.08 0.58 1.23 0.82 0.72 1.21 1.87 0.87 2.33 0.66 0.07-0.52 0.28-0.87 0.51-1.07-1.78-0.2-3.64-0.89-3.64-3.95 0-0.87 0.31-1.59 0.82-2.15-0.08-0.2-0.36-1.02 0.08-2.12 0 0 0.67-0.21 2.2 0.82 0.64-0.18 1.32-0.27 2-0.27 0.68 0 1.36 0.09 2 0.27 1.53-1.04 2.2-0.82 2.2-0.82 0.44 1.1 0.16 1.92 0.08 2.12 0.51 0.56 0.82 1.27 0.82 2.15 0 3.07-1.87 3.75-3.65 3.95 0.29 0.25 0.54 0.73 0.54 1.48 0 1.07-0.01 1.93-0.01 2.2 0 0.21 0.15 0.46 0.55 0.38C13.71 14.53 16 11.53 16 8 16 3.58 12.42 0 8 0z"></path></svg>
 </a>
     <ul class="site-footer-links">
-      <li>&copy; 2016 <span title="0.11550s from github-fe157-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
+      <li>&copy; 2016 <span title="0.09481s from github-fe121-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
         <li><a href="https://github.com/site/terms" data-ga-click="Footer, go to terms, text:terms">Terms</a></li>
         <li><a href="https://github.com/site/privacy" data-ga-click="Footer, go to privacy, text:privacy">Privacy</a></li>
         <li><a href="https://github.com/security" data-ga-click="Footer, go to security, text:security">Security</a></li>
