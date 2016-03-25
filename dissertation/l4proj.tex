@@ -496,7 +496,7 @@ Diagram ~\ref{fig:search-classdiagram} shows the structure of classes for the 'p
 \end{figure}
 
 \noindent
-The class diagram ~\ref{fig:searchtab-classdiagram} represents the structure of classes inside the 'uicomponents.search' package. Each class represents a user interface component. The SearchTab contains a panel  in which every other directly connected component is placed in the tab. Posts create their own mouse listeners. In order to perform search the InputPane and SearchPanelScroll must know about the object responsible for that purpose, as well as be able to modify the content of the posts by calling the appropriate methods. In addition, the InputPane is also given the history tab as a parameter to update the search history. This structure of the code (with tabs, panels and components) is also valid for the other user interface packages and allows easy expansion of the plugin with new functionality.
+The class diagram ~\ref{fig:searchtab-classdiagram} represents the structure of classes inside the 'uicomponents.search' package. Each class represents a user interface component. The SearchTab contains a panel  in which every other directly connected component is placed in the tab. Posts create their own mouse listeners. In order to perform search the InputPane and SearchPanelScroll must know about the class responsible for that purpose, as well as be able to modify the content of the posts by calling the appropriate methods. In addition, the InputPane is also given the history tab as a parameter to update the search history. This structure of the code (with tabs, panels and components) is also valid for the other user interface packages and allows easy expansion of the plugin with new functionality.
 
 \newpage
 \section{Libraries Used}
