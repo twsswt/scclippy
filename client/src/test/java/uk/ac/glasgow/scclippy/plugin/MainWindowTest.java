@@ -22,9 +22,4 @@ public class MainWindowTest {
 		mainWindow.createToolWindowContent(project, toolWindow);
 	}
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
-
 }

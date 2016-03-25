@@ -66,7 +66,8 @@ public class MainWindow implements ToolWindowFactory {
             return;
 
         editor.addEditorMouseListener(
-        	new TextSelectionMouseListener(searchTab.getQueryInputPane()));
+        	new TextSelectionMouseListener(
+        		searchTab.getQueryInputPane(), searchController));
 
     }
 
@@ -105,9 +106,13 @@ public class MainWindow implements ToolWindowFactory {
 	}
     
 	private Properties initialiseProperties() {
-    	
-		IdeaPluginDescriptor ipd = PluginManager.getPlugin(PluginId.getId("uk.ac.glasgow.scclippy"));
-        String pluginPath = (ipd == null) ? "src/main/resource" : ipd.getPath().getAbsolutePath();
+
+		IdeaPluginDescriptor ipd = null;
+		try {
+			ipd = PluginManager.getPlugin(PluginId.getId("uk.ac.glasgow.scclippy"));
+		} catch (RuntimeException rte){}
+        
+		String pluginPath = (ipd == null) ? "src/main/resource" : ipd.getPath().getAbsolutePath();
         String settingsPath = pluginPath+"/config.properties";
 
 		File propertiesFile = new java.io.File(settingsPath);

@@ -1,6 +1,5 @@
 package uk.ac.glasgow.scclippy.uicomponents.search;
 
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 

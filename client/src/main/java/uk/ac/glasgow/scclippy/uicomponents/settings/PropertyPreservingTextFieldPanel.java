@@ -29,8 +29,7 @@ public class PropertyPreservingTextFieldPanel extends JPanel {
         add(jTextField);
 	}
 
-	public void addDocumentListener(
-		PostColourChangerDocumentListener listener) {
+	public void addDocumentListener(DocumentListener listener) {
 		jTextField.getDocument().addDocumentListener(listener);
 	}
 	

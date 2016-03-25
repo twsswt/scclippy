@@ -57,10 +57,9 @@ public class GeneralSettingsPanel extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        JPanel extraPostsToRetrieveOnScrollingDownPanel = 
+        PropertyPreservingTextFieldPanel extraPostsToRetrieveOnScrollingDownPanel = 
         	new PropertyPreservingTextFieldPanel(
         		properties, "extraPostsToRetrieveOnScroll",  "Extra number of posts after scrolling down.");
-        
         this.add(extraPostsToRetrieveOnScrollingDownPanel, gbc);
 
         PropertyPreservingTextFieldPanel postsTextColourPanel =

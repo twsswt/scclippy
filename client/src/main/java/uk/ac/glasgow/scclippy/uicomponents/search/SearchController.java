@@ -102,7 +102,6 @@ public class SearchController {
 		queryMustBeSorted = false;
 		queryMustBeRefreshed = false;
 		queryMustBeFiltered = false;
-		System.out.println(filteredResult.size());
 		//Notify listeners.
 		postsPane.update(filteredResult);
 	}

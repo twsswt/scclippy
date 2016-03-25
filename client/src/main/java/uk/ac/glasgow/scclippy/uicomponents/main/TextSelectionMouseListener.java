@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.event.EditorMouseEvent;
 
 import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
 import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchController;
 
 /**
  * Code/Text mouse selection listener
@@ -13,9 +14,11 @@ import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
 public class TextSelectionMouseListener extends EditorMouseAdapter {
 
 	private final QueryInputPane queryInputPane;
+	private SearchController searchController;
 	
-	public TextSelectionMouseListener(QueryInputPane queryInputPane){
+	public TextSelectionMouseListener(QueryInputPane queryInputPane, SearchController searchController){
 		this.queryInputPane = queryInputPane;
+		this.searchController = searchController;
 	}
 	
     @Override
@@ -30,6 +33,7 @@ public class TextSelectionMouseListener extends EditorMouseAdapter {
         	editor.getSelectionModel().getSelectedText();
         
         queryInputPane.setQueryText(codeFragment);
+        searchController.setQuery(codeFragment);
     }
 
 }
