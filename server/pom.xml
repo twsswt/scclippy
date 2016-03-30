@@ -4,7 +4,7 @@
 	<groupId>uk.ac.glasgow.scclippy</groupId>
 	<artifactId>SourceCodeClippy</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.0.1-PREALPHA</version>
 	<name>SourceCodeClippy</name>
 	<url>http://maven.apache.org</url>
 
@@ -45,28 +45,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers-common</artifactId>
-			<version>5.3.1</version>
+			<groupId>uk.ac.glasgow.scclippy</groupId>
+			<artifactId>scclippy-lucene</artifactId>
+			<version>0.0.1-PREALPHA</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>5.3.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-queryparser</artifactId>
-			<version>5.3.1</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.4.1208.jre7</version>
-		</dependency>
 		
 	</dependencies>
 
