@@ -3,7 +3,7 @@ package uk.ac.glasgow.scclippy.uicomponents.search;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
-import uk.ac.glasgow.scclippy.uicomponents.history.SearchHistoryTab;
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
 
 /**
  * Represents a class that contains components in the search panel/tab
@@ -14,7 +14,7 @@ public class SearchTab extends JPanel {
     private PostsPane postsPane;
     private SearchTopPanel searchTopPanel;
 
-    public SearchTab(SearchController searchController, SearchHistoryTab searchHistoryTab) {
+    public SearchTab(SearchController searchController) {
 
     	SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
@@ -22,7 +22,7 @@ public class SearchTab extends JPanel {
         queryInputPane = new QueryInputPane(searchController);
         postsPane = new PostsPane();
         PostsScrollPane postsScrollPane = new PostsScrollPane(postsPane, searchController);
-        searchController.setPostsPane(postsPane);
+        searchController.addSearchChangeListener(postsPane);
         
         searchTopPanel = new SearchTopPanel(searchController, queryInputPane);
         

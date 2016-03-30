@@ -22,7 +22,7 @@ import com.intellij.ui.JBColor;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowLuceneIndexer;
 import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
-import uk.ac.glasgow.scclippy.uicomponents.search.SearchController;
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
 
 public class LocalIndexingSettingsPanel extends JPanel {
 

@@ -15,9 +15,9 @@ import javax.swing.event.DocumentEvent;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
 import uk.ac.glasgow.scclippy.uicomponents.search.PostsPane;
 import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
-import uk.ac.glasgow.scclippy.uicomponents.search.SearchController;
 
 /**
  * Represents a class that contains components in the settings panel/tab

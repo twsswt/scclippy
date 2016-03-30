@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 
 import com.intellij.openapi.ui.ComboBox;
 
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
+
 public class SearchTopPanel extends JPanel {
 
 	private ComboBox searchMechanismComboBox;

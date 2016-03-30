@@ -24,7 +24,7 @@ import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
 /**
  * Represents the Posts (JEditorPane(s) that hold the results from a query)
  */
-public class PostsPane extends JPanel {
+public class PostsPane extends JPanel implements SearchChangeListener {
     
     private String textColour = "";
 
@@ -113,7 +113,7 @@ public class PostsPane extends JPanel {
     /**
      * Updates the editor panes with the entries provided.
      */
-    public void update(List<StackoverflowEntry> stackoverflowEntries) {
+    public void notifySearchChanged(String query, List<StackoverflowEntry> stackoverflowEntries) {
     	
     	// Ensure that the cache of entry editor panes has sufficient capacity.
     	while (stackoverflowEntries.size() > entryEditorPanes.size())

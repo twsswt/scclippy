@@ -1,11 +1,13 @@
 package uk.ac.glasgow.scclippy.uicomponents.main;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
-import org.jetbrains.annotations.NotNull;
 
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
 import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
 
 /**
@@ -18,10 +20,13 @@ public class KeyInput extends TypedHandlerDelegate {
       ' ', '.', ';'
     };
 	
-	private QueryInputPane queryInputPane;
+	private final QueryInputPane queryInputPane;
+
+	private final SearchController searchController;
 	
-	public KeyInput (QueryInputPane queryInputPane){
+	public KeyInput (QueryInputPane queryInputPane, SearchController searchController){
 		this.queryInputPane = queryInputPane;
+		this.searchController = searchController;
 	}
 
     @Override

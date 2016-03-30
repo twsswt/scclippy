@@ -12,9 +12,9 @@ import javax.swing.border.Border;
 
 import com.intellij.ui.JBColor;
 
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
 import uk.ac.glasgow.scclippy.uicomponents.search.PostsPane;
 import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
-import uk.ac.glasgow.scclippy.uicomponents.search.SearchController;
 
 public class GeneralSettingsPanel extends JPanel {
 

@@ -6,8 +6,7 @@ import java.awt.event.AdjustmentListener;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
-import uk.ac.glasgow.scclippy.plugin.search.SearchException;
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
 
 public class PostsScrollPane extends JScrollPane {
 	
@@ -52,11 +51,6 @@ public class PostsScrollPane extends JScrollPane {
 
             if (value + extent == maximum) {
             	searchController.incrementMaximumPostsToRetrieveOnScroll();
-            	try {
-					searchController.updateSearchAndSort();
-				} catch (SearchException e) {
-					IntellijFacade.createErrorNotification(e.getMessage());
-				}            	
             }
         }
     }

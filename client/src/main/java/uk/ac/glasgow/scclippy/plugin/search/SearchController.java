@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.uicomponents.search;
+package uk.ac.glasgow.scclippy.plugin.search;
 
 import static java.util.Collections.sort;
 
@@ -6,16 +6,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
-import uk.ac.glasgow.scclippy.plugin.search.LocalIndexedSearch;
-import uk.ac.glasgow.scclippy.plugin.search.SearchException;
-import uk.ac.glasgow.scclippy.plugin.search.SortType;
-import uk.ac.glasgow.scclippy.plugin.search.StackoverflowJSONAPISearch;
-import uk.ac.glasgow.scclippy.plugin.search.StackoverflowSearch;
-import uk.ac.glasgow.scclippy.plugin.search.WebServiceSearch;
+import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
+import uk.ac.glasgow.scclippy.uicomponents.search.PostsPane;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchChangeListener;
 
 public class SearchController {
 	
@@ -48,8 +47,12 @@ public class SearchController {
 	private boolean queryMustBeFiltered;
 	private boolean queryMustBeSorted;
 
+	private Set<SearchChangeListener> searchChangeListeners;
+
     public SearchController() {
     	    	    	
+    	searchChangeListeners = new HashSet<SearchChangeListener>();
+    	
     	searchMechanisms = new HashMap<String, StackoverflowSearch>();
 
         sortOptions = new HashMap<String,SortType>();
@@ -74,7 +77,7 @@ public class SearchController {
 		return stackoverflowJSONAPISearch.getRemainingCalls();
 	}
 	
-	public void updateSearchAndSort () throws SearchException {
+	private void updateSearchAndSort ()  {
 		
 		if (queryMustBeRefreshed){
 			
@@ -84,7 +87,12 @@ public class SearchController {
 				StackoverflowSearch currentStackOverflowSearch =
 					searchMechanisms.get(searchType);
 				
-				searchResult = currentStackOverflowSearch.searchIndex(query, currentMaximumPosts);
+				try {
+					searchResult =
+						currentStackOverflowSearch.searchIndex(query, currentMaximumPosts);
+				} catch (SearchException e) {
+					IntellijFacade.createErrorNotification(e.getMessage());
+				}
 			}
 		}
 		
@@ -103,7 +111,8 @@ public class SearchController {
 		queryMustBeRefreshed = false;
 		queryMustBeFiltered = false;
 		//Notify listeners.
-		postsPane.update(filteredResult);
+		for (SearchChangeListener searchChangeListener: searchChangeListeners)
+			searchChangeListener.notifySearchChanged(query, filteredResult);
 	}
 	
 	private void performSort (List<StackoverflowEntry> stackoverflowEntries){
@@ -145,6 +154,7 @@ public class SearchController {
 		this.query = query;
 		this.queryMustBeRefreshed = true;
 		this.resetMaximumPostsToRetrieve();
+		updateSearchAndSort();
 	}
 	
 	public void setSearchType(String searchType){
@@ -160,6 +170,7 @@ public class SearchController {
 	public void incrementMaximumPostsToRetrieveOnScroll() {
 		this.currentMaximumPosts += extraPostsToRetrieveOnScoll;
 		this.queryMustBeRefreshed = true;
+		updateSearchAndSort();
 	}
 	
 	public void resetMaximumPostsToRetrieve (){
@@ -172,8 +183,8 @@ public class SearchController {
 		searchMechanisms.put(string, stackoverflowJSONAPISearch);
 	}
 
-	public void setPostsPane(PostsPane postsPane) {
-		this.postsPane = postsPane;
+	public void addSearchChangeListener(SearchChangeListener searchChangeListener) {
+		this.searchChangeListeners.add(searchChangeListener);
 		
 	}
 	

@@ -5,8 +5,8 @@ import com.intellij.openapi.editor.event.EditorMouseAdapter;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
 
 import uk.ac.glasgow.scclippy.plugin.editor.IntellijFacade;
+import uk.ac.glasgow.scclippy.plugin.search.SearchController;
 import uk.ac.glasgow.scclippy.uicomponents.search.QueryInputPane;
-import uk.ac.glasgow.scclippy.uicomponents.search.SearchController;
 
 /**
  * Code/Text mouse selection listener

@@ -4,7 +4,11 @@
 		
 	<dependencies>
 	
-		<dependency org="junit" name="junit" conf="default" rev="latest.release"/>
+		<dependency org="org.easymock" name="easymock" rev="3.3.1" conf="default"/>
+
+		<dependency org="junit" name="junit"  rev="4.10" conf="default"/>
+
+		<dependency org="org.hamcrest" name="hamcrest-all" rev="1.3" conf="default"/>
 
 		<dependency org="org.apache.lucene" name="lucene-core" rev="5.3.1" conf="default"/>
 		<dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="5.3.1" conf="default"/>
@@ -17,7 +21,7 @@
 		<dependency org="com.intellij" name="util" rev="15.0.1"/>
 		<dependency org="com.intellij" name="idea" rev="15.0.1"/>
 
-		<dependency org="net.sf.trove4j" name="trove4j" rev="3.0.3" conf="default"/>
+		<dependency org="net.sf.trove4j" name="trove4j" rev="4.0.0" conf="default"/>
 
 		<dependency org="org.picocontainer" name="picocontainer" rev="1.2" conf="default"/>
 

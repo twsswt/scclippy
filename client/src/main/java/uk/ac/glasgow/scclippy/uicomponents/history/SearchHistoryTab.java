@@ -2,16 +2,20 @@ package uk.ac.glasgow.scclippy.uicomponents.history;
 
 import com.intellij.ui.JBColor;
 
+import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
+import uk.ac.glasgow.scclippy.uicomponents.search.SearchChangeListener;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
  * Represents a class that contains components in the query history panel/tab
  */
-public class SearchHistoryTab extends JScrollPane{
+public class SearchHistoryTab extends JScrollPane implements SearchChangeListener {
 
     private final static int SCROLL_STEP_SIZE = 10;
     private final static int MAX_HISTORY_SIZE = 100;
@@ -34,7 +38,7 @@ public class SearchHistoryTab extends JScrollPane{
         
     }
 
-    public void update(String query) {
+    public void notifySearchChanged(String query, List<StackoverflowEntry> stackoverflowEntries) {
         JTextArea historyPane = createQueryHistoryPane(query);
         inputHistoryQueue.add(historyPane);
         
