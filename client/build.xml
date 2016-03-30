@@ -199,7 +199,7 @@
 
 
 	<target name="plugin" depends="dist">
-		<zip file="${ivy.module}-${ivy.revision}.zip">
+		<zip file="${target.dir}/${ivy.module}-${ivy.revision}.zip">
 			<zipfileset prefix="scclippy/lib" dir="${target.lib.dir}" includes="lucene-*.jar,json-*.jar" />
 			<zipfileset prefix="scclippy/lib" dir="." includes="scclippy-${ivy.version}.jar" />
 			<zipfileset prefix="scclippy/" dir="." includes="src/main/resource/config.properties" />
