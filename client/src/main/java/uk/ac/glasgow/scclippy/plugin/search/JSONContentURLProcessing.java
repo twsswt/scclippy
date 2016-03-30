@@ -1,4 +1,4 @@
-package uk.ac.glasgow.scclippy.plugin.util;
+package uk.ac.glasgow.scclippy.plugin.search;
 
 import org.json.JSONObject;
 
@@ -6,17 +6,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
-/**
- * Contains utility methods for processing URLs
- */
-public class URLProcessing {
+public class JSONContentURLProcessing {
 
-    /**
-     * Reads all characters from a reader object and returns a string
-     * @param rd reader
-     * @return the resulted string
-     * @throws IOException
-     */
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -28,10 +19,7 @@ public class URLProcessing {
     }
 
     /**
-     * Reads JSON from URL using GZIP
-     * (Used for StackExchange API)
-     * @param url the URL
-     * @return the result
+     * Reads JSON from URL using GZIP (Used for StackExchange API)
      */
     public static JSONObject readJsonFromUrlUsingGZIP(String url) {
 
@@ -48,10 +36,7 @@ public class URLProcessing {
     }
 
     /**
-     * Reads JSON from URL
-     * (Used for querying app server)
-     * @param url the URL
-     * @return the result
+     * Reads JSON from URL (Used for querying app server)
      */
     public static JSONObject readJsonFromUrl(String url) {
         JSONObject json = null;

@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
-import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -31,7 +30,7 @@ public class StackoverflowJSONAPISearch implements StackoverflowSearch {
 		} catch (UnsupportedEncodingException e) {
 			throw new SearchException(e);
 		}
-        JSONObject json = URLProcessing.readJsonFromUrlUsingGZIP(EXCERPTS_URL + "body=" + body + EXCERPTS_PARAMS);
+        JSONObject json = JSONContentURLProcessing.readJsonFromUrlUsingGZIP(EXCERPTS_URL + "body=" + body + EXCERPTS_PARAMS);
 
         if (json == null)
             throw new SearchException("Query failed. Check connection to server.");

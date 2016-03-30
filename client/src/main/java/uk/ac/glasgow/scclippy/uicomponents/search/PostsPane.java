@@ -113,6 +113,7 @@ public class PostsPane extends JPanel implements SearchChangeListener {
     /**
      * Updates the editor panes with the entries provided.
      */
+    @Override
     public void notifySearchChanged(String query, List<StackoverflowEntry> stackoverflowEntries) {
     	
     	// Ensure that the cache of entry editor panes has sufficient capacity.

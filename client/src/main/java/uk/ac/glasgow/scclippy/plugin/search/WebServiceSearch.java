@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
-import uk.ac.glasgow.scclippy.plugin.util.URLProcessing;
 
 import static java.lang.String.format;
 
@@ -40,7 +39,7 @@ public class WebServiceSearch implements StackoverflowSearch {
         String queryURITemplate = "%s%s?posts%d";
         String queryURI = format(queryURITemplate, webServiceURI, query, posts);
         
-        JSONObject webserviceQueryResult = URLProcessing.readJsonFromUrl(queryURI);
+        JSONObject webserviceQueryResult = JSONContentURLProcessing.readJsonFromUrl(queryURI);
 
         if (webserviceQueryResult == null) {
             throw new SearchException("Query failed. Check connection to server.");
