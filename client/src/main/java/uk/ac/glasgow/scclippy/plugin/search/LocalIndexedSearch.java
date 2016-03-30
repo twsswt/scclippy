@@ -9,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.jetbrains.annotations.NotNull;
 
 import uk.ac.glasgow.scclippy.lucene.StackoverflowEntry;
@@ -34,15 +33,13 @@ public class LocalIndexedSearch	implements StackoverflowSearch {
 	@Override
 	public List<StackoverflowEntry> searchIndex(@NotNull String queryString, int desiredHits) throws SearchException {
 		
-		
-		
 		try {
 			Connection connection = createDatabaseConnection();
 			
 			StackoverflowLuceneSearcher stackoverflowLuceneSearcher = 
 				new StackoverflowLuceneSearcher (connection, indexPath);
 			return stackoverflowLuceneSearcher.searchDocuments(queryString, desiredHits);
-		} catch (IOException | ParseException | SQLException e) {
+		} catch (IOException | SQLException e) {
 			throw new SearchException(e);
 		}		
 	}

@@ -57,10 +57,15 @@ public class StackoverflowLuceneSearcher {
 		this.indexDirectoryPath = indexDirectoryPath;		
 	}	
 
-	public List<StackoverflowEntry> searchDocuments (String queryString, Integer desiredHits) throws IOException, ParseException {
+	public List<StackoverflowEntry> searchDocuments (String queryString, Integer desiredHits) throws IOException {
 
 		IndexSearcher searcher = getSearcher();
-		Query query = createLuceneQuery(queryString);
+		Query query;
+		try {
+			query = createLuceneQuery(queryString);
+		} catch (ParseException e1) {
+			throw new IOException(format("Couldn't parse query[%s].",queryString), e1);
+		}
 		TopDocs topDocs = searcher.search(query, desiredHits);
 		
 		List<StackoverflowEntry> result = new ArrayList<StackoverflowEntry>();

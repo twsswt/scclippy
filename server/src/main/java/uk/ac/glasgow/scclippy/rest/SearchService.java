@@ -21,7 +21,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -102,8 +101,6 @@ public class SearchService {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return Response.status(200).entity("Search index is not currently available.").build();
-		} catch (ParseException e) {
-			return Response.status(200).entity("Invalid query.").build();
 		}
 	}
 	
