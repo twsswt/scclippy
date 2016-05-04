@@ -184,8 +184,6 @@
 	<target name="dist" depends="test" >
 		<jar destfile="${target.jar.dir}/${ivy.module}.jar">
 			<fileset dir="${target.bin.dir}" includes="**/*"/>
-			<!-- dirty hack for now. -->
-			<fileset dir="../server/${target.bin.dir}" includes="**/*"/>
 			<fileset dir="." includes="META-INF/plugin.xml"/>
 		</jar>
 	</target>
@@ -200,7 +198,7 @@
 
 	<target name="plugin" depends="dist">
 		<zip file="${target.dir}/${ivy.module}-${ivy.revision}.zip">
-			<zipfileset prefix="scclippy/lib" dir="${target.lib.dir}" includes="lucene-*.jar,json-*.jar" />
+			<zipfileset prefix="scclippy/lib" dir="${target.lib.dir}" includes="scclippy-*.jar,lucene-*.jar,json-*.jar" />
 			<zipfileset prefix="scclippy/lib" dir="." includes="scclippy-${ivy.version}.jar" />
 			<zipfileset prefix="scclippy/" dir="." includes="src/main/resource/config.properties" />
 						
