@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.ac.glasgow.scclippy</groupId>
-	<artifactId>SourceCodeClippy</artifactId>
-	<packaging>war</packaging>
+	<artifactId>scclippy-lucene</artifactId>
+	<packaging>jar</packaging>
 	<version>0.0.1-PREALPHA</version>
-	<name>SourceCodeClippy</name>
+	<name>SourceCodeClippy Lucene Indexer</name>
 	<url>http://maven.apache.org</url>
 
 	<repositories>
@@ -24,37 +24,33 @@
 			<version>1.1</version>
 		</dependency>
 
-
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>5.3.1</version>
 		</dependency>
 
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.0-b01</version>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>5.3.1</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.8</version>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>5.3.1</version>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>uk.ac.glasgow.scclippy</groupId>
-			<artifactId>scclippy-lucene</artifactId>
-			<version>0.0.1-PREALPHA</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4.1208.jre7</version>
 		</dependency>
-
 		
 	</dependencies>
-
+	
 	<build>
-		<finalName>SourceCodeClippy</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -63,12 +59,8 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.3.7.v20160115</version>
-			</plugin>
 		</plugins>
 	</build>
+
 
 </project>

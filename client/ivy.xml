@@ -1,14 +1,12 @@
 <ivy-module version="2.0">
 
-	<info organisation="uk.ac.glasgow" module="scclippy"/>
+	<info organisation="uk.ac.glasgow.socs" module="scclippy" revision="0.0.1-PREAlPHA" />
 		
 	<dependencies>
-		<dependency org="junit" name="junit" conf="default" rev="latest.release"/>
-
-		<dependency org="org.apache.lucene" name="lucene-core" rev="5.3.1" conf="default"/>
-		<dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="5.3.1" conf="default"/>
-		<dependency org="org.apache.lucene" name="lucene-queryparser" rev="5.3.1" conf="default"/>
-		<dependency org="org.json" name="json" rev="20140107" conf="default"/>
+	
+		<dependency org="org.easymock" name="easymock" rev="3.3.1" conf="default"/>
+		<dependency org="junit" name="junit"  rev="4.10" conf="default"/>
+		<dependency org="org.hamcrest" name="hamcrest-all" rev="1.3" conf="default"/>
 
 		<dependency org="com.intellij" name="openapi" rev="15.0.1"/>
 		<dependency org="com.intellij" name="extensions" rev="15.0.1"/>
@@ -16,8 +14,14 @@
 		<dependency org="com.intellij" name="util" rev="15.0.1"/>
 		<dependency org="com.intellij" name="idea" rev="15.0.1"/>
 
-		<dependency org="net.sf.trove4j" name="trove4j" rev="3.0.3"/>
+		<dependency org="net.sf.trove4j" name="trove4j" rev="4.0.0" conf="default"/>
+		<dependency org="org.picocontainer" name="picocontainer" rev="1.2" conf="default"/>
+		<dependency org="net.java.dev.jna" name="jna" rev="4.1.0" conf="default"/>
+
+		<dependency org="uk.ac.glasgow.scclippy" name="scclippy-lucene" rev="0.0.1-PREALPHA" conf="default"/>
 		
+		<dependency org="org.json" name="json" rev="20140107" conf="default"/>
+				
 	</dependencies>
 	
 </ivy-module>

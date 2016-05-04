@@ -19,7 +19,11 @@
 			<url name="2">
 				<artifact pattern="http://www.dcs.gla.ac.uk/~tws/software/site-jars/[organisation]/[module]/[revision]/[artifact]-[revision].jar" />
 			</url>
-			
+
+			<filesystem name="3">
+				<artifact pattern="${user.home}/.m2/repository/uk/ac/glasgow/scclippy/[artifact]/[revision]/[artifact]-[revision].[ext]"/>
+			</filesystem>
+
 		</chain>
 		
 	</resolvers>

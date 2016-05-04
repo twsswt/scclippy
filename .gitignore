@@ -3,8 +3,15 @@
 **/*.bbl
 **/*.blg
 **/*.log
+**/*.out
 **/*.pdf
 **/*.toc
 **/.project
 **/.classpath
+client/target
+lucene/target
 server/target
+client/.settings
+lucene/.settings
+server/.settings
+
